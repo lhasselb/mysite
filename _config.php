@@ -14,10 +14,9 @@ $databaseConfig = array(
 );
 
 // Set the site locale
-i18n::set_locale('en_US');
-//i18n::set_locale('de_DE');
-//i18n::set_date_format('dd.MM.YYYY');
-//i18n::set_time_format('HH:mm');
+i18n::set_locale('de_DE');
+i18n::set_date_format('dd.MM.YYYY');
+i18n::set_time_format('HH:mm');
 
 Director::set_environment_type('dev');//dev live
 
@@ -37,3 +36,29 @@ if(getenv('OS') == "Windows_NT") {
 ini_set("log_errors", "On");
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+
+
+// Add template to tinyMCE
+HtmlEditorConfig::get('cms')->enablePlugins('template');
+HtmlEditorConfig::get('cms')->insertButtonsAfter('tablecontrols', 'template');
+HtmlEditorConfig::get('cms')->setOptions(array('template_templates' => array(
+    array('title' => '10 Bereiche Accordion', 'src' => SSViewer::get_theme_folder().'/templates/helper/accordian.html', 'description' => 'Füge Beispielinhalt ein')
+)));
+
+// Add a Google Maps shortcode
+ShortcodeParser::get('default')->register('googlemap', function($arguments, $address, $parser, $shortcode) {
+    $iframeUrl = sprintf(
+        "https://mapsengine.google.com/map/embed?mid=%s",
+        urlencode($address)
+    );
+
+    $width = (isset($arguments['width']) && $arguments['width']) ? $arguments['width'] : "100%";
+    $height = (isset($arguments['height']) && $arguments['height']) ? $arguments['height'] : "100%";
+
+    return sprintf(
+        '<iframe class="embedded-maps" width="%s" height="%s" src="%s" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>',
+        $width,
+        $height,
+        $iframeUrl
+    );
+});

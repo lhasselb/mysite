@@ -14,3 +14,17 @@ SSViewer:
   source_file_comments: true
 # Enable Fragment Link rewriting (hashlinks)
 #  rewrite_hash_links: false
+
+# Rescale upload to max-width/-height
+ScaledUploads:
+  max-width: 1600
+  max-height: 1200
+  auto-rotate: 1
+
+# General Quality GD
+GDBackend:
+  default_quality: 95
+
+# Jonom/Focuspoint
+FocusPointImage:
+  flush_on_change: true

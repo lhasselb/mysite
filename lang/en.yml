@@ -1,0 +1,10 @@
+en:
+# Pagetype translation(s)
+  Homepage:
+    SINGULARNAME: "Homepage"
+    DESCRIPTION: "Homepage for JIMEV"
+    ALARM: "Alarm message"
+    ALARMINFO: "Max 255 characters allowed"
+  GoogleCalendarPage:
+    SINGULARNAME: "Calendarpage"
+    DESCRIPTION: "Page embedding Google Kalender"
