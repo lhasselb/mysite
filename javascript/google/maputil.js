@@ -336,7 +336,8 @@ var primeMap;
             }
 
             var googlemaptype = convertMapType(mapnode.attr('data-maptype'));
-            map.setMapTypeId(googlemaptype);
+            //map.setMapTypeId(googlemaptype);
+            map.setMapTypeId(google.maps.MapTypeId.HYBRID);
 
             if (useClusterer == 1) {
                 // ensure zoom and grid size are integers by prefixing with unary plus
@@ -357,27 +358,20 @@ var primeMap;
 
             //lh:start
             function addPublicTransport(map, lat, lng) {
-                console.log(map);
-                console.log(lat);
-                console.log(lng);
-
                 var origin = new google.maps.LatLng(lat,lng);
-                console.log(origin);
-
                 var request = {
                   location: origin,
-                  radius: 700,
-                  types: ['train_station']//'train_station','bus_station','subway_station','transit_station'
+                  radius: 1000,
+                  types: ['train_station','subway_station']//'train_station','bus_station','subway_station','transit_station'
                 };
-                //infowindow = new google.maps.InfoWindow();
                 service = new google.maps.places.PlacesService(map);
-                console.log(service);
-                var results = service.search(request, callback);
+                service.nearbySearch(request, callback);
             }
 
             function callback(results, status) {
+                console.log(results);
                 if (status == google.maps.places.PlacesServiceStatus.OK) {
-                    for (var i = 0; i < results.length; i++) {
+                    for (var i = 0; i < 1; i++) { //i < results.length
                         var place = results[i];
                         createPublicTransportMarker(results[i]);
                     }
@@ -385,15 +379,37 @@ var primeMap;
             }
 
             function createPublicTransportMarker(place) {
-                var placeLoc = place.geometry.location;
-                console.log(placeLoc);
-
-                var marker = new google.maps.Marker({
+                /*var marker = new google.maps.Marker({
                     map: map,
                     position: place.geometry.location
-                });
+                });*/
+                var start = place.geometry.location;
+                var end = new google.maps.LatLng(centre.lat,centre.lng);
+                calculateAndDisplayRoute(start,end);
             }
             addPublicTransport(map,centre.lat,centre.lng);
+
+
+            function calculateAndDisplayRoute(start, end) {
+            var directionsService = new google.maps.DirectionsService;
+            var directionsDisplay = new google.maps.DirectionsRenderer;
+            directionsDisplay.setMap(map);
+                var locOrigin = new google.maps.LatLng(centre.lat,centre.lng);
+                directionsService.route({
+                origin: start,
+                destination: end,
+                provideRouteAlternatives: false,
+                region: 'de',
+                travelMode: google.maps.TravelMode.WALKING
+                }, function(response, status) {
+                    if (status === google.maps.DirectionsStatus.OK) {
+                        directionsDisplay.setDirections(response);
+                    } else {
+                        window.alert('Directions request failed due to ' + status);
+                    }
+                });
+            }
+
             //lh:end
 
             var infoWindow = new google.maps.InfoWindow({

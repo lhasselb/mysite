@@ -1,10 +1,10 @@
 <?php
 class Homepage extends Page
 {
-	private static $singular_name = "Homepage";
-	private static $description = "Homepage für JIMEV";
-	private static $icon = "mysite/images/homepage.png";
-	private static $db = array("Alarm" => "HTMLVarchar(255)");
+	private static $singular_name = 'Homepage';
+	private static $description = 'Homepage für JIMEV';
+	private static $icon = 'mysite/images/homepage.png';
+	private static $db = array('Alarm' => 'HTMLVarchar(255)');
 	private static $has_one = array();
 
 	function getCMSFields(){
