@@ -154,7 +154,6 @@ var primeMap;
         }
     }
 
-
     /**
      * Add one or more (max of 25) KML files to a Google map
      * @param {GoogleMap} map      A Google Map instance
@@ -356,6 +355,47 @@ var primeMap;
             var kmlFiles = $.parseJSON(mapnode.attr('data-kmlfiles'));
             addKmlFiles(map, kmlFiles);
 
+            //lh:start
+            function addPublicTransport(map, lat, lng) {
+                console.log(map);
+                console.log(lat);
+                console.log(lng);
+
+                var origin = new google.maps.LatLng(lat,lng);
+                console.log(origin);
+
+                var request = {
+                  location: origin,
+                  radius: 700,
+                  types: ['train_station']//'train_station','bus_station','subway_station','transit_station'
+                };
+                //infowindow = new google.maps.InfoWindow();
+                service = new google.maps.places.PlacesService(map);
+                console.log(service);
+                var results = service.search(request, callback);
+            }
+
+            function callback(results, status) {
+                if (status == google.maps.places.PlacesServiceStatus.OK) {
+                    for (var i = 0; i < results.length; i++) {
+                        var place = results[i];
+                        createPublicTransportMarker(results[i]);
+                    }
+                }
+            }
+
+            function createPublicTransportMarker(place) {
+                var placeLoc = place.geometry.location;
+                console.log(placeLoc);
+
+                var marker = new google.maps.Marker({
+                    map: map,
+                    position: place.geometry.location
+                });
+            }
+            addPublicTransport(map,centre.lat,centre.lng);
+            //lh:end
+
             var infoWindow = new google.maps.InfoWindow({
                 content: ''
             });
@@ -389,7 +429,6 @@ var primeMap;
         });
     }
 
-
     function success_callback(p) {
         console.log(p.coords);
         // p.latitude : latitude value
@@ -409,8 +448,11 @@ var primeMap;
         var script = document.createElement('script');
         script.type = 'text/javascript';
         script.src = 'https://maps.googleapis.com/maps/api/js?' +
+            'key=AIzaSyBi9Htg9ShqTKdI2axXU3OkJRGutiVUDiw&signed_in=true&' +
+            'libraries=places' +
             '&callback=loadedGoogleMapsAPI&hl=de';
         script.async = true;
+        script.defer = true;
         document.body.appendChild(script);
     };
 
