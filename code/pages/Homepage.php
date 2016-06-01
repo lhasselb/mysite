@@ -6,18 +6,31 @@ class Homepage extends Page
 	private static $icon = 'mysite/images/homepage.png';
 	private static $db = array('Alarm' => 'HTMLVarchar(255)');
 	private static $has_one = array();
+    private static $has_many = array(
+        'Sliders' => 'Slider'
+    );
 
 	function getCMSFields(){
 		$fields = parent::getCMSFields();
+
 		$htmlEditorField = new HTMLEditorField("Alarm","Alarmmeldung");
 		$htmlEditorField->setRows(1);
 		$fields->addFieldToTab("Root.Main", $htmlEditorField, "Content");
-		return $fields;
+
+        $fields->addFieldToTab('Root.Sliders', GridField::create(
+            'Sliders',
+            'Sliders auf dieser Seite',
+            $this->Sliders(),
+            GridFieldConfig_RecordEditor::create()
+        ));
+
+        return $fields;
 	}
 }
 
 
-class Homepage_Controller extends Page_Controller {
+class Homepage_Controller extends Page_Controller
+{
 
 	/**
 	 * An array of actions that can be accessed via a request. Each array element should be an action name, and the
