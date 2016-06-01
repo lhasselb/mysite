@@ -4,7 +4,6 @@
 
 (function($) {
     $.entwine(function($) {
-        console.log('loaded');
         /**
          * Class: .cms-edit-form .field.switchable
          *
@@ -12,14 +11,13 @@
          */
         $('.cms-edit-form .field.switchable').entwine({
             onmatch: function() {
-                console.log('onmatch');
                 var id = this.attr('id'),
                     form = this.closest('form');
-                console.log(id);
-                //console.log(form);
-                console.log(form.find('input[name=LinkType]:checked').attr('id'));
-                if(form.find('input[name=LinkType]:checked').val() !== id) {
-                    console.log(this);
+                //console.log('id=' + id);
+                //console.log('val=' + form.find('input[name=LinkType]:checked').val());
+                //console.log(id.indexOf(form.find('input[name=LinkType]:checked').val()));
+                if(id.indexOf(form.find('input[name=LinkType]:checked').val()) <= 0) {
+                //if(form.find('input[name=LinkType]:checked').val() !== id) {
                     this.hide();
                 }
 
@@ -40,12 +38,12 @@
          */
         $('.cms-edit-form input[name=LinkType]').entwine({
             onclick: function() {
-                console.log('clicked');
                 var id = this.val(),
                     form = this.closest('form');
 
-                form.find('.field.switchable').disappear(); //.hide();
-                form.find('#' + id).reappear(); //.show();
+                form.find('.field.switchable').disappear();
+                //form.find('#' + id).reappear();
+                $('div[id*="' + id + '"]').reappear();
 
                 this._super();
             }
