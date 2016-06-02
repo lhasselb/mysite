@@ -7,7 +7,7 @@ class Homepage extends Page
 	private static $db = array('Alarm' => 'HTMLVarchar(255)');
 	private static $has_one = array();
     private static $has_many = array(
-        'Sliders' => 'Slider'
+        'Sliders' => 'HomepageSlider.Parent'
     );
 
 	function getCMSFields(){
@@ -17,12 +17,19 @@ class Homepage extends Page
 		$htmlEditorField->setRows(1);
 		$fields->addFieldToTab("Root.Main", $htmlEditorField, "Content");
 
-        $fields->addFieldToTab('Root.Sliders', GridField::create(
-            'Sliders',
-            'Sliders auf dieser Seite',
-            $this->Sliders(),
-            GridFieldConfig_RecordEditor::create()
-        ));
+        $gridFieldConfig = GridFieldConfig::create()->addComponents(
+          new GridFieldToolbarHeader(),
+          new GridFieldAddNewButton('toolbar-header-right'),
+          new GridFieldSortableHeader(),
+          new GridFieldDataColumns(),
+          new GridFieldPaginator(10),
+          new GridFieldEditButton(),
+          new GridFieldDeleteAction(),
+          new GridFieldDetailForm()
+        );
+
+        $gridField = new GridField('SLiders', 'Homepage Slider', $this->Sliders(), $gridFieldConfig);
+        $fields->addFieldToTab("Root.Sliders", $gridField);
 
         return $fields;
 	}
