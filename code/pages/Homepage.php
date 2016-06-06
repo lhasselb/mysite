@@ -1,21 +1,21 @@
 <?php
 class Homepage extends Page
 {
-	private static $singular_name = 'Homepage';
-	private static $description = 'Homepage für JIMEV';
-	private static $icon = 'mysite/images/homepage.png';
-	private static $db = array('Alarm' => 'HTMLVarchar(255)');
-	private static $has_one = array();
+    private static $singular_name = 'Startseite';
+    private static $description = 'Startseite für JIMEV';
+    private static $icon = 'mysite/images/homepage.png';
+
+    /*private static $db = array('Alarm' => 'HTMLVarchar(255)');*/
+
+    private static $has_one = array();
+
     private static $has_many = array(
-        'Sliders' => 'HomepageSlider.Parent'
+        'Sliders' => 'HomepageSlider.Parent',
+        'Alarme' => 'HomepageAlarm'
     );
 
 	function getCMSFields(){
 		$fields = parent::getCMSFields();
-
-		$htmlEditorField = new HTMLEditorField("Alarm","Alarmmeldung");
-		$htmlEditorField->setRows(1);
-		$fields->addFieldToTab("Root.Main", $htmlEditorField, "Content");
 
         $gridFieldConfig = GridFieldConfig::create()->addComponents(
           new GridFieldToolbarHeader(),
@@ -28,8 +28,10 @@ class Homepage extends Page
           new GridFieldDetailForm()
         );
 
-        $gridField = new GridField('SLiders', 'Homepage Slider', $this->Sliders(), $gridFieldConfig);
-        $fields->addFieldToTab("Root.Sliders", $gridField);
+        //$sliderGridField = new GridField('SLiders', '(Slider) Bilder auf der Startseite', $this->Sliders(), $gridFieldConfig);
+        $alarmrGridField = new GridField('Alarme', 'Alarm auf der Startseite', $this->Alarme(), $gridFieldConfig);
+        //$fields->addFieldToTab("Root.Sliders", $sliderGridField);
+        $fields->addFieldToTab("Root.Alarm", $alarmrGridField);
 
         return $fields;
 	}

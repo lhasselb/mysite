@@ -1,11 +1,9 @@
 <?php
-
 class HomepageSlider extends DataObject
 {
 
-    static $singular_name = 'Slider';
-    static $plural_name = 'Sliders';
-    static $description = 'Slider image(s) for Homepage';
+    static $singular_name = '(Slider) Bilder';
+    static $description = 'Slider Bild(er) für die Startseite';
 
 
     private static $db = array(
@@ -34,35 +32,6 @@ class HomepageSlider extends DataObject
 
     // Set default values
     public static $defaults = array();
-
-
-    public function getGridThumbnail() {
-        if($this->SliderImage()->exists()) {
-            return $this->SliderImage()->SetWidth(100);
-        }
-
-        return "(kein Bild)";
-    }
-
-    public function getSliderURL() {
-        if($this->ExternalURL) {
-            return $this->ExternalURL;
-        } else if($this->InternalURLID) {
-            return 'interne Seite: ' .Page::get()->byID($this->InternalURLID)->Title;
-            //return $this->InternalURLID;
-        }
-
-        return "(kein Link)";
-    }
-
-    public function getLink() {
-        if($this->ExternalURL) {
-            return $this->ExternalURL;
-        } else if($this->InternalURLID) {
-            return Page::get()->byID($this->InternalURLID)->Link();
-            //return $this->InternalURLID;
-        }
-    }
 
     /**
      * @return FieldList
@@ -93,18 +62,54 @@ class HomepageSlider extends DataObject
         $linkText = TextField::create('LinkText',_t('Homepage.LINKTEXT','Link Text'));
 
         // The two options for which type of link to add
-        $linkOptions = array('ExternalURL' => 'Link to an external page', 'InternalURLID' => 'Link to an internal page');
+        $linkOptions = array('ExternalURL' => 'Link zu externer Seite', 'InternalURLID' => 'Link zu einer internen Seite');
         // If we've set an internal link already, then that option should be pre-selected
         $selectedOption = ($this->InternalURLID) ? 'InternalURLID' : 'ExternalURL';
         $linkTypeField = OptionsetField::create('LinkType', '', $linkOptions, $selectedOption);
 
         $externalURLField = TextField::create('ExternalURL', 'Link to external page')
             ->addExtraClass('switchable');
-        $internalURLField = TreeDropdownField::create('InternalURLID', 'Choose a page to link to', 'SiteTree')
+        $internalURLField = TreeDropdownField::create('InternalURLID', 'Wählen Sie eine interne Seite', 'SiteTree')
             ->setTreeBaseID(0)->addExtraClass('switchable');
 
         $fields->addFieldsToTab('Root.Main', array($headline,$sliderUploadField,$linkText,$linkTypeField,$externalURLField, $internalURLField));
 
         return $fields;
+    }
+
+    public function getGridThumbnail()
+    {
+        if($this->SliderImage()->exists()) {
+            return $this->SliderImage()->SetWidth(100);
+        }
+
+        return "(kein Bild)";
+    }
+    /**
+     * @return void
+     */
+    public function onBeforeWrite()
+    {
+        // If we've set an external link unset any existing internal link
+        if($this->ExternalURL && $this->isChanged('ExternalURL')) {
+            $this->InternalURLID = false;
+        // Otherwise, if we've set an internal link unset any existing external link
+        } elseif($this->InternalURLID && $this->isChanged('InternalURLID')) {
+            $this->ExternalURL = false;
+        }
+        parent::onBeforeWrite();
+    }
+    /**
+     * Fetch the current link, use with $Link in templates
+     * @return string|false
+     */
+    public function getLink()
+    {
+        if($this->ExternalURL) {
+            return $this->ExternalURL;
+        } elseif($this->InternalURL() && $this->InternalURL()->exists()) {
+            return $this->InternalURL()->Link();
+        }
+        return false;
     }
 }
