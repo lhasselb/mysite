@@ -3,8 +3,8 @@ de:
   Homepage:
     SINGULARNAME: "Startseite"
     DESCRIPTION: "Startseite für JIMEV"
-    ALARM: "Alarmmeldung"
-    ALARMINFO: "In der Meldung sind max. 255 Zeichen erlaubt. Der Rest wird ohne Warnung entfernt."
+  GridField:
+    NewRecord: 'Neuer %s'
   GoogleCalendarPage:
     SINGULARNAME: "Kalenderseite"
     DESCRIPTION: "Seite um Google Kalender anzuzeigen"

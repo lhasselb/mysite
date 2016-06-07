@@ -17,20 +17,15 @@ class Homepage extends Page
 	function getCMSFields(){
 		$fields = parent::getCMSFields();
 
-        $gridFieldConfig = GridFieldConfig::create()->addComponents(
-          new GridFieldToolbarHeader(),
-          new GridFieldAddNewButton('toolbar-header-right'),
-          new GridFieldSortableHeader(),
-          new GridFieldDataColumns(),
-          new GridFieldPaginator(10),
-          new GridFieldEditButton(),
-          new GridFieldDeleteAction(),
-          new GridFieldDetailForm()
-        );
+        $sliderConfig = GridFieldConfig_RecordEditor::create();
+        $sliderGridField = new GridField('SLider', 'Bild(er) auf der Startseite', $this->Sliders());
+        $sliderGridField->setConfig($sliderConfig);
 
-        //$sliderGridField = new GridField('SLiders', '(Slider) Bilder auf der Startseite', $this->Sliders(), $gridFieldConfig);
-        $alarmrGridField = new GridField('Alarme', 'Alarm auf der Startseite', $this->Alarme(), $gridFieldConfig);
-        //$fields->addFieldToTab("Root.Sliders", $sliderGridField);
+        $alarmConfig = GridFieldConfig_RecordEditor::create();
+        $alarmrGridField = new GridField('Alarme', 'Alarm auf der Startseite', $this->Alarme());
+        $alarmrGridField->setConfig($alarmConfig);
+
+        $fields->addFieldToTab("Root.Slider-Bilder", $sliderGridField);
         $fields->addFieldToTab("Root.Alarm", $alarmrGridField);
 
         return $fields;
@@ -66,4 +61,11 @@ class Homepage_Controller extends Page_Controller
 
 	}//init()
 
+    public function LatestNews()
+    {
+        $itemsToSkip = 0;
+        $itemsToReturn = 5;
+        $namespace = '*'; //all
+        return NewsHelper::Entries($itemsToSkip, $itemsToReturn, $namespace, $this->ClassName);
+    }
 }

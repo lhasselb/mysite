@@ -2,13 +2,13 @@
 class HomepageSlider extends DataObject
 {
 
-    static $singular_name = '(Slider) Bilder';
+    static $singular_name = 'Slider-Bild';
     static $description = 'Slider Bild(er) für die Startseite';
 
 
     private static $db = array(
-        'Headline' => 'HTMLVarchar',
-        'LinkText' => 'Varchar',
+        'Headline' => 'Varchar(255)',
+        'LinkText' => 'Varchar(50)',
         'ExternalURL' => 'Text'
     );
 
@@ -20,18 +20,10 @@ class HomepageSlider extends DataObject
 
     private static $summary_fields = array (
         'Headline' => 'Schlagzeile',
-        'SliderURL' => 'Link',
+        'Link' => 'Link zu Seite',
         'LinkText' => 'Text für den Link',
-        'GridThumbnail' => 'Vorschau',
-        //'InternalURL' => 'Externe Verknüpfung',
-        //'InternalURL' => 'Interne Verknüpfung',
+        'GridThumbnail' => 'Vorschau'
     );
-
-    // to change the default sorting to the new SortOrder
-    //public static $default_sort = 'SortOrder';
-
-    // Set default values
-    public static $defaults = array();
 
     /**
      * @return FieldList
@@ -51,7 +43,8 @@ class HomepageSlider extends DataObject
         $fields->removeByName('SliderImage');
 
         // Slider Headline
-        $headline = HtmlEditorField::create('Headline',_t('Homepage.HEADLINE','Slider Headline'));
+        //$headline = HtmlEditorField::create('Headline',_t('Homepage.HEADLINE','Slider Headline'));
+        $headline = TextareaField::create('Headline',_t('Homepage.HEADLINE','Schlagzeile'));
 
         // Settings for UploadField : SliderImage
         $sliderUploadField = new UploadField('SliderImage', _t('Homepage.SLIDERIMAGE','Slider Image'));
@@ -62,7 +55,7 @@ class HomepageSlider extends DataObject
         $linkText = TextField::create('LinkText',_t('Homepage.LINKTEXT','Link Text'));
 
         // The two options for which type of link to add
-        $linkOptions = array('ExternalURL' => 'Link zu externer Seite', 'InternalURLID' => 'Link zu einer internen Seite');
+        $linkOptions = array('ExternalURL' => 'Link zu einer externer Seite', 'InternalURLID' => 'Link zu einer internen Seite');
         // If we've set an internal link already, then that option should be pre-selected
         $selectedOption = ($this->InternalURLID) ? 'InternalURLID' : 'ExternalURL';
         $linkTypeField = OptionsetField::create('LinkType', '', $linkOptions, $selectedOption);
@@ -83,8 +76,18 @@ class HomepageSlider extends DataObject
             return $this->SliderImage()->SetWidth(100);
         }
 
-        return "(kein Bild)";
+        return '(kein Bild)';
     }
+
+    public function getTitle()
+    {
+        if($this->SliderImage()->exists()) {
+            return 'Bild: '.$this->SliderImage()->Title;
+        }
+
+        return '(kein Bild)';
+    }
+
     /**
      * @return void
      */

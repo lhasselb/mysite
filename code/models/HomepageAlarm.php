@@ -6,12 +6,11 @@ class HomepageAlarm extends DataObject
     static $plural_name = 'Alarme';
     static $description = 'Alarme für die Startseite';
 
-
     private static $db = array(
-        'Titel' => 'Varchar',
-        'Meldung' => 'HTMLVarchar(255)',
         'StartDate' => 'SS_Datetime',
         'EndDate' => 'SS_Datetime',
+        'Title' => 'Varchar',
+        'Meldung' => 'HTMLVarchar(255)'
     );
 
     private static $has_one = array(
@@ -19,14 +18,19 @@ class HomepageAlarm extends DataObject
     );
 
     private static $summary_fields = array(
-        'Titel' => 'Titel'
+        'Title' => 'Titel',
+        'StartDate.FormatFromSettings' => 'Anzeigen ab',
+        'EndDate.FormatFromSettings' => 'Anzeigen bis'
     );
 
-    // to change the default sorting to the new SortOrder
-    //public static $default_sort = 'SortOrder';
-
-    // Set default values
-    public static $defaults = array();
+    public function fieldLabels($includerelations = true)
+    {
+        $labels = parent::fieldLabels($includerelations);
+        $labels['Title'] = 'Titel';
+        $labels['StartDate'] = 'Anzeigen ab';
+        $labels['EndDate'] = 'Anzeigen bis';
+        return $labels;
+    }
 
     /**
      * @return FieldList
@@ -34,17 +38,16 @@ class HomepageAlarm extends DataObject
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
-        $fields->removeByName('Homepage');
-        $fields->addFieldToTab('Root.Main', TextField::create('Titel','Schlagzeile'));
-        $fields->addFieldToTab('Root.Main', HtmlEditorField::create('Meldung','Meldung'));
-        $fields->addFieldToTab('Root.Main', DatetimeField::create('StartDate','Wird angezeigt ab')
-                ->setConfig('showcalendar', true)
-                ->setConfig('dateformat', 'd MMMM yyyy HH:MM')
-                ->setDescription('Text'));
-        $fields->addFieldToTab('Root.Main', DatetimeField::create('EndDate','Wird angezeigt bis')
-                ->setConfig('showcalendar', true)
-                ->setConfig('dateformat', 'd MMMM yyyy HH:MM')
-                ->setDescription('Text'));
+        $fields->removeByName('HomepageID');
+
+        $fields->dataFieldByName('StartDate')->getDateField()->setConfig('showcalendar', true);
+        $fields->dataFieldByName('StartDate')->getTimeField()->setConfig('use_strtotime', true);
+        $fields->dataFieldByName('StartDate')->getTimeField()->setValue('now');
+
+        $fields->dataFieldByName('EndDate')->getDateField()->setConfig('showcalendar', true);
+        $fields->dataFieldByName('EndDate')->getTimeField()->setConfig('use_strtotime', true);
+        $fields->dataFieldByName('EndDate')->getTimeField()->setValue('now');
+
         return $fields;
     }
 
