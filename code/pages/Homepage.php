@@ -10,7 +10,7 @@ class Homepage extends Page
     private static $has_many = array(
         'Sliders' => 'HomepageSlider.Parent',
         'Alarme' => 'HomepageAlarm',
-        'News' => 'HomepageNews'
+        //'News' => 'HomepageNews'
     );
 
 	function getCMSFields(){
@@ -24,13 +24,13 @@ class Homepage extends Page
         $alarmGridField = new GridField('Alarme', 'Alarm auf der Startseite', $this->Alarme());
         $alarmGridField->setConfig($alarmConfig);
 
-        $newsConfig = GridFieldConfig_RecordEditor::create();
+        /*$newsConfig = GridFieldConfig_RecordEditor::create();
         $newsGridField = new GridField('News', 'News auf der Startseite', $this->News());
-        $newsGridField->setConfig($newsConfig);
+        $newsGridField->setConfig($newsConfig);*/
 
         $fields->addFieldToTab("Root.Slider-Bilder", $sliderGridField);
         $fields->addFieldToTab("Root.Alarm", $alarmGridField);
-        $fields->addFieldToTab("Root.News", $newsGridField);
+        //$fields->addFieldToTab("Root.News", $newsGridField);
 
         return $fields;
 	}
