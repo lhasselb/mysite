@@ -61,11 +61,11 @@ class Homepage_Controller extends Page_Controller
 
 	}//init()
 
-    public function LatestNews()
+    /*public function LatestNews()
     {
         $itemsToSkip = 0;
         $itemsToReturn = 5;
         $namespace = '*'; //all
         return NewsHelper::Entries($itemsToSkip, $itemsToReturn, $namespace, $this->ClassName);
-    }
+    }*/
 }
