@@ -5,13 +5,12 @@ class Homepage extends Page
     private static $description = 'Startseite für JIMEV';
     private static $icon = 'mysite/images/homepage.png';
 
-    /*private static $db = array('Alarm' => 'HTMLVarchar(255)');*/
-
     private static $has_one = array();
 
     private static $has_many = array(
         'Sliders' => 'HomepageSlider.Parent',
-        'Alarme' => 'HomepageAlarm'
+        'Alarme' => 'HomepageAlarm',
+        //'News' => 'HomepageNews'
     );
 
 	function getCMSFields(){
@@ -22,11 +21,16 @@ class Homepage extends Page
         $sliderGridField->setConfig($sliderConfig);
 
         $alarmConfig = GridFieldConfig_RecordEditor::create();
-        $alarmrGridField = new GridField('Alarme', 'Alarm auf der Startseite', $this->Alarme());
-        $alarmrGridField->setConfig($alarmConfig);
+        $alarmGridField = new GridField('Alarme', 'Alarm auf der Startseite', $this->Alarme());
+        $alarmGridField->setConfig($alarmConfig);
+
+        /*$newsConfig = GridFieldConfig_RecordEditor::create();
+        $newsGridField = new GridField('News', 'News auf der Startseite', $this->News());
+        $newsGridField->setConfig($newsConfig);*/
 
         $fields->addFieldToTab("Root.Slider-Bilder", $sliderGridField);
-        $fields->addFieldToTab("Root.Alarm", $alarmrGridField);
+        $fields->addFieldToTab("Root.Alarm", $alarmGridField);
+        //$fields->addFieldToTab("Root.News", $newsGridField);
 
         return $fields;
 	}

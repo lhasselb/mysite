@@ -3,7 +3,6 @@ class HomepageAlarm extends DataObject
 {
 
     static $singular_name = 'Alarm';
-    static $plural_name = 'Alarme';
     static $description = 'Alarme für die Startseite';
 
     private static $db = array(
