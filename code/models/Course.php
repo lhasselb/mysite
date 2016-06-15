@@ -1,6 +1,14 @@
 <?php
 /**
- * Tag
+ * Course
+ * @property Varchar Title
+ * @property Varchar MenuTitle
+ * @property Varchar URLSegment
+ * @property Section HomepageSection
+ *
+ * @property HTMLText Content
+ *
+ * @method ManyManyList Sections
  */
 class Course extends DataObject
 {
@@ -8,8 +16,13 @@ class Course extends DataObject
     private static $plural_name = 'Kurse';
 
     private static $db = array(
-        'Title' => 'Varchar',
-        'URLSegment' => 'Varchar(255)',
+        'Title' => 'Varchar(255)',
+        'MenuTitle' => 'Varchar',
+        'URLSegment' => 'Varchar(255)'
+    );
+
+    private static $has_one = array(
+        'HomepageSection' => 'Section'
     );
 
     private static $belongs_many_many = array(
@@ -17,14 +30,39 @@ class Course extends DataObject
     );
 
     private static $summary_fields = array(
-        'Title' => 'Titel'
+        'Title' => 'Name',
+        'URLSegment' => 'URL-Segment',
+        'News' => 'News(Startseite) zeigt auf Bereich'
     );
+
+    public function News() {
+        if(!$this->HomepageSectionID) return 'Kein Bereich - Nicht auf der Startseite.';
+        elseif($this->HomepageSectionID) {
+            return DataObject::get_by_id('Section',$this->HomepageSectionID)->Title;
+        }
+    }
 
     public function getCMSFields() {
         return FieldList::create(
-            TextField::create('Title','Titel'),
-            TextField::create('URLSegment', 'URLSegment')
+            TextField::create('Title','Seitenname'),
+            TextField::create('URLSegment','URL-Segment'),
+            TextField::create('MenuTitle','Navigationsbezeichnung'),
+            DropdownField::create('HomepageSectionID', 'Bereich auf der Startseite', $this->Sections()->map('ID', 'Title'))
+                ->setEmptyString('(Zur Anzeige bitte wählen)')
         );
+    }
+
+    /**
+     * Get news items
+     *
+     * @param int $offset
+     * @param int $maxitems Max number of items to return
+     * @return DataList
+     */
+    public static function Entries($offset=0, $maxitems=5) {
+        $filters = array('HomepageSectionID:GreaterThan'=>'0');
+        //->sort('Date DESC')
+        return Course::get()->filter($filters)->limit($maxitems, $offset);
     }
 
     protected function onBeforeWrite() {
@@ -46,27 +84,40 @@ class Course extends DataObject
         }
     }
 
-    /*public function Link()
-    {
-        //$courses = $this->Courses();
-        SS_Log::log('Course Link() called',SS_Log::WARN);
-        //SS_Log::log('this link='.$this->Courses()->Link('tag/'.$this->ID),SS_Log::WARN);
-        //return $this->Courses()->Link('tag/'.$this->ID);
-    }*/
-
     /**
      * @return string
      */
     public function Link() {
+        SS_Log::log('Link() called',SS_Log::WARN);
+        SS_Log::log('Link() count='.$this->Sections()->count(),SS_Log::WARN);
 
-        if ($this->isInDB()) {
-            $sections = $this->Sections();
-            foreach ($sections as $section) {
-                SS_Log::log(' Link='.$section->Link,SS_Log::WARN);
+        if($this->isInDB()) {
+            // Course is just linked once
+            if($this->Sections()->count() == 1) {
+                return Controller::join_links($this->Sections()->First()->Link(),'kurs',$this->URLSegment);
             }
-            //return $this->Sections()->Link($this->URLSegment);
-            //return Controller::join_links($category->Link(), 'product', $this->URLSegment);
-            return Controller::join_links($this->URLSegment);
+            // Course is linked several times
+            elseif($this->Sections()->count() > 1) {
+                foreach ($this->Sections() as $section) {
+        //SS_Log::log('Link() homepage section='.$section->HomepageSection(),SS_Log::WARN);
+                        //SS_Log::log(' Link() compare ['.$section->Link().'] with ['.Controller::curr()->Link().']',SS_Log::WARN);
+                    // Create link for current context
+                    if ($section->Link() == Controller::curr()->Link()) {
+                        //SS_Log::log(' Link() section->Link()='.$section->Link(),SS_Log::WARN);
+                        return Controller::join_links($section->Link(),'kurs',$this->URLSegment);
+                    } else { // For Homepage
+                        SS_Log::log('Else '.$this->HomepageSectionID,SS_Log::WARN);
+                        if($this->HomepageSectionID) {
+                            $section = DataObject::get_by_id('Section',$this->HomepageSectionID);
+                            SS_Log::log('Homepage? ='.$section->Link(),SS_Log::WARN);
+                            return Controller::join_links($section->Link(),'kurs',$this->URLSegment);
+                        }
+
+                        else
+                            return Controller::join_links($this->Sections()->First()->Link(),'kurs',$this->URLSegment);
+                    }
+                }
+            }
         }
         return '';
     }
