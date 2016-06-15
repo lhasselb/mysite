@@ -18,10 +18,17 @@ class Course extends DataObject
     private static $db = array(
         'Title' => 'Varchar(255)',
         'MenuTitle' => 'Varchar',
-        'URLSegment' => 'Varchar(255)'
+        'URLSegment' => 'Varchar(255)',
+        'News' => 'HTMLVarchar', //255 characters
+        'CourseDateStart' => 'SS_Datetime',
+        'CourseDateEnd' => 'SS_Datetime',
+        'Location' => 'Varchar',
+        'Content' => 'HTMLText'
     );
 
     private static $has_one = array(
+        'NewsImage' => 'Image',
+        'ContentImage' => 'Image',
         'HomepageSection' => 'Section'
     );
 
@@ -35,21 +42,45 @@ class Course extends DataObject
         'News' => 'News(Startseite) zeigt auf Bereich'
     );
 
+    public function fieldLabels($includerelations = true) {
+        $labels = parent::fieldLabels($includerelations);
+        $labels['Title'] = 'Seitenname';
+        $labels['MenuTitle'] = 'Navigationsbezeichnung';
+        $labels['URLSegment'] = 'URL-Segment';
+        $labels['News'] = 'News';
+        $labels['CourseDateStart'] = 'Start-Datum';
+        $labels['CourseDateEnd'] = 'End-Datum';
+        $labels['Location'] = 'Ort';
+        $labels['Content'] = 'Inhalt';
+        $labels['NewsImage'] = 'News-Bild';
+        $labels['ContentImage'] = 'Inhalts-Bild';
+        $labels['HomepageSection'] = 'Bereich auf der Startseite';
+        $labels['Sections'] = 'Bereiche';
+        return $labels;
+    }
+
+    public function getCMSFields() {
+
+        $fields = parent::getCMSFields();
+
+        $fields->addFieldsToTab('Root.Main',
+            array(
+                TextField::create('Title',$this->fieldLabel('Title')),
+                TextField::create('URLSegment','URL-Segment'),
+                TextField::create('MenuTitle','Navigationsbezeichnung'),
+                DropdownField::create('HomepageSectionID', 'Bereich auf der Startseite', $this->Sections()->map('ID', 'Title'))
+                    ->setEmptyString('(Zur Anzeige bitte wählen)')
+            )
+        );
+        //return FieldList::create();
+        return $fields;
+    }
+
     public function News() {
         if(!$this->HomepageSectionID) return 'Kein Bereich - Nicht auf der Startseite.';
         elseif($this->HomepageSectionID) {
             return DataObject::get_by_id('Section',$this->HomepageSectionID)->Title;
         }
-    }
-
-    public function getCMSFields() {
-        return FieldList::create(
-            TextField::create('Title','Seitenname'),
-            TextField::create('URLSegment','URL-Segment'),
-            TextField::create('MenuTitle','Navigationsbezeichnung'),
-            DropdownField::create('HomepageSectionID', 'Bereich auf der Startseite', $this->Sections()->map('ID', 'Title'))
-                ->setEmptyString('(Zur Anzeige bitte wählen)')
-        );
     }
 
     /**

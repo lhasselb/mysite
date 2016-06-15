@@ -2,6 +2,7 @@
 class Section extends Page
 {
     private static $singular_name = 'Bereich';
+    private static $plural_name = 'Bereiche';
     private static $description = 'Seite für Workshop und Kurse.';
     //private static $icon = 'mysite/images/workshops.png';
     private static $can_be_root = false;
@@ -21,6 +22,22 @@ class Section extends Page
         )
     );
 
+    /*public function fieldLabels($includerelations = true) {
+        $labels = parent::fieldLabels($includerelations);
+        $labels['Title'] = 'Seitenname';
+        $labels['MenuTitle'] = 'Navigationsbezeichnung';
+        $labels['URLSegment'] = 'URL-Segment';
+        $labels['News'] = 'News';
+        $labels['CourseDateStart'] = 'Start-Datum';
+        $labels['CourseDateEnd'] = 'End-Datum';
+        $labels['Location'] = 'Ort';
+        $labels['Content'] = 'Inhalt';
+        $labels['NewsImage'] = 'News-Bild';
+        $labels['ContentImage'] = 'Inhalts-Bild';
+        $labels['HomepageSection'] = 'Bereich auf der Startseite';
+        return $labels;
+    }*/
+
     function getCMSFields(){
         $fields = parent::getCMSFields();
         $config = GridFieldConfig_RelationEditor::create();
@@ -31,7 +48,7 @@ class Section extends Page
     }
 
     public function Courses() {
-        SS_Log::log(' getCourses() called',SS_Log::WARN);
+        //SS_Log::log(' getCourses() called',SS_Log::WARN);
         return $this->getManyManyComponents('Courses')->sort('SortOrder');
     }
 
