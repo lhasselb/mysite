@@ -10,16 +10,8 @@ class Section extends Page
         'Section'
     );
 
-    private static $has_one = array();
-
-    private static $many_many = array(
+    private static $belongs_many_many = array(
         'Courses' => 'Course'
-    );
-
-    static $many_many_extraFields = array(
-        'Courses' => array(
-            'SortOrder' => 'Int'
-        )
     );
 
     /*public function fieldLabels($includerelations = true) {
@@ -40,17 +32,16 @@ class Section extends Page
 
     function getCMSFields(){
         $fields = parent::getCMSFields();
-        $config = GridFieldConfig_RelationEditor::create();
-        $config->addComponents(new GridFieldSortableRows('SortOrder'));
-        $gridfield = GridField::create("Courses", "Workshops und Kurse", $this->Courses(), $config);
-        $fields->addFieldToTab('Root.Kurse', $gridfield);
         return $fields;
     }
 
-    public function Courses() {
+    /*
+     * Overloading many_many method Courses to use SortOrder
+     */
+    /*public function Courses() {
         //SS_Log::log(' getCourses() called',SS_Log::WARN);
         return $this->getManyManyComponents('Courses')->sort('SortOrder');
-    }
+    }*/
 
 }
 

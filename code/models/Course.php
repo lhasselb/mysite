@@ -19,11 +19,11 @@ class Course extends DataObject
         'Title' => 'Varchar(255)',
         'MenuTitle' => 'Varchar',
         'URLSegment' => 'Varchar(255)',
-        'News' => 'HTMLVarchar', //255 characters
         'CourseDateStart' => 'SS_Datetime',
         'CourseDateEnd' => 'SS_Datetime',
-        'Location' => 'Varchar',
-        'Content' => 'HTMLText'
+        'Content' => 'HTMLText',
+        'NewsTitle' => 'Varchar(255)',
+        'News' => 'HTMLVarchar', //255 characters
     );
 
     private static $has_one = array(
@@ -32,55 +32,105 @@ class Course extends DataObject
         'HomepageSection' => 'Section'
     );
 
-    private static $belongs_many_many = array(
+    private static $many_many = array(
         'Sections' => 'Section',
     );
 
-    private static $summary_fields = array(
-        'Title' => 'Name',
-        'URLSegment' => 'URL-Segment',
-        'News' => 'News(Startseite) zeigt auf Bereich'
+    static $many_many_extraFields = array(
+        'Sections' => array(
+            'SortOrder' => 'Int'
+        )
     );
 
-    public function fieldLabels($includerelations = true) {
-        $labels = parent::fieldLabels($includerelations);
-        $labels['Title'] = 'Seitenname';
-        $labels['MenuTitle'] = 'Navigationsbezeichnung';
-        $labels['URLSegment'] = 'URL-Segment';
-        $labels['News'] = 'News';
-        $labels['CourseDateStart'] = 'Start-Datum';
-        $labels['CourseDateEnd'] = 'End-Datum';
-        $labels['Location'] = 'Ort';
-        $labels['Content'] = 'Inhalt';
-        $labels['NewsImage'] = 'News-Bild';
-        $labels['ContentImage'] = 'Inhalts-Bild';
-        $labels['HomepageSection'] = 'Bereich auf der Startseite';
-        $labels['Sections'] = 'Bereiche';
-        return $labels;
-    }
-
-    public function getCMSFields() {
-
-        $fields = parent::getCMSFields();
-
-        $fields->addFieldsToTab('Root.Main',
-            array(
-                TextField::create('Title',$this->fieldLabel('Title')),
-                TextField::create('URLSegment','URL-Segment'),
-                TextField::create('MenuTitle','Navigationsbezeichnung'),
-                DropdownField::create('HomepageSectionID', 'Bereich auf der Startseite', $this->Sections()->map('ID', 'Title'))
-                    ->setEmptyString('(Zur Anzeige bitte wählen)')
-            )
-        );
-        //return FieldList::create();
-        return $fields;
-    }
+    private static $summary_fields = array(
+        'Title' => 'Kursname',
+        'URLSegment' => 'URL-Segment',
+        'News' => 'Bereich für Links auf der Startseite'
+    );
 
     public function News() {
         if(!$this->HomepageSectionID) return 'Kein Bereich - Nicht auf der Startseite.';
         elseif($this->HomepageSectionID) {
             return DataObject::get_by_id('Section',$this->HomepageSectionID)->Title;
         }
+    }
+
+    public function Sections() {
+        //SS_Log::log(' getSections() called',SS_Log::WARN);
+        return $this->getManyManyComponents('Sections')->sort('SortOrder');
+    }
+
+    public function getCMSFields() {
+
+        $fields = parent::getCMSFields();
+        //MAiN TAB
+        $fields->addFieldToTab('Root.Main', TextField::create('Title', $this->fieldLabel('Title'))
+            ->setDescription('Der Titel des Kurses, Workshops oder der Veranstaltung.'));
+        $fields->addFieldToTab('Root.Main', TextField::create('URLSegment', $this->fieldLabel('URLSegment'))
+            ->setDescription('Wird automatisch generiert, bitte nur in vollem Bewusstsein ändern.'));
+        $fields->addFieldToTab('Root.Main', TextField::create('MenuTitle', $this->fieldLabel('MenuTitle'))
+            ->setDescription('Wird automatisch vom Seitennamen übernommen, kann geändert werden.'));
+        $startDate = DatetimeField::create('CourseDateStart', $this->fieldLabel('CourseDateStart'))
+            ->setConfig('datavalueformat', 'dd.MM.yyyy HH:mm');
+        $startDate->getDateField()->setConfig('showcalendar', true);
+        $startDate->getDateField()->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('dd.MM.yyyy'))));
+        $startDate->getTimeField()->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('HH:mm'))));
+        $fields->addFieldToTab('Root.Main', $startDate);
+        $endDate = DatetimeField::create('CourseDateEnd', $this->fieldLabel('CourseDateEnd'))
+            ->setConfig('datavalueformat', 'dd-MM-yyyy HH:mm');
+        $endDate->getDateField()->setConfig('showcalendar', true);
+        $endDate->getDateField()->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('dd.MM.yyyy'))));
+        $endDate->getTimeField()->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('HH:mm'))));
+        $fields->addFieldToTab('Root.Main', $endDate);
+        $contentImage = new UploadField('ContentImage', $this->fieldLabel('ContentImage'));
+        $contentImage->setConfig('allowedMaxFileNumber', 1);
+        $contentImage->getValidator()->allowedExtensions = array('jpg', 'gif', 'png');
+        $fields->addFieldToTab('Root.Main', $contentImage);
+        $fields->addFieldToTab('Root.Main', HtmlEditorField::create('Content', $this->fieldLabel('Content')));
+
+        //NEWS TAB
+        $fields->insertBefore(new Tab('News', 'News'), 'Sections');
+        $fields->addFieldToTab('Root.News', TextField::create('NewsTitle', $this->fieldLabel('NewsTitle')));
+        $fields->addFieldToTab('Root.News', DropdownField::create('HomepageSectionID',
+            $this->fieldLabel('HomepageSection'), $this->Sections()->map('ID', 'Title'))
+            ->setEmptyString('(Zur Anzeige bitte wählen)')
+            ->setDescription('Wenn kein Bereich gewählt ist erscheint die News nicht auf der Startseite.')
+         );
+        $newsImage = new UploadField('NewsImage', $this->fieldLabel('NewsImage'));
+        $newsImage->setConfig('allowedMaxFileNumber', 1);
+        $newsImage->getValidator()->allowedExtensions = array('jpg', 'gif', 'png');
+        $fields->addFieldToTab('Root.News', $newsImage);
+        $fields->addFieldToTab('Root.News', HtmlEditorField::create('News', $this->fieldLabel('News')));
+
+        $fields->removeByName('Sections');
+        /*SS_Log::log('Bereiche '. DataObject::get('Section')->count(),SS_Log::WARN);
+        if($sections = DataObject::get('Section')) $map = $sections->map();
+        $select = CheckboxSetField::create('Sections','Bereiche',$sections->map());
+        $fields->addFieldToTab('Root.Main', $select);*/
+
+        $config = GridFieldConfig_RelationEditor::create();
+        $config->addComponents(new GridFieldSortableRows('SortOrder'));
+        $gridfield = GridField::create("Sections", "Bereich", $this->Sections(), $config);
+        $fields->addFieldToTab('Root.TEST', $gridfield);
+
+        return $fields;
+    }
+
+    public function fieldLabels($includerelations = true) {
+        $labels = parent::fieldLabels($includerelations);
+        $labels['Title'] = 'Kursname';
+        $labels['MenuTitle'] = 'Navigationsbezeichnung';
+        $labels['URLSegment'] = 'URL-Segment';
+        $labels['CourseDateStart'] = 'Start-Datum';
+        $labels['CourseDateEnd'] = 'End-Datum';
+        $labels['Content'] = 'Inhalt';
+        $labels['NewsTitle'] = 'Schlagzeile';
+        $labels['News'] = 'News';
+        $labels['NewsImage'] = 'Bild';
+        $labels['ContentImage'] = 'Bild';
+        $labels['HomepageSection'] = 'Bereich für Links auf der Startseite';
+        $labels['Sections'] = 'Bereiche';
+        return $labels;
     }
 
     /**
@@ -137,7 +187,7 @@ class Course extends DataObject
                         //SS_Log::log(' Link() section->Link()='.$section->Link(),SS_Log::WARN);
                         return Controller::join_links($section->Link(),'kurs',$this->URLSegment);
                     } else { // For Homepage
-                        SS_Log::log('Else '.$this->HomepageSectionID,SS_Log::WARN);
+                        //SS_Log::log('Else '.$this->HomepageSectionID,SS_Log::WARN);
                         if($this->HomepageSectionID) {
                             $section = DataObject::get_by_id('Section',$this->HomepageSectionID);
                             SS_Log::log('Homepage? ='.$section->Link(),SS_Log::WARN);
