@@ -1,10 +1,14 @@
 <?php
-class LocationPage extends Page
+class Location extends Page
 {
-
-    private static $singular_name = 'Location Page';
-    private static $description = 'Location';
-    //private static $icon = 'mysite/images/calendar.png';
+    private static $singular_name = 'Treffpunkt';
+    private static $plural_name = 'Treffpunkte';
+    private static $description = 'Seite für Jongliertreffen';
+    //private static $icon = 'mysite/images/treffen.png';
+    private static $can_be_root = false;
+    private static $allowed_children = array(
+        'Location'
+    );
 
 	private static $db = array(
 	   'LocationName' => 'Varchar(255)'
@@ -27,9 +31,8 @@ class LocationPage extends Page
 
 }
 
-class LocationPage_Controller extends Page_Controller
+class Location_Controller extends Page_Controller
 {
-
 	/**
 	 * An array of actions that can be accessed via a request. Each array element should be an action name, and the
 	 * permissions or conditions required to allow the user to access it.
@@ -50,10 +53,6 @@ class LocationPage_Controller extends Page_Controller
 
 	public function init() {
 		parent::init();
-		// You can include any CSS or JS required by your project here.
-		// See: http://doc.silverstripe.org/framework/en/reference/requirements
-        //SS_Log::log($this->Title,SS_Log::WARN);
-
-	}
+	}//init()
 
 }

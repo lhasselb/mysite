@@ -14,40 +14,34 @@ class Section extends Page
         'Courses' => 'Course'
     );
 
-    /*public function fieldLabels($includerelations = true) {
-        $labels = parent::fieldLabels($includerelations);
-        $labels['Title'] = 'Seitenname';
-        $labels['MenuTitle'] = 'Navigationsbezeichnung';
-        $labels['URLSegment'] = 'URL-Segment';
-        $labels['News'] = 'News';
-        $labels['CourseDateStart'] = 'Start-Datum';
-        $labels['CourseDateEnd'] = 'End-Datum';
-        $labels['Location'] = 'Ort';
-        $labels['Content'] = 'Inhalt';
-        $labels['NewsImage'] = 'News-Bild';
-        $labels['ContentImage'] = 'Inhalts-Bild';
-        $labels['HomepageSection'] = 'Bereich auf der Startseite';
-        return $labels;
-    }*/
+    private static $summary_fields = array(
+        'Title' => 'Bereich',
+    );
 
     function getCMSFields(){
         $fields = parent::getCMSFields();
         return $fields;
     }
-
-    /*
-     * Overloading many_many method Courses to use SortOrder
-     */
-    /*public function Courses() {
-        //SS_Log::log(' getCourses() called',SS_Log::WARN);
-        return $this->getManyManyComponents('Courses')->sort('SortOrder');
-    }*/
-
 }
 
 
 class Section_Controller extends Page_Controller
 {
+    /**
+     * An array of actions that can be accessed via a request. Each array element should be an action name, and the
+     * permissions or conditions required to allow the user to access it.
+     *
+     * <code>
+     * array (
+     *     'action', // anyone can access this action
+     *     'action' => true, // same as above
+     *     'action' => 'ADMIN', // you must have ADMIN permissions to access this action
+     *     'action' => '->checkAction' // you can only access this action if $this->checkAction() returns true
+     * );
+     * </code>
+     *
+     * @var array
+     */
     private static $allowed_actions = array ('kurs');
 
     public function kurs(SS_HTTPRequest $request) {
@@ -71,6 +65,5 @@ class Section_Controller extends Page_Controller
         parent::init();
         $theme = $this->themeDir();
     }//init()
-
 
 }

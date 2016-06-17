@@ -44,15 +44,15 @@ class HomepageSlider extends DataObject
 
         // Slider Headline
         //$headline = HtmlEditorField::create('Headline',_t('Homepage.HEADLINE','Slider Headline'));
-        $headline = TextareaField::create('Headline',_t('Homepage.HEADLINE','Schlagzeile'));
+        $headline = TextareaField::create('Headline','Schlagzeile');
 
         // Settings for UploadField : SliderImage
-        $sliderUploadField = new UploadField('SliderImage', _t('Homepage.SLIDERIMAGE','Slider Image'));
+        $sliderUploadField = new UploadField('SliderImage', 'Slider Bild');
         $sliderUploadField->getValidator()->allowedExtensions = array('jpg', 'gif', 'png');
         $sliderUploadField->setFolderName('Uploads/homepage');
 
         // Link Text
-        $linkText = TextField::create('LinkText',_t('Homepage.LINKTEXT','Link Text'));
+        $linkText = TextField::create('LinkText', 'Link Text');
 
         // The two options for which type of link to add
         $linkOptions = array('ExternalURL' => 'Link zu einer externer Seite', 'InternalURLID' => 'Link zu einer internen Seite');

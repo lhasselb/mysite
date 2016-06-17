@@ -1,11 +1,11 @@
 <?php
-class SectionHolder extends Page
+class LocationHolder extends Page
 {
-    private static $singular_name = 'Workshops und Kurse';
-    private static $description = 'Seite zum Gruppieren von Bereichen.';
-    private static $icon = 'mysite/images/workshops.png';
+    private static $singular_name = 'Jongliertreffen';
+    private static $description = 'Seite zum Gruppieren von Treffpunkten.';
+    private static $icon = 'mysite/images/treffen.png';
     private static $allowed_children = array(
-        'Section'
+        'Location'
     );
 
     function getCMSFields(){
@@ -14,7 +14,7 @@ class SectionHolder extends Page
     }
 }
 
-class SectionHolder_Controller extends Page_Controller
+class LocationHolder_Controller extends Page_Controller
 {
     private static $allowed_actions = array ();
 

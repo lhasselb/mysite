@@ -10,7 +10,7 @@ class Homepage extends Page
     private static $has_many = array(
         'Sliders' => 'HomepageSlider.Parent',
         'Alarme' => 'HomepageAlarm',
-        //'News' => 'HomepageNews'
+        'News' => 'News'
     );
 
 	function getCMSFields(){
@@ -28,9 +28,11 @@ class Homepage extends Page
         $newsGridField = new GridField('News', 'News auf der Startseite', $this->News());
         $newsGridField->setConfig($newsConfig);*/
 
-        $fields->addFieldToTab("Root.Slider-Bilder", $sliderGridField);
         $fields->addFieldToTab("Root.Alarm", $alarmGridField);
-        //$fields->addFieldToTab("Root.News", $newsGridField);
+        /*$fields->addFieldToTab("Root.News", $newsGridField);*/
+        $fields->addFieldToTab("Root.Slider-Bilder", $sliderGridField);
+
+
 
         return $fields;
 	}
@@ -69,6 +71,6 @@ class Homepage_Controller extends Page_Controller
     {
         $itemsToSkip = 0;
         $itemsToReturn = 5;
-        return Course::Entries($itemsToSkip, $itemsToReturn);
+        return News::Entries($itemsToSkip, $itemsToReturn);
     }
 }
