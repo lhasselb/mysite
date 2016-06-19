@@ -21,7 +21,7 @@ class News extends DataObject
     private static $default_sort='NewsDate DESC';
 
     private static $summary_fields = array(
-        'Title' => 'News',
+        'NewsTitle' => 'Schlagzeile',
         'NiceNewsDate' => 'Datum',
         //Thumbnail?
     );
@@ -36,6 +36,23 @@ class News extends DataObject
     public function getTitle()
     {
         return $this->NewsTitle;
+    }
+
+    public static function addNewsProperties($course)
+    {
+        SS_Log::log('addNewsProperties('.$course->ID.','.$course->Title.')',SS_Log::WARN);
+        // Get the appropriate news
+        $news = News::get()->byID($course->ID);
+        // NewsTitle
+        if(empty($news->NewsTitle)) $news->NewsTitle = $course->Title;
+        // NewsDate
+        if(empty($news->NewsDate)) $news->NewsDate = $course->CourseDateStart;
+        // NewsContent
+        if(empty($news->NewsContent)) $news->NewsContent = $course->dbobject('Content')->FirstParagraph();
+        // NewsImage
+        if(empty($news->NewsImageID)) $news->NewsImageID = $course->ContentImageID;
+
+        $news->write();
     }
 
     public function getCMSFields()
@@ -81,20 +98,24 @@ class News extends DataObject
      */
     public static function Entries($offset=0, $maxitems=5)
     {
+        $newsList = News::get();
+        foreach ($newsList as $item) {
+            //SS_Log::log('Classname='.$item->ClassName,SS_Log::WARN);
+            //SS_Log::log('HomepageSectionID='.$item->HomepageSectionID,SS_Log::WARN);
+            if($item->ClassName == 'Course' && $item->HomepageSectionID == 0) $newsList->remove($item);
+        }
         $filters = array();
         //->sort('Date DESC')
-        return News::get()->filter($filters)->limit($maxitems, $offset);
+        //$news = News::get()->filter($filters)->limit($maxitems, $offset);
+        return $newsList;
     }
 
-    protected function onBeforeWrite() {
-        parent::onBeforeWrite();
-    }
 
     /**
      * @return string
      */
     public function Link() {
-        SS_Log::log('Link() called',SS_Log::WARN);
+        //SS_Log::log('Link() called',SS_Log::WARN);
     }
 
 }

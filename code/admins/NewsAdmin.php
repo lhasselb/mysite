@@ -6,14 +6,14 @@
  * @package courses
  * @subpackage admins
  */
-class CourseAdmin extends ModelAdmin
+class NewsAdmin extends ModelAdmin
 {
 
-    private static $url_segment = 'coursemanager';
-    private static $menu_icon = 'mysite/images/workshops.png';
-    private static $menu_title = 'Kurse';
+    private static $url_segment = 'newsmanager';
+    private static $menu_icon = 'mysite/images/news.gif';
+    private static $menu_title = 'News';
     private static $managed_models = array(
-        'Course' => array('title' => 'Kurse')
+        'News' => array('title' => 'News')
     );
     public $showImportForm = false;
     /**
@@ -51,7 +51,7 @@ class CourseAdmin extends ModelAdmin
      */
     public function getEditForm($id = null, $fields = null)
     {
-
+        SS_Log::log('NewsAdmin getEditForm()',SS_Log::WARN);
         $form = parent::getEditForm($id, $fields);
         // Hide Export and Print Button
         foreach ($form->Fields() as $field) {
@@ -61,16 +61,17 @@ class CourseAdmin extends ModelAdmin
             }
         };
 
-        // $gridFieldName is generated from the ModelClass, eg if the Class 'ClubMember'
+        // $gridFieldName is generated from the ModelClass, e.g. if the Class 'ClubMember'
         // is managed by this ModelAdmin, the GridField for it will also be named 'ClubMember'
         $gridFieldName = $this->sanitiseClassName($this->modelClass);
         $gridField = $form->Fields()->fieldByName($gridFieldName);
-
+        SS_Log::log('NewsAdmin gridFieldName='.$gridFieldName,SS_Log::WARN);
         // Get gridfield config
         $config = $gridField->getConfig();
-        /*if ($gridFieldName == 'Course') {
-            $config->addComponents(new GridFieldSortableRows('SortOrder'));
-        }*/
+        if ($gridFieldName == 'News') {
+            //$config->addComponents(new GridFieldSortableRows('SortOrder'));
+            //$config->removeComponentsByType('GridFieldDeleteAction');
+        }
         return $form;
     }
 

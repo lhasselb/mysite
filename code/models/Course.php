@@ -8,7 +8,7 @@ class Course extends News
     private static $plural_name = 'Kurse';
 
     private static $db = array(
-        'Title' => 'Varchar(255)',
+        'CourseTitle' => 'Varchar(255)',
         'MenuTitle' => 'Varchar', // Not used
         'URLSegment' => 'Varchar(255)',
         'CourseDateStart' => 'SS_Datetime',
@@ -25,12 +25,9 @@ class Course extends News
         'Sections' => 'Section',
     );
 
-
     private static $summary_fields = array(
-        'Title' => 'Kursname',
-        //'URLSegment' => 'URL-Segment',
-        'NewsTitle' => 'News',
-        'News' => 'News auf der Startseite',
+        'CourseTitle' => 'Kurstitel',
+        'URLSegment' => 'URL-Segment',
         'SectionList' => 'Bereiche'
     );
 
@@ -50,73 +47,100 @@ class Course extends News
         }
     }
 
+    public function getTitle()
+    {
+        return $this->CourseTitle;
+    }
+
+    public function NewsSection()
+    {
+            return $this->HomepageSection()->Title;
+    }
+
     public function getCMSFields() {
 
+        $controller = Controller::curr();
+        //SS_Log::log('controller='.$controller,SS_Log::WARN);
+
         $fields = parent::getCMSFields();
-        //MAiN TAB
-        $fields->addFieldToTab('Root.Main', TextField::create('Title', $this->fieldLabel('Title'))
-            ->setDescription('Der Titel des Kurses, Workshops oder der Veranstaltung.'));
-        $fields->addFieldToTab('Root.Main', TextField::create('URLSegment', $this->fieldLabel('URLSegment'))
-            ->setDescription('Wird beim Speichern generiert, bitte nur in vollem Bewusstsein ändern.'));
-        //$fields->addFieldToTab('Root.Main', TextField::create('MenuTitle', $this->fieldLabel('MenuTitle'))
-        //    ->setDescription('Wird automatisch vom Seitennamen übernommen, kann geändert werden.'));
-        $fields->removeByName('MenuTitle');
-
-        $startDate = DatetimeField::create('CourseDateStart', $this->fieldLabel('CourseDateStart'))
-            ->setConfig('datavalueformat', 'dd.MM.yyyy HH:mm');
-        $startDate->getDateField()->setConfig('showcalendar', true);
-        $startDate->getDateField()->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('dd.MM.yyyy'))));
-        $startDate->getTimeField()->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('HH:mm'))));
-        $fields->addFieldToTab('Root.Main', $startDate);
-        $endDate = DatetimeField::create('CourseDateEnd', $this->fieldLabel('CourseDateEnd'))
-            ->setConfig('datavalueformat', 'dd-MM-yyyy HH:mm');
-        $endDate->getDateField()->setConfig('showcalendar', true);
-        $endDate->getDateField()->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('dd.MM.yyyy'))));
-        $endDate->getTimeField()->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('HH:mm'))));
-        $fields->addFieldToTab('Root.Main', $endDate);
-        $contentImage = new UploadField('ContentImage', $this->fieldLabel('ContentImage'));
-        $contentImage->setConfig('allowedMaxFileNumber', 1);
-        $contentImage->getValidator()->allowedExtensions = array('jpg', 'gif', 'png');
-        $fields->addFieldToTab('Root.Main', $contentImage);
-        $fields->addFieldToTab('Root.Main', HtmlEditorField::create('Content', $this->fieldLabel('Content')));
-
-        //NEWS TAB
-        $fields->insertBefore(new Tab('News', 'News'), 'Sections');
-        $title = TextField::create('NewsTitle', $this->fieldLabel('NewsTitle'))->setDescription('Der Titel der News.');
-        $fields->addFieldToTab('Root.News', $title);
-        //$fields->removeByName('NewsDate');
-        $newsDate = DateField::create('NewsDate', $this->fieldLabel('NewsDate'))
-            ->setConfig('dataformat', 'dd.MM.yyyy')
-            ->setConfig('showcalendar', true);
-        $newsDate->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('dd.MM.yyyy'))));
-        $fields->addFieldToTab('Root.News', $newsDate);
-        //$fields->addFieldToTab('Root.News', LinkField::create('NewsLinkID', 'Link'));
-        $fields->removeByName('NewsLinkID');
-        $fields->addFieldToTab('Root.News', DropdownField::create('HomepageSectionID',
-            $this->fieldLabel('HomepageSection'), $this->Sections()->map('ID', 'Title'))
-            ->setEmptyString('(Zur Anzeige bitte wählen)')
-            ->setDescription('Wenn kein Bereich gewählt ist erscheint die News nicht auf der Startseite!')
-         );
-        $newsImage = new UploadField('NewsImage', $this->fieldLabel('NewsImage'));
-        $newsImage->setConfig('allowedMaxFileNumber', 1);
-        $newsImage->getValidator()->allowedExtensions = array('jpg', 'gif', 'png');
-        $newsImage->setFolderName('news');
-        $fields->addFieldToTab('Root.News', $newsImage);
-        $fields->addFieldToTab('Root.News', HtmlEditorField::create('NewsContent', $this->fieldLabel('NewsContent')));
-
-        //SECTIONS TAB
+        // Remove "autogenerated" (by manymany relation) Sections tab
         $fields->removeByName('Sections');
+
+        if($controller == 'NewsAdmin')
+        {
+            //News Main TAB
+            $title = TextField::create('NewsTitle', $this->fieldLabel('NewsTitle'))->setDescription('Der Titel der News.');
+            $fields->addFieldToTab('Root.Main', $title);
+            $newsDate = DateField::create('NewsDate', $this->fieldLabel('NewsDate'))
+                ->setConfig('dataformat', 'dd.MM.yyyy')
+                ->setConfig('showcalendar', true);
+            $newsDate->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('dd.MM.yyyy'))));
+            $fields->addFieldToTab('Root.Main', $newsDate);
+            //$fields->addFieldToTab('Root.News', LinkField::create('NewsLinkID', 'Link'));
+            $fields->removeByName('NewsLinkID');
+            $fields->addFieldToTab('Root.Main', DropdownField::create('HomepageSectionID',
+                $this->fieldLabel('HomepageSection'), $this->Sections()->map('ID', 'Title'))
+                ->setEmptyString('(Zur Anzeige bitte wählen)')
+                ->setDescription('Wenn kein Bereich gewählt ist erscheint die News nicht auf der Startseite!')
+             );
+            $newsImage = new UploadField('NewsImage', $this->fieldLabel('NewsImage'));
+            $newsImage->setConfig('allowedMaxFileNumber', 1);
+            $newsImage->getValidator()->allowedExtensions = array('jpg', 'gif', 'png');
+            $newsImage->setFolderName('news');
+            $fields->addFieldToTab('Root.Main', $newsImage);
+            $fields->addFieldToTab('Root.Main', HtmlEditorField::create('NewsContent', $this->fieldLabel('NewsContent')));
+            $fields->removeFieldsFromTab('Root.Main',array('CourseTitle','URLSegment','MenuTitle','CourseDateStart','CourseDateEnd','Content','ContentImage'));
+        }
+        if($controller == 'CourseAdmin')
+        {
+            //Course Main TAB
+            $fields->removeByName('NewsLinkID');
+            $fields->addFieldToTab('Root.Main', TextField::create('CourseTitle', $this->fieldLabel('CourseTitle'))
+                ->setDescription('Der Titel des Kurses, Workshops oder der Veranstaltung.'));
+            $fields->addFieldToTab('Root.Main', TextField::create('URLSegment', $this->fieldLabel('URLSegment'))
+                ->setDescription('Wird beim Speichern generiert, bitte nur in vollem Bewusstsein ändern.'));
+            //$fields->addFieldToTab('Root.Main', TextField::create('MenuTitle', $this->fieldLabel('MenuTitle'))
+            //    ->setDescription('Wird automatisch vom Seitennamen übernommen, kann geändert werden.'));
+            $fields->removeByName('MenuTitle');
+            $map = DataObject::get('Section')->map();
+            /*foreach ($map as $key => $value) {
+                SS_Log::log('key='.$key.' value='.$value,SS_Log::WARN);
+            }*/
+            $sectionCheck = CheckboxSetField::create('Sections','Bereiche', $map);
+            $fields->addFieldToTab('Root.Main', $sectionCheck);
+            $startDate = DatetimeField::create('CourseDateStart', $this->fieldLabel('CourseDateStart'))
+                ->setConfig('datavalueformat', 'dd.MM.yyyy HH:mm');
+            $startDate->getDateField()->setConfig('showcalendar', true);
+            $startDate->getDateField()->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('dd.MM.yyyy'))));
+            $startDate->getTimeField()->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('HH:mm'))));
+            $fields->addFieldToTab('Root.Main', $startDate);
+            $endDate = DatetimeField::create('CourseDateEnd', $this->fieldLabel('CourseDateEnd'))
+                ->setConfig('datavalueformat', 'dd-MM-yyyy HH:mm');
+            $endDate->getDateField()->setConfig('showcalendar', true);
+            $endDate->getDateField()->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('dd.MM.yyyy'))));
+            $endDate->getTimeField()->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('HH:mm'))));
+            $fields->addFieldToTab('Root.Main', $endDate);
+            $contentImage = new UploadField('ContentImage', $this->fieldLabel('ContentImage'));
+            $contentImage->setConfig('allowedMaxFileNumber', 1);
+            $contentImage->getValidator()->allowedExtensions = array('jpg', 'gif', 'png');
+            $fields->addFieldToTab('Root.Main', $contentImage);
+            $fields->addFieldToTab('Root.Main', HtmlEditorField::create('Content', $this->fieldLabel('Content')));
+            $fields->removeFieldsFromTab('Root.Main',array('NewsTitle','NewsDate','NewsContent','NewsImage','NewsLink','HomepageSectionID'));
+        }
+
+/*
         $config = GridFieldConfig_RelationEditor::create();
         $config->removeComponentsByType($config->getComponentByType('GridFieldAddNewButton'));
         $gridfield = GridField::create("Sections", "Bereich", $this->Sections(), $config);
         $fields->addFieldToTab('Root.Bereiche', $gridfield);
+*/
 
         return $fields;
     }
 
     public function fieldLabels($includerelations = true) {
         $labels = parent::fieldLabels($includerelations);
-        $labels['Title'] = 'Kursname';
+        $labels['CourseTitle'] = 'Kursname';
         $labels['MenuTitle'] = 'Navigationsbezeichnung';
         $labels['URLSegment'] = 'URL-Segment';
         $labels['CourseDateStart'] = 'Kurs-Datum - Anfang';
@@ -126,7 +150,7 @@ class Course extends News
         $labels['News'] = 'News';
         $labels['NewsImage'] = 'Bild';
         $labels['ContentImage'] = 'Bild';
-        $labels['HomepageSection'] = 'Bereich für Links auf der Startseite';
+        $labels['HomepageSection'] = 'Link';
         $labels['Sections'] = 'Bereiche';
         return $labels;
     }
@@ -138,23 +162,19 @@ class Course extends News
      * @param int $maxitems Max number of items to return
      * @return DataList
      */
-    public static function Entries($offset=0, $maxitems=5) {
+    /*public static function Entries($offset=0, $maxitems=5) {
         $filters = array('HomepageSectionID:GreaterThan'=>'0');
         //->sort('Date DESC')
         return Course::get()->filter($filters)->limit($maxitems, $offset);
-    }
+    }*/
 
-    public function NewsSection()
+    public function onBeforeWrite()
     {
-            return $this->HomepageSection()->Title;
-    }
-
-    protected function onBeforeWrite() {
         parent::onBeforeWrite();
 
         $filter = URLSegmentFilter::create();
         if (!$this->URLSegment) {
-            $this->URLSegment = $this->Title;
+            $this->URLSegment = $this->CourseTitle;
         }
         $this->URLSegment = $filter->filter($this->URLSegment);
         if (!$this->URLSegment) {
@@ -166,14 +186,25 @@ class Course extends News
             $this->URLSegment = preg_replace('/-[0-9]+$/', null, $this->URLSegment) . '-' . $count;
             $count++;
         }
+        /*if(!$this->NewsTitel) {
+            SS_Log::log('NewsTitel='.$this->NewsTitel,SS_Log::WARN);
+            SS_Log::log('CourseTitel='.$this->CourseTitle,SS_Log::WARN);
+        }*/
+
+    }
+
+    public function onAfterWrite()
+    {
+        parent::onAfterWrite();
+        News::addNewsProperties($this);
     }
 
     /**
      * @return string
      */
     public function Link() {
-        SS_Log::log('Link() called',SS_Log::WARN);
-        SS_Log::log('Link() count='.$this->Sections()->count(),SS_Log::WARN);
+        //SS_Log::log('Link() called',SS_Log::WARN);
+        //SS_Log::log('Link() count='.$this->Sections()->count(),SS_Log::WARN);
 
         if($this->isInDB()) {
             // Course is just linked once
@@ -224,6 +255,12 @@ class Course extends News
             static::$_cached_get_by_url[$str] = ($obj && $obj->exists()) ? $obj : false;
         }
         return static::$_cached_get_by_url[$str];
+    }
+
+    public function canDelete($member = null) {
+        //Avoid deleting Course as from within NewsAdmin
+        if (Controller::curr() == 'NewsAdmin') return false;
+        else return Permission::check('SITETREE_EDIT_ALL', 'any', $member);
     }
 
 }
