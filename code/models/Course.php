@@ -28,7 +28,8 @@ class Course extends News
     private static $summary_fields = array(
         'CourseTitle' => 'Kurstitel',
         'URLSegment' => 'URL-Segment',
-        'SectionList' => 'Bereiche'
+        'SectionList' => 'Bereiche',
+        'Thumbnail' => 'Bild',
     );
 
     public function News()
@@ -50,6 +51,11 @@ class Course extends News
     public function getTitle()
     {
         return $this->CourseTitle;
+    }
+
+    public function Thumbnail()
+    {
+        return $this->NewsImage()->SetHeight(50);
     }
 
     public function NewsSection()
@@ -123,6 +129,7 @@ class Course extends News
             $contentImage = new UploadField('ContentImage', $this->fieldLabel('ContentImage'));
             $contentImage->setConfig('allowedMaxFileNumber', 1);
             $contentImage->getValidator()->allowedExtensions = array('jpg', 'gif', 'png');
+            $contentImage->setFolderName('kurse');
             $fields->addFieldToTab('Root.Main', $contentImage);
             $fields->addFieldToTab('Root.Main', HtmlEditorField::create('Content', $this->fieldLabel('Content')));
             $fields->removeFieldsFromTab('Root.Main',array('NewsTitle','NewsDate','NewsContent','NewsImage','NewsLink','HomepageSectionID'));
@@ -172,7 +179,7 @@ class Course extends News
     {
         parent::onBeforeWrite();
 
-        $filter = URLSegmentFilter::create();
+        /*$filter = URLSegmentFilter::create();
         if (!$this->URLSegment) {
             $this->URLSegment = $this->CourseTitle;
         }
@@ -185,18 +192,89 @@ class Course extends News
             // add a -n to the URLSegment if it already existed
             $this->URLSegment = preg_replace('/-[0-9]+$/', null, $this->URLSegment) . '-' . $count;
             $count++;
-        }
-        /*if(!$this->NewsTitel) {
-            SS_Log::log('NewsTitel='.$this->NewsTitel,SS_Log::WARN);
-            SS_Log::log('CourseTitel='.$this->CourseTitle,SS_Log::WARN);
         }*/
+        // If there is no URLSegment set, generate one from Title
+        if(!$this->URLSegment)
+        {
+            $this->URLSegment = $this->generateURLSegment($this->CourseTitle);
+        }
+        else if($this->isChanged('URLSegment'))
+        {
+            // Make sure the URLSegment is valid for use in a URL
+            $segment = preg_replace('/[^A-Za-z0-9]+/','-',$this->URLSegment);
+            $segment = preg_replace('/-+/','-',$segment);
+            // If after sanitising there is no URLSegment, give it a reasonable default
+            if(!$segment) {
+                $segment = "item-$this->ID";
+            }
+            $this->URLSegment = $segment;
+        }
+        // Ensure that this object has a non-conflicting URLSegment value.
+        $count = 2;
+        $URLSegment = $this->URLSegment;
+        $ID = $this->ID;
+        while($this->LookForExistingURLSegment($URLSegment, $ID))
+        {
+            $URLSegment = preg_replace('/-[0-9]+$/', null, $URLSegment) . '-' . $count;
+            $count++;
+        }
+        $this->URLSegment = $URLSegment;
 
+        $this->addCourseNewsProperties();
     }
 
-    public function onAfterWrite()
+    /*public function onAfterWrite()
     {
         parent::onAfterWrite();
-        News::addNewsProperties($this);
+
+    }*/
+
+    /**
+     * Check if there is already a DOAP with this URLSegment
+     */
+    public function LookForExistingURLSegment($URLSegment, $ID)
+    {
+        return Course::get()->filter(
+            'URLSegment',$URLSegment
+        )->exclude('ID', $ID)->exists();
+    }
+
+    /**
+     * Generate a URL segment based on the title provided.
+     *
+     * If {@link Extension}s wish to alter URL segment generation, they can do so by defining
+     * updateURLSegment(&$url, $title).  $url will be passed by reference and should be modified.
+     * $title will contain the title that was originally used as the source of this generated URL.
+     * This lets extensions either start from scratch, or incrementally modify the generated URL.
+     *
+     * @param string $title Page title.
+     * @return string Generated url segment
+     */
+    public function generateURLSegment($title)
+    {
+        $filter = URLSegmentFilter::create();
+        $t = $filter->filter($title);
+
+        // Fallback to generic page name if path is empty (= no valid, convertable characters)
+        if(!$t || $t == '-' || $t == '-1') $t = "page-$this->ID";
+
+        // Hook for extensions
+        $this->extend('updateURLSegment', $t, $title);
+
+        return $t;
+    }
+
+    public function addCourseNewsProperties()
+    {
+        //SS_Log::log('addNewsProperties(), for '.$this->CourseTitle,SS_Log::WARN);
+        // NewsTitle
+        if(empty($this->NewsTitle)) $this->NewsTitle = $this->CourseTitle;
+        // NewsDate
+        if(empty($this->NewsDate)) $this->NewsDate = $this->CourseDateStart;
+        // NewsContent
+        if(empty($this->NewsContent)) $this->NewsContent = $this->dbobject('Content')->FirstParagraph();
+        // NewsImage
+        if(empty($this->NewsImageID)) $this->NewsImageID = $this->ContentImageID;
     }
 
     /**
@@ -221,7 +299,7 @@ class Course extends News
                         //SS_Log::log(' Link() section->Link()='.$section->Link(),SS_Log::WARN);
                         return Controller::join_links($section->Link(),'kurs',$this->URLSegment);
                     } else { // For Homepage
-                        //SS_Log::log('Else '.$this->HomepageSectionID,SS_Log::WARN);
+                        SS_Log::log('Else '.$this->HomepageSectionID,SS_Log::WARN);
                         if($this->HomepageSectionID) {
                             $section = DataObject::get_by_id('Section',$this->HomepageSectionID);
                             SS_Log::log('Homepage? ='.$section->Link(),SS_Log::WARN);

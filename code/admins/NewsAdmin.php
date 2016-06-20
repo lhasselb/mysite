@@ -51,7 +51,7 @@ class NewsAdmin extends ModelAdmin
      */
     public function getEditForm($id = null, $fields = null)
     {
-        SS_Log::log('NewsAdmin getEditForm()',SS_Log::WARN);
+        //SS_Log::log('NewsAdmin getEditForm()',SS_Log::WARN);
         $form = parent::getEditForm($id, $fields);
         // Hide Export and Print Button
         foreach ($form->Fields() as $field) {
@@ -65,7 +65,7 @@ class NewsAdmin extends ModelAdmin
         // is managed by this ModelAdmin, the GridField for it will also be named 'ClubMember'
         $gridFieldName = $this->sanitiseClassName($this->modelClass);
         $gridField = $form->Fields()->fieldByName($gridFieldName);
-        SS_Log::log('NewsAdmin gridFieldName='.$gridFieldName,SS_Log::WARN);
+        //SS_Log::log('NewsAdmin gridFieldName='.$gridFieldName,SS_Log::WARN);
         // Get gridfield config
         $config = $gridField->getConfig();
         if ($gridFieldName == 'News') {
@@ -75,10 +75,6 @@ class NewsAdmin extends ModelAdmin
         return $form;
     }
 
-    /**
-     * [init description]
-     * @return [type] [description]
-     */
     public function init()
     {
         parent::init();

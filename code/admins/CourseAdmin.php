@@ -11,9 +11,9 @@ class CourseAdmin extends ModelAdmin
 
     private static $url_segment = 'coursemanager';
     private static $menu_icon = 'mysite/images/workshops.png';
-    private static $menu_title = 'Kurse';
+    private static $menu_title = 'Workshops und Kurse';
     private static $managed_models = array(
-        'Course' => array('title' => 'Kurse')
+        'Course' => array('title' => 'Workshops und Kurse')
     );
     public $showImportForm = false;
     /**
@@ -74,10 +74,6 @@ class CourseAdmin extends ModelAdmin
         return $form;
     }
 
-    /**
-     * [init description]
-     * @return [type] [description]
-     */
     public function init()
     {
         parent::init();

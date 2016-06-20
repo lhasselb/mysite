@@ -10,7 +10,7 @@ class News extends DataObject
     private static $db = array(
         'NewsTitle' => 'Varchar(255)',
         'NewsDate' => 'Date',
-        'NewsContent' => 'HTMLVarchar', //HTMLText 2MB
+        'NewsContent' => 'HTMLVarchar(255)', //HTMLText 2MB
     );
 
     private static $has_one = array(
@@ -23,7 +23,7 @@ class News extends DataObject
     private static $summary_fields = array(
         'NewsTitle' => 'Schlagzeile',
         'NiceNewsDate' => 'Datum',
-        //Thumbnail?
+        'Thumbnail' => 'Bild'
     );
 
     public function NiceNewsDate()
@@ -38,22 +38,11 @@ class News extends DataObject
         return $this->NewsTitle;
     }
 
-    public static function addNewsProperties($course)
+    public function Thumbnail()
     {
-        SS_Log::log('addNewsProperties('.$course->ID.','.$course->Title.')',SS_Log::WARN);
-        // Get the appropriate news
-        $news = News::get()->byID($course->ID);
-        // NewsTitle
-        if(empty($news->NewsTitle)) $news->NewsTitle = $course->Title;
-        // NewsDate
-        if(empty($news->NewsDate)) $news->NewsDate = $course->CourseDateStart;
-        // NewsContent
-        if(empty($news->NewsContent)) $news->NewsContent = $course->dbobject('Content')->FirstParagraph();
-        // NewsImage
-        if(empty($news->NewsImageID)) $news->NewsImageID = $course->ContentImageID;
-
-        $news->write();
+        return $this->NewsImage()->SetHeight(50);
     }
+
 
     public function getCMSFields()
     {
