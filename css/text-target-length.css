@@ -1,0 +1,20 @@
+.target-length p.target-length-count {
+    color: #8796a3;
+    margin: 0 auto;
+    padding: .25em 0;
+}
+.target-length p.target-length-count i,
+.target-length p.target-length-count b {
+    color: #00a651;
+}
+.target-length p.target-length-count b {
+    font-weight: bold;
+}
+.target-length p.target-length-count.over i,
+.target-length p.target-length-count.over b {
+    color: #e3080a;
+}
+.target-length p.target-length-count.under i,
+.target-length p.target-length-count.under b {
+    color: #e39d08;
+}

@@ -64,7 +64,12 @@ class News extends DataObject
         $newsImage->getValidator()->allowedExtensions = array('jpg', 'gif', 'png');
         $newsImage->setFolderName('news');
         $fields->addFieldToTab('Root.Main', $newsImage);
-        $fields->addFieldToTab('Root.Main', HtmlEditorField::create('NewsContent', $this->fieldLabel('NewsContent')));
+        $fields->addFieldToTab('Root.Main',
+            HtmlEditorField::create('NewsContent', $this->fieldLabel('NewsContent'))
+            ->setRows(3)
+            ->setTargetLength(250, 50, 250)
+            ->setDescription('Die maximale Textlänge ist begrenzt. Eingaben über 100% werden abgeschnitten.')
+        );
         return $fields;
     }
 

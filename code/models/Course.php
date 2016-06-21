@@ -94,7 +94,12 @@ class Course extends News
             $newsImage->getValidator()->allowedExtensions = array('jpg', 'gif', 'png');
             $newsImage->setFolderName('news');
             $fields->addFieldToTab('Root.Main', $newsImage);
-            $fields->addFieldToTab('Root.Main', HtmlEditorField::create('NewsContent', $this->fieldLabel('NewsContent')));
+            $fields->addFieldToTab('Root.Main',
+                HtmlEditorField::create('NewsContent', $this->fieldLabel('NewsContent'))
+                ->setRows(3)
+                ->setTargetLength(250, 50, 250)
+                ->setDescription('Die maximale Textlänge ist begrenzt. Eingaben über 100% werden abgeschnitten.')
+            );
             $fields->removeFieldsFromTab('Root.Main',array('CourseTitle','URLSegment','MenuTitle','CourseDateStart','CourseDateEnd','Content','ContentImage'));
         }
         if($controller == 'CourseAdmin')
