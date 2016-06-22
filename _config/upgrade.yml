@@ -1,0 +1,7 @@
+---
+Name: disablevisits
+---
+# This functionality will be removed in 4.0
+Member:
+  log_num_visits: false
+  log_last_visited: false
