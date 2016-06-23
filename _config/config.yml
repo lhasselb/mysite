@@ -28,3 +28,7 @@ GDBackend:
 # Jonom/Focuspoint
 FocusPointImage:
   flush_on_change: true
+
+# Email
+Email:
+  admin_email: info@jimev.de

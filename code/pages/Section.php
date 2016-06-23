@@ -22,6 +22,7 @@ class Section extends Page
         $fields = parent::getCMSFields();
         return $fields;
     }
+
 }
 
 
@@ -59,6 +60,45 @@ class Section_Controller extends Page_Controller
         );
 
     }
+
+    //Get's the current product from the URL, if any
+    public function getCurrentProduct()
+    {
+        $Params = $this->getURLParams();
+        $URLSegment = Convert::raw2sql($Params['ID']);
+
+        if($URLSegment && $Product = DataObject::get_one('Course', "URLSegment = '" . $URLSegment . "'"))
+        {
+            return $Product;
+        }
+    }
+
+    //Generate out custom breadcrumbs
+    /*public function Breadcrumbs() {
+
+        //Get the default breadcrumbs
+        $Breadcrumbs = parent::Breadcrumbs();
+
+        if($Product = $this->getCurrentProduct())
+        {
+            //Explode them into their individual parts
+            $Parts = explode(SiteTree::$breadcrumbs_delimiter, $Breadcrumbs);
+
+            //Count the parts
+            $NumOfParts = count($Parts);
+
+            //Change the last item to a link instead of just text
+            $Parts[$NumOfParts-1] = ('<a href="' . $this->Link() . '">' . $Parts[$NumOfParts-1] . '</a>');
+
+            //Add our extra piece on the end
+            $Parts[$NumOfParts] = $Product->Title;
+
+            //Return the imploded array
+            $Breadcrumbs = implode(SiteTree::$breadcrumbs_delimiter, $Parts);
+        }
+
+        return $Breadcrumbs;
+    }*/
 
     public function init()
     {

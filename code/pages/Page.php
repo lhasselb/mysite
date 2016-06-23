@@ -79,4 +79,35 @@ class Page_Controller extends ContentController {
 	public function isDev() {
 		return Director::isDev();
 	}
+
+
+/*
+    public function Breadcrumbs($maxDepth = 20, $unlinked = false, $stopAtPageType = false, $showHidden = true)
+    {
+        SS_Log::log('Breadcrumbs called',SS_Log::WARN );
+        $page = $this;
+        $parts = array();
+        $i = 0;
+        while(
+            $page
+            && (!$maxDepth || sizeof($parts) < $maxDepth)
+            && (!$stopAtPageType || $page->ClassName != $stopAtPageType)
+        ) {
+            if($showHidden || $page->ShowInMenus || ($page->ID == $this->ID)) {
+                if($page->URLSegment == 'home') $hasHome = true;
+                $parts[] = $page;
+            }
+            $page = $page->Parent;
+        }
+        if ($this->ClassName != "HomePage") {
+            $parts[] = DataObject::get_one("HomePage");
+        }
+        $parts = array_reverse($parts);
+        $bdoSet = new DataList();
+        foreach ($parts as $breadcrumb) {
+            $bdoSet->push($breadcrumb);
+        }
+        return $bdoSet;
+    }
+*/
 }
