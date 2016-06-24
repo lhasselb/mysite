@@ -286,9 +286,7 @@ class Course extends News
      * @return string
      */
     public function Link() {
-        //SS_Log::log('Link() called',SS_Log::WARN);
         //SS_Log::log('Link() count='.$this->Sections()->count(),SS_Log::WARN);
-
         if($this->isInDB()) {
             // Course is just linked once
             if($this->Sections()->count() == 1) {
@@ -296,25 +294,26 @@ class Course extends News
             }
             // Course is linked several times
             elseif($this->Sections()->count() > 1) {
+                $counter = 0;
+                //SS_Log::log('Link() called for '.$this->Title.' '.$this->Sections()->count(),SS_Log::WARN);
                 foreach ($this->Sections() as $section) {
-        //SS_Log::log('Link() homepage section='.$section->HomepageSection(),SS_Log::WARN);
-                        //SS_Log::log(' Link() compare ['.$section->Link().'] with ['.Controller::curr()->Link().']',SS_Log::WARN);
+                    //SS_Log::log('Link() homepage section='.$section->HomepageSection(),SS_Log::WARN);
+                    //SS_Log::log($counter.' Link() compare ['.$section->Link().'] with ['.Controller::curr()->Link().']',SS_Log::WARN);
                     // Create link for current context
                     if ($section->Link() == Controller::curr()->Link()) {
                         //SS_Log::log(' Link() section->Link()='.$section->Link(),SS_Log::WARN);
                         return Controller::join_links($section->Link(),'kurs',$this->URLSegment);
                     } else { // For Homepage
-                        SS_Log::log('Else '.$this->HomepageSectionID,SS_Log::WARN);
+                        //SS_Log::log('Else '.$this->HomepageSectionID,SS_Log::WARN);
                         if($this->HomepageSectionID) {
                             $section = DataObject::get_by_id('Section',$this->HomepageSectionID);
-                            SS_Log::log('Homepage? ='.$section->Link(),SS_Log::WARN);
+                            //SS_Log::log('Homepage? ='.$section->Link(),SS_Log::WARN);
                             return Controller::join_links($section->Link(),'kurs',$this->URLSegment);
                         }
-
-                        else
-                            return Controller::join_links($this->Sections()->First()->Link(),'kurs',$this->URLSegment);
                     }
-                }
+                    $counter++;
+                } //foreach
+
             }
         }
         return '';
