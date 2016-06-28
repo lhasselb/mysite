@@ -1,6 +1,6 @@
 ---
 name: weboftalent-example-map-extensions
 ---
-Location:
+LocationPage:
   extensions:
     ['MapExtension']

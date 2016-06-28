@@ -5,7 +5,8 @@ class LocationHolder extends Page
     private static $description = 'Seite zum Gruppieren von Treffpunkten.';
     private static $icon = 'mysite/images/treffen.png';
     private static $allowed_children = array(
-        'Location'
+        'LocationPage',
+        'Page'
     );
 
     function getCMSFields(){

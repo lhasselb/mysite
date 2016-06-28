@@ -13,7 +13,7 @@ class HomepageAlarm extends DataObject
     );
 
     private static $has_one = array(
-        'Homepage' => 'Homepage'
+        'Homepage' => 'HomePage'
     );
 
     private static $summary_fields = array(

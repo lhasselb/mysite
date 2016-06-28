@@ -18,11 +18,11 @@ class Course extends News
 
     private static $has_one = array(
         'ContentImage' => 'Image',
-        'HomepageSection' => 'Section'
+        'HomepageSection' => 'SectionPage'
     );
 
     private static $many_many = array(
-        'Sections' => 'Section',
+        'Sections' => 'SectionPage',
     );
 
     private static $summary_fields = array(

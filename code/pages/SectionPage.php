@@ -1,5 +1,5 @@
 <?php
-class Section extends Page
+class SectionPage extends Page
 {
     private static $singular_name = 'Bereich';
     private static $plural_name = 'Bereiche';
@@ -7,7 +7,7 @@ class Section extends Page
     //private static $icon = 'mysite/images/workshops.png';
     private static $can_be_root = false;
     private static $allowed_children = array(
-        'Section'
+        'SectionPage'
     );
 
     private static $belongs_many_many = array(
@@ -29,7 +29,7 @@ class Section extends Page
 }
 
 
-class Section_Controller extends Page_Controller
+class SectionPage_Controller extends Page_Controller
 {
     private static $allowed_actions = array ('kurs');
 

@@ -5,7 +5,7 @@ class SectionHolder extends Page
     private static $description = 'Seite zum Gruppieren von Bereichen.';
     private static $icon = 'mysite/images/workshops.png';
     private static $allowed_children = array(
-        'Section'
+        'SectionPage'
     );
 
     function getCMSFields(){

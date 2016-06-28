@@ -1,5 +1,5 @@
 <?php
-class Homepage extends Page
+class HomePage extends Page
 {
     private static $singular_name = 'Startseite';
     private static $description = 'Startseite für JIMEV';
@@ -39,7 +39,7 @@ class Homepage extends Page
 }
 
 
-class Homepage_Controller extends Page_Controller
+class HomePage_Controller extends Page_Controller
 {
 
 	/**
