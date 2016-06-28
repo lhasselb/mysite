@@ -108,7 +108,7 @@
 (function($) {
     $(document).ready(function() {
         $('.date input').datetimepicker({
-             format: "MMMM YYYY",
+             format: "DD.MM.YYYY",
              locale: "de"
         });
     });
