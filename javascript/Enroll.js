@@ -97,13 +97,6 @@
 }(jQuery));
 */
 
-/*
-(function($) {
-    $(document).ready(function() {
-        $('.date input.text').datepicker({'format': 'dd.mm.yyyy'});
-    });
-}(jQuery));
-*/
 
 (function($) {
     $(document).ready(function() {

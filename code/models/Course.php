@@ -36,7 +36,7 @@ class Course extends News
     {
         if(!$this->HomepageSectionID) return 'Nicht auf der Startseite.';
         elseif($this->HomepageSectionID) {
-            return DataObject::get_by_id('Section',$this->HomepageSectionID)->Title;
+            return DataObject::get_by_id('SectionPage',$this->HomepageSectionID)->Title;
         }
     }
 
@@ -113,7 +113,7 @@ class Course extends News
             //$fields->addFieldToTab('Root.Main', TextField::create('MenuTitle', $this->fieldLabel('MenuTitle'))
             //    ->setDescription('Wird automatisch vom Seitennamen übernommen, kann geändert werden.'));
             $fields->removeByName('MenuTitle');
-            $map = DataObject::get('Section')->map();
+            $map = DataObject::get('SectionPage')->map();
             /*foreach ($map as $key => $value) {
                 SS_Log::log('key='.$key.' value='.$value,SS_Log::WARN);
             }*/
@@ -306,7 +306,7 @@ class Course extends News
                     } else { // For Homepage
                         //SS_Log::log('Else '.$this->HomepageSectionID,SS_Log::WARN);
                         if($this->HomepageSectionID) {
-                            $section = DataObject::get_by_id('Section',$this->HomepageSectionID);
+                            $section = DataObject::get_by_id('SectionPage',$this->HomepageSectionID);
                             //SS_Log::log('Homepage? ='.$section->Link(),SS_Log::WARN);
                             return Controller::join_links($section->Link(),'kurs',$this->URLSegment);
                         }

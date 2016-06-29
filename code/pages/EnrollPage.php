@@ -105,8 +105,8 @@ class EnrollPage_Controller extends Page_Controller
                 ->setAttribute('placeholder', _t('ClubMember.LASTNAME', 'Lastname')),
             DateField::create('Birthday', _t('ClubMember.BIRTHDAY', 'Birthday'))
                 ->setConfig('showcalendar', true)
-                ->setAttribute('placeholder', $today),
-                //->setAttribute('data-provide', 'datepicker'),
+                ->setAttribute('placeholder', $today)
+                ->setAttribute('data-provide', 'datepicker'),
 
             CountryDropdownField::create('Nationality', _t('ClubMember.NATIONALITY', 'Nationality')),
             TextField::create('Street', _t('ClubMember.STREET', 'Street')),
@@ -190,7 +190,7 @@ class EnrollPage_Controller extends Page_Controller
         Requirements::block('framework/thirdparty/jquery-ui/jquery-ui.js');
         Requirements::block('framework/thirdparty/jquery-ui/datepicker/i18n/jquery.ui.datepicker-de.js');
 
-        //Requirements::css(THIRDPARTY_DIR . '/jquery-ui-themes/smoothness/jquery-ui.css');
+        Requirements::block(THIRDPARTY_DIR . '/jquery-ui-themes/smoothness/jquery-ui.css');
         //Requirements::css("thirdparty/datepicker/bootstrap-datepicker.css");
         //Requirements::javascript("thirdparty/datepicker/bootstrap-datepicker.js");
 
@@ -199,7 +199,7 @@ class EnrollPage_Controller extends Page_Controller
         Requirements::javascript('mysite/javascript/jquery-validate/additional-methods.js');
         Requirements::javascript('mysite/javascript/jquery-validate/localization/messages_de.js');
 
-        Requirements::css($theme.'/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css');
+        Requirements::css($theme.'/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css');
         Requirements::javascript($theme.'/bower_components/moment/min/moment-with-locales.js');
         Requirements::javascript($theme.'/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js');
         SS_Log::log('init()',SS_Log::WARN);
