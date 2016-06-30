@@ -97,10 +97,19 @@
 }(jQuery));
 */
 
-
+/*
 (function($) {
     $(document).ready(function() {
         $('.date input').datetimepicker({
+             format: "DD.MM.YYYY",
+             locale: "de"
+        });
+    });
+}(jQuery));
+*/
+(function($) {
+    $(document).ready(function() {
+        $('.datepicker').datepicker({
              format: "DD.MM.YYYY",
              locale: "de"
         });

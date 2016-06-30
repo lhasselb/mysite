@@ -198,15 +198,18 @@ class EnrollPage_Controller extends Page_Controller
         Requirements::javascript('mysite/javascript/jquery-validate/jquery.validate.js');
         Requirements::javascript('mysite/javascript/jquery-validate/additional-methods.js');
         Requirements::javascript('mysite/javascript/jquery-validate/localization/messages_de.js');
-
+/*
         Requirements::css($theme.'/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css');
         Requirements::javascript($theme.'/bower_components/moment/min/moment-with-locales.js');
         Requirements::javascript($theme.'/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js');
-        SS_Log::log('init()',SS_Log::WARN);
+        //SS_Log::log('init()',SS_Log::WARN);
         if(method_exists(Requirements::backend(), 'add_dependency')){
-            SS_Log::log('YES '.$theme,SS_Log::WARN);
             Requirements::backend()->add_dependency('mysite/javascript/Enroll.js',$theme.'/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js');
         }
-        //Requirements::javascript('mysite/javascript/Enroll.js');
+*/
+        Requirements::css($theme.'/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.css');
+        Requirements::javascript($theme.'/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js');
+        Requirements::javascript($theme.'/bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.de.min.js');
+        Requirements::javascript('mysite/javascript/Enroll.js');
     }
 }
