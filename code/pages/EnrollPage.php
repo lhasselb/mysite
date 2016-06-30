@@ -106,7 +106,7 @@ class EnrollPage_Controller extends Page_Controller
             DateField::create('Birthday', _t('ClubMember.BIRTHDAY', 'Birthday'))
                 ->setConfig('showcalendar', true)
                 ->setAttribute('placeholder', $today)
-                ->setAttribute('data-provide', 'datepicker'),
+                ->setAttribute('data-date-format', 'DD.MM.YYYY'),
 
             CountryDropdownField::create('Nationality', _t('ClubMember.NATIONALITY', 'Nationality')),
             TextField::create('Street', _t('ClubMember.STREET', 'Street')),
@@ -189,27 +189,20 @@ class EnrollPage_Controller extends Page_Controller
         Requirements::block('framework/javascript/DateField.js');
         Requirements::block('framework/thirdparty/jquery-ui/jquery-ui.js');
         Requirements::block('framework/thirdparty/jquery-ui/datepicker/i18n/jquery.ui.datepicker-de.js');
-
         Requirements::block(THIRDPARTY_DIR . '/jquery-ui-themes/smoothness/jquery-ui.css');
-        //Requirements::css("thirdparty/datepicker/bootstrap-datepicker.css");
-        //Requirements::javascript("thirdparty/datepicker/bootstrap-datepicker.js");
 
         //Front-End validation
         Requirements::javascript('mysite/javascript/jquery-validate/jquery.validate.js');
         Requirements::javascript('mysite/javascript/jquery-validate/additional-methods.js');
         Requirements::javascript('mysite/javascript/jquery-validate/localization/messages_de.js');
-/*
+
+        // eonasdan Datetimepicker
         Requirements::css($theme.'/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css');
         Requirements::javascript($theme.'/bower_components/moment/min/moment-with-locales.js');
         Requirements::javascript($theme.'/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js');
-        //SS_Log::log('init()',SS_Log::WARN);
         if(method_exists(Requirements::backend(), 'add_dependency')){
             Requirements::backend()->add_dependency('mysite/javascript/Enroll.js',$theme.'/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js');
         }
-*/
-        Requirements::css($theme.'/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.css');
-        Requirements::javascript($theme.'/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.js');
-        Requirements::javascript($theme.'/bower_components/bootstrap-datepicker/dist/locales/bootstrap-datepicker.de.min.js');
-        Requirements::javascript('mysite/javascript/Enroll.js');
+
     }
 }

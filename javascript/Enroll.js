@@ -64,54 +64,35 @@
     });
 
 }(jQuery));
-/*
-(function($) {
-    console.log('ssDatepicker ready');
-    $.fn.extend({
-        ssDatepicker: function(opts) {
-            return $(this).each(function() {
-                if($(this).data('datepicker')) return; // already applied
-                $(this).siblings("button").addClass("ui-icon ui-icon-calendar");
-                var holder = $(this).parents('.field.date:first'),
-                    config = $.extend(opts || {}, $(this).data(), $(this).data('jqueryuiconfig'), {});
-                if(!config.showcalendar) return;
-                if(config.locale && $.datepicker.regional[config.locale]) {
-                    config = $.extend(config, $.datepicker.regional[config.locale], {});
-                }
-                if(config.min) config.minDate = $.datepicker.parseDate('yy-mm-dd', config.min);
-                if(config.max) config.maxDate = $.datepicker.parseDate('yy-mm-dd', config.max);
-                // Initialize and open a datepicker
-                // live() doesn't have "onmatch", and jQuery.entwine is a bit too heavyweight for this, so we need to do this onclick.
-                config.dateFormat = config.jquerydateformat;
-                $(this).datepicker(config);
-            });
-        }
-    });
-    $(document).on("click", ".date input", function() {
-        console.log(this);
-        $(this).ssDatepicker();
-        if($(this).data('datepicker')) {
-            $(this).datepicker('show');
-        }
-    });
-}(jQuery));
-*/
 
-/*
+
 (function($) {
     $(document).ready(function() {
+
         $('.date input').datetimepicker({
-             format: "DD.MM.YYYY",
-             locale: "de"
+             //format: "DD.MM.YYYY",
+            //debug: true,
+            locale: "de",
+            tooltips: {
+                today: 'Heute auswählen',
+                clear: 'Auswahl löschen',
+                close: 'Kalender schließen',
+                selectMonth: 'Monat auswählen',
+                prevMonth: 'Vorheriger Monat',
+                nextMonth: 'Nächster Monat',
+                selectYear: 'Jahr auswählen',
+                prevYear: 'Vorheriges Jahr',
+                nextYear: 'Nächstes Jahr',
+                selectDecade: 'Jahrzent auswählen',
+                prevDecade: 'Vorheriges Jahrzent',
+                nextDecade: 'Nächstes Jahrzent',
+                prevCentury: 'Vorheriges Jahrhundert',
+                nextCentury: 'Nächstes Jahrhundert'
+            }
         });
     });
 }(jQuery));
-*/
-(function($) {
-    $(document).ready(function() {
-        $('.datepicker').datepicker({
-             format: "DD.MM.YYYY",
-             locale: "de"
-        });
-    });
-}(jQuery));
+
+
+
+
