@@ -10,8 +10,11 @@
 class EnrollPage extends Page
 {
     private static $singular_name = 'Enroll';
-    private static $description = 'Enroll page using a form';
+    private static $description = 'Seite für Mitgliedsantrag';
     private static $icon = 'pageimages/images/enrollform.png';
+    private static $can_be_root = false;
+    private static $allowed_children = array('EnrollSuccessPage');
+
     private static $db = array();
 
     // Store relation to folder(FolderID)
@@ -153,9 +156,8 @@ class EnrollPage_Controller extends Page_Controller
 
     public function doEnroll($data, Form $form)
     {
-
+        // Add a success message
         $form->sessionMessage('Vielen Dank für die Anmeldung ' .$data['FirstName']. ' ' .$data['LastName'], 'success');
-
         // Create a ClubMember object
         $clubMember = new ClubMemberPending();
         // Save data into object
@@ -164,7 +166,6 @@ class EnrollPage_Controller extends Page_Controller
         $serialized = base64_encode(serialize($clubMember));
         // Get the desired folder to store the serialized object
         $folder = $this->Folder();
-
         // Get the path for the folder and add a filename
         $path = $folder->getFullPath() . $data['FirstName'][0] . $data['LastName'][0] . '_' . $data['Birthday'] . '_' . date('d.m.Y_H_i_s') . '.antrag';
         //SS_Log::log("path=".$path,SS_Log::WARN);
@@ -174,12 +175,15 @@ class EnrollPage_Controller extends Page_Controller
          */
         file_put_contents($path, $serialized);
 
-        //Send E-Mail
+        //Send an E-Mail
         $email = new Email();
-        $email->setTo($data['Email'])->setSubject('Anmeldung bei Jim e.V.')->setTemplate('EnrolllEmail')->populateTemplate(new ArrayData($data));
+        $email->setTo($data['Email'])->setSubject('Anmeldung bei Jim e.V.')->setTemplate('EnrollMail')->populateTemplate(new ArrayData($data));
         $email->send();
 
-        return $this->redirectBack();
+        //return $this->redirectBack();
+        SS_Log::log(EnrollSuccessPage::get()->First()->Link(),SS_Log::WARN);
+        Session::set('Data',$data);
+        return $this->redirect(EnrollSuccessPage::get()->First()->Link());
     }
 
     function init()
