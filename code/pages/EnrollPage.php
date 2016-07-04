@@ -102,7 +102,7 @@ class EnrollPage_Controller extends Page_Controller
         $fields = FieldList::create(
             DropdownField::create('Salutation', 'Anrede',
                 //singleton('ClubMember')->dbObject('Salutation')->enumValues()
-                array('Frau','Herr','Schülerin','Schüler')
+                array('Frau'=>'Frau','Herr'=>'Herr','Schülerin'=>'Schülerin','Schüler'=>'Schüler')
             ),
             TextField::create('FirstName', 'Vorname')
                 ->setAttribute('placeholder', 'Vorname'),
@@ -126,7 +126,7 @@ class EnrollPage_Controller extends Page_Controller
                 ->setAttribute('placeholder', 'Handynummer'),//PhoneNumberField
             TextField::create('Phone', 'Telefon')
                 ->setAttribute('placeholder', 'Telefonnummer'),//PhoneNumberField
-            DropdownField::create('TypeID', 'Mitgliedstyp',array('Vollverdiener','Student / Azubi / Schüler')),
+            DropdownField::create('TypeID', 'Mitgliedstyp',array('Vollverdiener'=>'Vollverdiener','Student / Azubi / Schüler'=>'Student / Azubi / Schüler')),
                 //->setSource(ClubMemberType::get()->map('ID', 'TypeName')),
             DateField::create('Since', 'Mitglied ab')->setValue(SS_Datetime::now()->FormatI18N('%d.%m.%Y')),
             CheckboxField::create('EqualAddress', 'Mitgliedsadresse ist Kontoadresse')->setValue(true),

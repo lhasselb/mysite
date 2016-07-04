@@ -25,8 +25,8 @@ class EnrollSuccessPage extends Page
         return $fields;
     }
 
-    function getData() {
-        return Session::get('Data');
+    function FormData() {
+        return $list = new ArrayData(Session::get('Data'));
     }
 
 }
@@ -37,14 +37,6 @@ class EnrollSuccessPage_Controller extends Page_Controller
 
     public function init() {
         parent::init();
-        $data = Session::get('Data');
-        if($data) {
-            foreach ($data as $key => $value) {
-            SS_Log::log('key='. $key.' value='.$value,SS_Log::WARN);
-            }
-        }
-
-
     }//init()
 
 }
