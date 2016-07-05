@@ -43,6 +43,8 @@ class EnrollPage extends Page
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
+        $config = HtmlEditorConfig::get('basic');
+        $fields->addFieldToTab('Root.Main', HtmlEditorField::create('Content','Inhalt',$config));
         return $fields;
     }
 
@@ -157,7 +159,7 @@ class EnrollPage_Controller extends Page_Controller
     public function doEnroll($data, Form $form)
     {
         // Add a success message
-        $form->sessionMessage('Vielen Dank für die Anmeldung ' .$data['FirstName']. ' ' .$data['LastName'], 'success');
+        //$form->sessionMessage('Vielen Dank für die Anmeldung ' .$data['FirstName']. ' ' .$data['LastName'], 'success');
         // Create a ClubMember object
         $clubMember = new ClubMemberPending();
         // Save data into object
