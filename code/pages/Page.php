@@ -36,8 +36,10 @@ class Page_Controller extends ContentController {
 
 		if(Director::isDev()) {
 			Requirements::javascript($theme.'/bower_components/jquery/dist/jquery.js');
+            Requirements::javascript($theme.'/bower_components/velocity/velocity.js');
 		} else {
 			Requirements::javascript($theme.'/bower_components/jquery/dist/jquery.min.js');
+            Requirements::javascript($theme.'/bower_components/velocity/velocity.min.js');
 		}
 
 		Requirements::javascript($theme.'/dist/javascript/plugins/jquery-migrate.min.js');
@@ -58,9 +60,8 @@ class Page_Controller extends ContentController {
         Requirements::javascript($theme.'/dist/javascript/plugins/fancybox/jquery.fancybox.pack.js');
         Requirements::javascript($theme.'/dist/javascript/plugins/slider-for-bootstrap/js/bootstrap-slider.js');
 
-
 		Requirements::javascript($theme.'/dist/javascript/components.js');
-		Requirements::javascript($theme.'/dist/javascript/components-shop.js');
+		//Requirements::javascript($theme.'/dist/javascript/components-shop.js');
 		Requirements::javascript($theme.'/dist/javascript/app.js');
 		if(Director::isDev()) {
 			Requirements::javascript($theme.'/bower_components/bootstrap-sass/assets/javascripts/bootstrap.min.js');
@@ -80,34 +81,13 @@ class Page_Controller extends ContentController {
 		return Director::isDev();
 	}
 
-
-/*
-    public function Breadcrumbs($maxDepth = 20, $unlinked = false, $stopAtPageType = false, $showHidden = true)
-    {
-        SS_Log::log('Breadcrumbs called',SS_Log::WARN );
-        $page = $this;
-        $parts = array();
-        $i = 0;
-        while(
-            $page
-            && (!$maxDepth || sizeof($parts) < $maxDepth)
-            && (!$stopAtPageType || $page->ClassName != $stopAtPageType)
-        ) {
-            if($showHidden || $page->ShowInMenus || ($page->ID == $this->ID)) {
-                if($page->URLSegment == 'home') $hasHome = true;
-                $parts[] = $page;
-            }
-            $page = $page->Parent;
+    public function Copyright($startYear = "2007", $separator = "-") {
+        $currentYear = date('Y');
+        if(!empty($startYear)) {
+            $output = ($startYear>=$currentYear ? $currentYear : $startYear.$separator.$currentYear);
+        } else {
+            $output = $currentYear;
         }
-        if ($this->ClassName != "HomePage") {
-            $parts[] = DataObject::get_one("HomePage");
-        }
-        $parts = array_reverse($parts);
-        $bdoSet = new DataList();
-        foreach ($parts as $breadcrumb) {
-            $bdoSet->push($breadcrumb);
-        }
-        return $bdoSet;
+        return $output;
     }
-*/
 }

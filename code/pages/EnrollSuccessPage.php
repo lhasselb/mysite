@@ -22,7 +22,9 @@ class EnrollSuccessPage extends Page
 
     function getCMSFields() {
         $fields = parent::getCMSFields();
-        $fields->addFieldToTab('Root.Main', HtmlEditorField::create('Content','Inhalt', $this->Content, 'cmsNoP'));
+        $fields->removeFieldFromTab('Root.Main','Content');
+        //$fields->addFieldToTab('Root.Main', HtmlEditorField::create('Content','Inhalt', $this->Content, 'cmsNoP'));
+        $fields->addFieldToTab('Root.Main', TextAreaField::create('Content','Danke-Meldung', $this->Content));
         return $fields;
     }
 
