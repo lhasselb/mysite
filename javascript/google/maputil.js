@@ -391,9 +391,12 @@ var primeMap;
 
 
             function calculateAndDisplayRoute(start, end) {
-            var directionsService = new google.maps.DirectionsService;
-            var directionsDisplay = new google.maps.DirectionsRenderer;
-            directionsDisplay.setMap(map);
+                var directionsService = new google.maps.DirectionsService;
+                var directionsDisplay = new google.maps.DirectionsRenderer;
+                directionsDisplay.setMap(map);
+                directionsDisplay.setOptions({
+                    suppressMarkers: true
+                });
                 var locOrigin = new google.maps.LatLng(centre.lat,centre.lng);
                 directionsService.route({
                 origin: start,
