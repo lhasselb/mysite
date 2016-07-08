@@ -289,6 +289,15 @@ var primeMap;
             mapdomid = mapnode.attr('id');
             var map = new google.maps.Map(document.getElementById(mapdomid));
 
+            //lh:start
+            google.maps.event.addDomListener(window, "resize", function() {
+                 var center = map.getCenter();
+                 google.maps.event.trigger(map, "resize");
+                 map.setCenter(center);
+                 console.log('resize');
+            });
+            //lh:end
+
             // initialise geocoder
             geocoder = new google.maps.Geocoder();
 
@@ -369,7 +378,7 @@ var primeMap;
             }
 
             function callback(results, status) {
-                console.log(results);
+                //console.log(results);
                 if (status == google.maps.places.PlacesServiceStatus.OK) {
                     for (var i = 0; i < 1; i++) { //i < results.length
                         var place = results[i];
