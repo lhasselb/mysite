@@ -9,7 +9,11 @@ class LocationPage extends Page
     private static $allowed_children = array();
 
 	private static $db = array(
-	   'LocationName' => 'Varchar(255)'
+	   'LocationName' => 'Varchar(255)',
+       'LocationDescription' => 'Varchar(255)',
+       'Schedule' => 'Varchar(255)',
+       'Location' => 'Varchar(255)',
+       'Contact' => 'Varchar(255)',
     );
 
 	private static $has_one = array(
@@ -17,8 +21,22 @@ class LocationPage extends Page
 
     function getCMSFields(){
         $fields = parent::getCMSFields();
-        $textField = new TextField("LocationName","Ortsbezeichnung");
-        $fields->addFieldToTab("Root.Main", $textField, "Content");
+
+        $name = new TextField("LocationName","Ortsbezeichnung");
+        $schedule = TextareaField::create("Schedule","Wann")->setRows(3);
+        $location = TextareaField::create("Location","Wo")->setRows(2);
+        $contact = TextareaField::create("Contact","Ansprechpartner")->setRows(2);
+        $description = new TextField("LocationDescription","Beschreibung");
+
+        $fields->addFieldsToTab("Root.Main", array($name,$schedule,$location,$contact,$description), "Content");
+
+        //$fields->removeFieldFromTab("Root.Main", "Content");
+        $mapTab = $fields->findOrMakeTab('Root.Location');
+        $mapTab->setTitle('Landkarte');
+        $mapPinIcon = $mapTab->fieldByName('MapPinIcon');
+        $mapPinIcon->setTitle('Grafik zur Positionsanzeige.  Leer lassen für Standardgrafik.');
+        SS_Log::log('map '.$mapTab->Title(),SS_Log::WARN);
+
         return $fields;
     }
 
