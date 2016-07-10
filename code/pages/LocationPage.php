@@ -13,7 +13,8 @@ class LocationPage extends Page
        'LocationDescription' => 'Varchar(255)',
        'Schedule' => 'Varchar(255)',
        'Location' => 'Varchar(255)',
-       'Contact' => 'Varchar(255)',
+       'Contact' => 'HTMLVarchar(255)',
+       'Map' => 'HTMLVarchar(255)',
     );
 
 	private static $has_one = array(
@@ -21,21 +22,24 @@ class LocationPage extends Page
 
     function getCMSFields(){
         $fields = parent::getCMSFields();
-
-        $name = new TextField("LocationName","Ortsbezeichnung");
-        $schedule = TextareaField::create("Schedule","Wann")->setRows(3);
-        $location = TextareaField::create("Location","Wo")->setRows(2);
-        $contact = TextareaField::create("Contact","Ansprechpartner")->setRows(2);
-        $description = new TextField("LocationDescription","Beschreibung");
-
-        $fields->addFieldsToTab("Root.Main", array($name,$schedule,$location,$contact,$description), "Content");
-
         //$fields->removeFieldFromTab("Root.Main", "Content");
+
+        $schedule = TextareaField::create('Schedule','Wann')->setRows(3);
+        $location = TextareaField::create('Location','Wo')->setRows(2);
+        $contact = HtmlEditorField::create('Contact','Ansprechpartner')->setRows(1);
+
+        $fields->addFieldsToTab('Root.Main', array($schedule,$location,$contact));
+
         $mapTab = $fields->findOrMakeTab('Root.Location');
         $mapTab->setTitle('Landkarte');
+        $name = new TextField('LocationName','Ortsbezeichnung');
+        $fields->addFieldToTab('Root.Location',$name,'MapPinIcon');
+        $description = new TextField('LocationDescription','Beschreibung');
+        $fields->addFieldToTab('Root.Location',$description,'MapPinIcon');
         $mapPinIcon = $mapTab->fieldByName('MapPinIcon');
         $mapPinIcon->setTitle('Grafik zur Positionsanzeige.  Leer lassen für Standardgrafik.');
-        SS_Log::log('map '.$mapTab->Title(),SS_Log::WARN);
+        $map = HtmlEditorField::create('Map','Landkarte')->setRows(1);
+        $fields->addFieldToTab('Root.Location',$map,'MapPinIcon');
 
         return $fields;
     }
