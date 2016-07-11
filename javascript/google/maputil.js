@@ -398,6 +398,18 @@ var primeMap;
             }
             addPublicTransport(map,centre.lat,centre.lng);
 
+            function distance(src,dst) {
+                var lat1 = src.lat();
+                var lon1 = src.lng();
+                var lat2 = dst.lat();
+                var lon2 = dst.lng();
+                var p = 0.017453292519943295;    // Math.PI / 180
+                var c = Math.cos;
+                var a = 0.5 - c((lat2 - lat1) * p)/2 + c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))/2;
+                var result = 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+                console.log(result * 100);
+                return result * 100;
+            }
 
             function calculateAndDisplayRoute(start, end) {
                 var directionsService = new google.maps.DirectionsService;
@@ -406,7 +418,12 @@ var primeMap;
                 directionsDisplay.setOptions({
                     suppressMarkers: true
                 });
-                var locOrigin = new google.maps.LatLng(centre.lat,centre.lng);
+
+                //var locOrigin = new google.maps.LatLng(centre.lat,centre.lng);
+                if(distance(start,end) > 20) {
+                    //console.log('Out of Munich');
+                }
+
                 directionsService.route({
                 origin: start,
                 destination: end,

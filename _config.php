@@ -82,7 +82,8 @@ HtmlEditorConfig::get('cms')->setOptions(array('template_templates' => array(
 )));
 
 // Add a Google Maps shortcode
-ShortcodeParser::get('default')->register('googlemap', function($arguments, $address, $parser, $shortcode) {
+ShortcodeParser::get('default')->register('existinggooglemap', array('LocationPage', 'ExistingGoogleMap'));
+/*ShortcodeParser::get('default')->register('googlemap', function($arguments, $address, $parser, $shortcode) {
     $iframeUrl = sprintf(
         "https://mapsengine.google.com/map/embed?mid=%s",
         urlencode($address)
@@ -97,4 +98,4 @@ ShortcodeParser::get('default')->register('googlemap', function($arguments, $add
         $height,
         $iframeUrl
     );
-});
+});*/
