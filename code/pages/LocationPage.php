@@ -17,9 +17,6 @@ class LocationPage extends Page
        'Map' => 'HTMLVarchar(255)',
     );
 
-	private static $has_one = array(
-	);
-
     private static $casting = array(
         'ExistingGoogleMap' => 'HTMLText'
     );

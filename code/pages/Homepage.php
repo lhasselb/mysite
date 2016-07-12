@@ -5,37 +5,34 @@ class HomePage extends Page
     private static $description = 'Startseite für JIMEV';
     private static $icon = 'mysite/images/homepage.png';
 
-    private static $has_one = array();
-
     private static $has_many = array(
         'Sliders' => 'HomepageSlider.Parent',
         'Alarme' => 'HomepageAlarm',
         'News' => 'News'
     );
 
-	function getCMSFields(){
+	function getCMSFields() {
 		$fields = parent::getCMSFields();
-
         $sliderConfig = GridFieldConfig_RecordEditor::create();
         $sliderGridField = new GridField('SLider', 'Bild(er) auf der Startseite', $this->Sliders());
         $sliderGridField->setConfig($sliderConfig);
-
         $alarmConfig = GridFieldConfig_RecordEditor::create();
         $alarmGridField = new GridField('Alarme', 'Alarm auf der Startseite', $this->Alarme());
         $alarmGridField->setConfig($alarmConfig);
-
         /*$newsConfig = GridFieldConfig_RecordEditor::create();
         $newsGridField = new GridField('News', 'News auf der Startseite', $this->News());
         $newsGridField->setConfig($newsConfig);*/
-
         $fields->addFieldToTab("Root.Alarm", $alarmGridField);
         /*$fields->addFieldToTab("Root.News", $newsGridField);*/
         $fields->addFieldToTab("Root.Slider-Bilder", $sliderGridField);
-
-
-
         return $fields;
 	}
+
+    public function LatestNews() {
+        $itemsToSkip = 0;
+        $itemsToReturn = 5;
+        return News::Entries($itemsToSkip, $itemsToReturn);
+    }
 }
 
 
@@ -67,10 +64,4 @@ class HomePage_Controller extends Page_Controller
 
 	}//init()
 
-    public function LatestNews()
-    {
-        $itemsToSkip = 0;
-        $itemsToReturn = 5;
-        return News::Entries($itemsToSkip, $itemsToReturn);
-    }
 }

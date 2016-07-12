@@ -38,7 +38,7 @@ class LinkSet extends DataObject
         $fields->removeByName('LinkPageID');
         $fields->removeByName('Links');
         $config = GridFieldConfig_RelationEditor::create();
-        $gridfield = GridField::create("Links", "Links", $this->Links(), $config);
+        $gridfield = GridField::create('Links', 'Links', $this->Links(), $config);
         $fields->addFieldToTab('Root.Main', $gridfield);
 
         return $fields;

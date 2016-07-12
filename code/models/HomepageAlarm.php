@@ -37,7 +37,7 @@ class HomepageAlarm extends DataObject
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
-        $fields->removeByName('HomepageID');
+        $fields->removeByName('HomeageID');
 
         $fields->dataFieldByName('StartDate')->getDateField()->setConfig('showcalendar', true);
         $fields->dataFieldByName('StartDate')->getTimeField()->setConfig('use_strtotime', true);
