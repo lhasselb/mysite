@@ -21,14 +21,14 @@ class LinkPage extends Page
 
     function getCMSFields(){
         $fields = parent::getCMSFields();
-        $fields->addFieldToTab('Root.Main',
+        /*$fields->addFieldToTab('Root.Main',
             HtmlEditorField::create('Content', $this->fieldLabel('Content'))
             ->setRows(3)
-        );
+        );*/
         $config = GridFieldConfig_RelationEditor::create();
         //$config->removeComponentsByType($config->getComponentByType('GridFieldAddNewButton'));
         $gridfield = GridField::create("Linkset", "Link-Sammlungen", $this->Linkset(), $config);
-        $fields->addFieldToTab('Root.Main', $gridfield);
+        $fields->addFieldToTab('Root.Link-Sammlungen', $gridfield);
         return $fields;
     }
 

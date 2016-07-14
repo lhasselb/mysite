@@ -1,23 +1,33 @@
 <?php
 class FacebookLink extends DataObject
 {
-    static $singular_name = 'FacebookLink';
+    static $singular_name = 'Facebookgruppen-Link';
     static $description = 'Ein Link zu einer Facebook Seite';
+
+    private static $db = array(
+        'Description' => 'Varchar(255)'
+    );
 
     private static $has_one = array(
         'KontaktPage' => 'KontaktPage',
-        'Link' => 'Link'
+        'FacebookLink' => 'Link'
     );
 
 
     private static $summary_fields = array(
-        'Link'=>'FacebookLink'
+        'FacebookLink'=>'Link',
+        'Description'=>'Beschreibung'
     );
+
+    public function getTitle() {
+        return $this->Description;
+    }
 
     public function fieldLabels($includerelations = true)
     {
         $labels = parent::fieldLabels($includerelations);
-        //$labels['Description'] = 'Beschreibung';
+        $labels['FacebookLink'] = 'Link';
+        $labels['Description'] = 'Beschreibung';
         return $labels;
     }
 
@@ -27,7 +37,8 @@ class FacebookLink extends DataObject
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
-        $fields->addFieldToTab('Root.Main', LinkField::create('Link', 'Facebook-Gruppe'));
+        $fields->removeByName('KontaktPageID');
+        $fields->addFieldToTab('Root.Main', LinkField::create('FacebookLinkID', 'Facebook-Gruppe'));
         return $fields;
     }
 

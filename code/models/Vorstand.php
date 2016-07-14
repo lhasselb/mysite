@@ -43,6 +43,7 @@ class Vorstand extends DataObject
     function getCMSFields()
     {
         $fields = parent::getCMSFields();
+        $fields->removeByName('KontaktPageID');
         $name = TextField::create('Name','Name');
         $role = TextField::create('Role','Funktion');
         $mail = TextField::create('Mail','E-Mail');

@@ -18,12 +18,13 @@ class KontaktPage extends Page
     function getCMSFields()
     {
         $fields = parent::getCMSFields();
-        $config = GridFieldConfig_RelationEditor::create();
+        $facebooConfig = GridFieldConfig_RelationEditor::create();
 
-        $facebookGruppen = GridField::create('FacebookLinks', 'Facebook Gruppen', $this->FacebookLinks(), $config);
+        $facebookGruppen = GridField::create('FacebookLinks', 'Facebook Gruppen', $this->FacebookLinks(), $facebooConfig);
         $fields->addFieldToTab('Root.Facebook', $facebookGruppen);
 
-        $directors = GridField::create('Directors', 'Vorstand', $this->Directors(), $config);
+        $directorsConfig = GridFieldConfig_RelationEditor::create();
+        $directors = GridField::create('Directors', 'Vorstand', $this->Directors(), $directorsConfig);
         $fields->addFieldToTab('Root.Vorstand', $directors);
 
         $mailingLists = HtmlEditorField::create('Mailinglists','Mailing-Listen');
