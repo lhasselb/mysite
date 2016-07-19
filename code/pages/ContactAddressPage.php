@@ -1,5 +1,5 @@
 <?php
-class KontaktPage extends Page
+class ContactAddressPage extends Page
 {
     private static $singular_name = 'Kontakt';
     private static $description = 'Seite für Kontakt';
@@ -8,28 +8,27 @@ class KontaktPage extends Page
     private static $allowed_children = array();
 
     private static $db = array(
-       //'Mailinglists' => 'HTMLText'
     );
+
     private static $has_many = array(
-        'FacebookLinks' => 'FacebookLink'
+        'Directors' => 'Vorstand'
     );
 
     function getCMSFields()
     {
         $fields = parent::getCMSFields();
-        $facebooConfig = GridFieldConfig_RelationEditor::create();
 
-        $facebookGruppen = GridField::create('FacebookLinks', 'Facebook Gruppen', $this->FacebookLinks(), $facebooConfig);
-        $fields->addFieldToTab('Root.Facebook', $facebookGruppen);
 
-        //$mailingLists = HtmlEditorField::create('Mailinglists','Mailing-Listen');
-        //$fields->addFieldToTab('Root.Seiteninhalt', $mailingLists);
+        $directorsConfig = GridFieldConfig_RelationEditor::create();
+        $directors = GridField::create('Directors', 'Vorstand', $this->Directors(), $directorsConfig);
+        $fields->addFieldToTab('Root.Vorstand', $directors);
+
         return $fields;
     }
 
 }
 
-class KontaktPage_Controller extends Page_Controller
+class ContactAddressPage_Controller extends Page_Controller
 {
     private static $allowed_actions = array ();
 

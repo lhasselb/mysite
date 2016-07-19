@@ -9,7 +9,7 @@ class Vorstand extends DataObject
 
     private static $has_one = array(
        'Bild' => 'Image',
-        'KontaktPage' => 'KontaktPage'
+        'ContactAddressPage' => 'ContactAddressPage'
     );
 
     private static $summary_fields = array(

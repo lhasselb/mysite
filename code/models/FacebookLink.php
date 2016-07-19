@@ -5,7 +5,7 @@ class FacebookLink extends DataObject
     static $description = 'Ein Link zu einer Facebook Seite';
 
     private static $db = array(
-        'Description' => 'Varchar(255)'
+        //'Description' => 'Varchar(255)'
     );
 
     private static $has_one = array(
@@ -16,18 +16,18 @@ class FacebookLink extends DataObject
 
     private static $summary_fields = array(
         'FacebookLink'=>'Link',
-        'Description'=>'Beschreibung'
+        //'Description'=>'Beschreibung'
     );
 
     public function getTitle() {
-        return $this->Description;
+        return $this->FacebookLink()->Title;
     }
 
     public function fieldLabels($includerelations = true)
     {
         $labels = parent::fieldLabels($includerelations);
         $labels['FacebookLink'] = 'Link';
-        $labels['Description'] = 'Beschreibung';
+        //$labels['Description'] = 'Beschreibung';
         return $labels;
     }
 
