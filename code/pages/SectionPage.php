@@ -1,8 +1,7 @@
 <?php
 class SectionPage extends Page
 {
-    private static $singular_name = 'Bereich';
-    private static $plural_name = 'Bereiche';
+    private static $singular_name = 'Bereich in Workshops und Kurse';
     private static $description = 'Seite für Workshop und Kurse.';
     //private static $icon = 'mysite/images/workshops.png';
     private static $can_be_root = false;

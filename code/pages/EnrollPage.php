@@ -1,15 +1,7 @@
 <?php
-
-/**
- * Enoll page
- *
- * @package clubmaster
- * @subpackage pages
- *
- */
 class EnrollPage extends Page
 {
-    private static $singular_name = 'Enroll';
+    private static $singular_name = 'Mitgliedsantrag';
     private static $description = 'Seite für Mitgliedsantrag';
     private static $icon = 'pageimages/images/enrollform.png';
     private static $can_be_root = false;

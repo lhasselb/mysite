@@ -1,7 +1,7 @@
 <?php
 class EnrollSuccessPage extends Page
 {
-    private static $singular_name = 'EnrollSuccess';
+    private static $singular_name = 'Erfolgreicher Mitgliedsantrag';
     private static $description = 'Seite für erfolgreichen Mitgliedsantrag';
     //private static $icon = 'mysite/images/treffen.png';
     private static $can_be_root = false;

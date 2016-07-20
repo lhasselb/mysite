@@ -1,8 +1,8 @@
 <?php
 class ContactAddressPage extends Page
 {
-    private static $singular_name = 'Kontakt';
-    private static $description = 'Seite für Kontakt';
+    private static $singular_name = 'Adresse und Vorstand';
+    private static $description = 'Seite für Adresse und Vorstand';
     //private static $icon = 'mysite/images/treffen.png';
     private static $can_be_root = true;
     private static $allowed_children = array();
