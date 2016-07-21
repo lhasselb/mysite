@@ -21,6 +21,10 @@ class LocationPage extends Page
         'ExistingGoogleMap' => 'HTMLText'
     );
 
+    /* Declared within _config.php
+     * ShortcodeParser::get('default')
+     * ->register('existinggooglemap', array('LocationPage','ExistingGoogleMap'));
+    */
     public static function ExistingGoogleMap($arguments, $address = null, $parser = null, $shortcode) {
         $iframeUrl = sprintf(
             "https://mapsengine.google.com/map/embed?mid=%s",
@@ -41,23 +45,26 @@ class LocationPage extends Page
     function getCMSFields(){
         $fields = parent::getCMSFields();
         $fields->removeFieldFromTab("Root.Main", "Content");
-        $content = HtmlEditorField::create('Content','Inhalt')->setRows(1);
-        $remark = HtmlEditorField::create('Remark','Bemerkung')->setRows(1);
-        $schedule = TextareaField::create('Schedule','Wann')->setRows(3);
-        $location = TextareaField::create('Location','Wo')->setRows(2);
-        $contact = HtmlEditorField::create('Contact','Ansprechpartner')->setRows(1);
-
-        $fields->addFieldsToTab('Root.Main', array($content,$schedule,$location,$contact,$remark));
-
-        $mapTab = $fields->findOrMakeTab('Root.Location');
-        $mapTab->setTitle('Landkarte');
+        $content = HtmlEditorField::create('Content','Intro');
+        $schedule = TextareaField::create('Schedule','Wann');
+        $location = TextareaField::create('Location','Wo');
+        $contact = HtmlEditorField::create('Contact','Ansprechpartner');
+        $remark = HtmlEditorField::create('Remark','Bemerkung');
+        $fields->addFieldToTab('Root.Main', $content,'Metadata');
+        $fields->addFieldsToTab('Root.Tabelle', array($schedule,$location,$contact,$remark));
         $description = new TextField('LocationDescription','Beschreibung');
-        $fields->addFieldToTab('Root.Location',$description,'MapPinIcon');
-        $mapPinIcon = $mapTab->fieldByName('MapPinIcon');
-        $mapPinIcon->setTitle('Grafik zur Positionsanzeige.  Leer lassen für Standardgrafik.');
+        $fields->addFieldToTab('Root.Landkarte', $description);
 
-        $map = HtmlEditorField::create('Map','Google-Karte')->setRows(1);
-        $fields->addFieldToTab('Root.Location',$map,'MapPinIcon');
+        //$mapTab = $fields->findOrMakeTab('Root.Location');
+        //$mapTab->setTitle('Landkarte');
+        //$description = new TextField('LocationDescription','Beschreibung');
+        //$fields->addFieldToTab('Root.Location',$description);
+        //$fields->addFieldToTab('Root.Location',$description,'MapPinIcon');
+        //$mapPinIcon = $mapTab->fieldByName('MapPinIcon');
+        //$mapPinIcon->setTitle('Grafik zur Positionsanzeige.  Leer lassen für Standardgrafik.');
+
+        //$map = HtmlEditorField::create('Map','Google-Karte')->setRows(1);
+        //$fields->addFieldToTab('Root.Location',$map,'MapPinIcon');
 
         return $fields;
     }
