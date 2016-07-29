@@ -7,7 +7,7 @@ class HomePage extends Page
 
     private static $has_many = array(
         'Sliders' => 'HomepageSlider.Parent',
-        'Alarme' => 'HomepageAlarm',
+        'Alarm' => 'HomepageAlarm',
         'News' => 'News'
     );
 
@@ -17,7 +17,7 @@ class HomePage extends Page
         $sliderGridField = new GridField('SLider', 'Bild(er) auf der Startseite', $this->Sliders());
         $sliderGridField->setConfig($sliderConfig);
         $alarmConfig = GridFieldConfig_RecordEditor::create();
-        $alarmGridField = new GridField('Alarme', 'Alarm auf der Startseite', $this->Alarme());
+        $alarmGridField = new GridField('Alarm', 'Alarm auf der Startseite', $this->Alarm());
         $alarmGridField->setConfig($alarmConfig);
         /*$newsConfig = GridFieldConfig_RecordEditor::create();
         $newsGridField = new GridField('News', 'News auf der Startseite', $this->News());

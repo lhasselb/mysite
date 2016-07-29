@@ -7,20 +7,11 @@ class Page extends SiteTree {
 	private static $has_one = array(
 	);
 
-    public function getAlerts() {
-        $alerts = HomePage::get()->First()->Alarme();
-        $list = new ArrayList();
-        foreach ($alerts as $alert) {
-            //SS_Log::log('Title '  .$alert->Title,SS_Log::WARN);
-            //SS_Log::log('Meldung '.$alert->Meldung,SS_Log::WARN);
-            //SS_Log::log('Start past?'.$alert->obj('StartDate')->InPast(),SS_Log::WARN);
-            //SS_Log::log('Start future?'  .$alert->obj('StartDate')->InFuture(),SS_Log::WARN);
-            //SS_Log::log('Ende past?'   .$alert->obj('EndDate')->InPast(),SS_Log::WARN);
-            //SS_Log::log('Ende future?'   .$alert->obj('EndDate')->InFuture(),SS_Log::WARN);
-            if($alert->obj('StartDate')->InPast() && $alert->obj('EndDate')->InFuture())
-            $list->push($alert);
-        }
-        return $list;
+    /**
+     * Make Homepage Alerts accessible from all pages
+     */
+    public function getAlert() {
+        return $alerts = HomePage::get()->First()->Alarm();
     }
 
 }
@@ -53,11 +44,14 @@ class Page_Controller extends ContentController {
 		if(Director::isDev()) {
 			Requirements::javascript($theme.'/bower_components/jquery/dist/jquery.js');
             Requirements::javascript($theme.'/bower_components/velocity/velocity.js');
+            Requirements::javascript($theme.'/bower_components/velocity/velocity.ui.js');
 		} else {
 			Requirements::javascript($theme.'/bower_components/jquery/dist/jquery.min.js');
             Requirements::javascript($theme.'/bower_components/velocity/velocity.min.js');
+            Requirements::javascript($theme.'/bower_components/velocity/velocity.ui.min.js');
 		}
-        Requirements::javascript($theme.'/dist/javascript/js.cookie.js');
+        Requirements::javascript($theme.'/bower_components/js-cookie/src/js.cookie.js');
+
 		Requirements::javascript($theme.'/dist/javascript/plugins/jquery-migrate.min.js');
         Requirements::javascript($theme.'/dist/javascript/plugins/jquery.easing.min.js');
         Requirements::javascript($theme.'/dist/javascript/plugins/reveal-animate/wow.js');
