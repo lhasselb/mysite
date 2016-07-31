@@ -2,7 +2,6 @@
 class LocationPage extends Page
 {
     private static $singular_name = 'Treffpunkt';
-    private static $plural_name = 'Treffpunkte';
     private static $description = 'Seite für Jongliertreffen';
     //private static $icon = 'mysite/images/treffen.png';
     private static $can_be_root = false;

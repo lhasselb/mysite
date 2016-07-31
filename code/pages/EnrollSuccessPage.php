@@ -24,11 +24,12 @@ class EnrollSuccessPage extends Page
         $fields = parent::getCMSFields();
         $fields->removeFieldFromTab('Root.Main','Content');
         //$fields->addFieldToTab('Root.Main', HtmlEditorField::create('Content','Inhalt', $this->Content, 'cmsNoP'));
-        $fields->addFieldToTab('Root.Main', TextAreaField::create('Content','Danke-Meldung', $this->Content));
+        $fields->addFieldToTab('Root.Main', TextAreaField::create('Content','Danke-Meldung', $this->Content),'Metadata');
         return $fields;
     }
 
     function FormData() {
+        if(Session::get('Data'))
         return $list = new ArrayData(Session::get('Data'));
     }
 

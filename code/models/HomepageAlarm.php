@@ -82,7 +82,9 @@ class HomepageAlarm extends DataObject
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
-        $fields->removeByName('HomeageID');
+        $fields->removeByName('HomepageID');
+
+        $fields->dataFieldByName('Meldung')->setTargetLength(250, 50, 250);
 
         //$fields->dataFieldByName('StartDate')->setConfig('datavalueformat', 'dd.MM.yyyy HH:mm');
         $fields->dataFieldByName('StartDate')->timefield->setConfig('timeformat', 'HH:mm');
