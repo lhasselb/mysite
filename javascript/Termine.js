@@ -1,6 +1,6 @@
 (function ($) {
 
-   $(document).ready(function() {
+    $(document).ready(function() {
         $('#calendar').fullCalendar({
             /*header: {
                 left: 'today prev,next',
@@ -8,6 +8,7 @@
                 right: 'month,basicWeek,basicDay'
             },*/
             lang: 'de',
+
             googleCalendarApiKey: 'AIzaSyB6cztHJTF4Xn6LJUiNNhCGyItBzO6xyhs',
             eventSources: [
                 {
@@ -51,14 +52,25 @@
             },
 
             eventRender: function(event, element, view) {
+                //console.log(event.source);
                 if ( event.start.format('MM.DD.YYYY') !== event.end.format('MM.DD.YYYY')) {
                     element.css('background-color', event.source.textColor);
                     element.css('color', event.source.color);
                     //console.log(event);
                 }
-            },
+            }
 
         });
+
+        //console.log($('#calendar').fullCalendar('getEventSourceById', 'jimev.de_5rs1u41usnfck91lojqr3s6lds@group.calendar.google.com'));
+        var calendar = $('#calendar');
+        var sources = calendar.fullCalendar('getEventSources');
+        //console.log(sources.length);
+        for (var i=0,  tot=sources.length; i < tot; i++) {
+            //console.log(sources[i]); //"aa", "bb"
+        }
+
     });
+
 
 })(jQuery);

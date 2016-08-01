@@ -26,7 +26,8 @@ class GoogleCalendarPage_Controller extends Page_Controller {
 		parent::init();
 		$theme = $this->themeDir();
 
-		Requirements::css($theme.'/bower_components/fullcalendar/dist/fullcalendar.css');
+        //Requirements::css($theme.'/bower_components/fullcalendar/dist/fullcalendar.print.css');
+		Requirements::css($theme.'/bower_components/fullcalendar/dist/fullcalendar.min.css');
 
 		Requirements::javascript($theme.'/bower_components/moment/min/moment-with-locales.js');
 		Requirements::javascript($theme.'/bower_components/fullcalendar/dist/fullcalendar.min.js');
