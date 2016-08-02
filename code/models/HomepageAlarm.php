@@ -9,7 +9,7 @@ class HomepageAlarm extends DataObject
         'StartDate' => 'SS_Datetime',
         'EndDate' => 'SS_Datetime',
         'Title' => 'Varchar',
-        'Meldung' => 'HTMLVarchar(255)'
+        'Meldung' => 'HTMLText(300)'
     );
 
     private static $has_one = array(
@@ -84,7 +84,7 @@ class HomepageAlarm extends DataObject
         $fields = parent::getCMSFields();
         $fields->removeByName('HomepageID');
 
-        $fields->dataFieldByName('Meldung')->setTargetLength(250, 50, 250);
+        $fields->dataFieldByName('Meldung')->setTargetLength(300, 50, 300);
 
         //$fields->dataFieldByName('StartDate')->setConfig('datavalueformat', 'dd.MM.yyyy HH:mm');
         $fields->dataFieldByName('StartDate')->timefield->setConfig('timeformat', 'HH:mm');
