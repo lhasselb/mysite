@@ -11,8 +11,8 @@ class Course extends News
         'CourseTitle' => 'Varchar(255)',
         'MenuTitle' => 'Varchar', // Not used
         'URLSegment' => 'Varchar(255)',
-        'CourseDateStart' => 'SS_Datetime',
-        'CourseDateEnd' => 'SS_Datetime',
+//        'CourseDateStart' => 'SS_Datetime',
+//        'CourseDateEnd' => 'SS_Datetime',
         'Content' => 'HTMLText',
     );
 
@@ -119,6 +119,7 @@ class Course extends News
             }*/
             $sectionCheck = CheckboxSetField::create('Sections','Bereiche', $map);
             $fields->addFieldToTab('Root.Main', $sectionCheck);
+            /*
             $startDate = DatetimeField::create('CourseDateStart', $this->fieldLabel('CourseDateStart'))
                 ->setConfig('datavalueformat', 'dd.MM.yyyy HH:mm');
             $startDate->getDateField()->setConfig('showcalendar', true);
@@ -131,13 +132,14 @@ class Course extends News
             $endDate->getDateField()->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('dd.MM.yyyy'))));
             $endDate->getTimeField()->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('HH:mm'))));
             $fields->addFieldToTab('Root.Main', $endDate);
+            */
             $contentImage = new UploadField('ContentImage', $this->fieldLabel('ContentImage'));
             $contentImage->setConfig('allowedMaxFileNumber', 1);
             $contentImage->getValidator()->allowedExtensions = array('jpg', 'gif', 'png');
             $contentImage->setFolderName('kurse');
             $fields->addFieldToTab('Root.Main', $contentImage);
             $fields->addFieldToTab('Root.Main', HtmlEditorField::create('Content', $this->fieldLabel('Content')));
-            $fields->removeFieldsFromTab('Root.Main',array('NewsTitle','NewsDate','NewsContent','NewsImage','NewsLink','HomepageSectionID'));
+            $fields->removeFieldsFromTab('Root.Main',array('NewsTitle','NewsContent','NewsImage','NewsLink','HomepageSectionID'));
         }
 
 /*

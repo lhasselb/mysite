@@ -35,8 +35,10 @@ class EnrollPage extends Page
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
-        $config = HtmlEditorConfig::get('basic');
-        $fields->addFieldToTab('Root.Main', HtmlEditorField::create('Content','Inhalt',$config));
+        $fields->addFieldToTab('Root.Main',LabelField::create('Das Formular wird im PHP-Code gepflegt.'),'Content');
+        $fields->removeFieldFromTab('Root.Main','Content');
+        //$config = HtmlEditorConfig::get('basic');
+        //$fields->addFieldToTab('Root.Main', HtmlEditorField::create('Content','Inhalt',$config));
         return $fields;
     }
 
