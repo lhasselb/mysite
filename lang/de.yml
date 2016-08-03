@@ -9,3 +9,25 @@ de:
     SINGULARNAME: "Kalenderseite"
     DESCRIPTION: "Seite um Google Kalender anzuzeigen"
 
+
+  GoogleDirections:
+    DESTINATION: 'Ziel'
+    DIRECTIONS: 'Anfahrtsbeschreibung'
+    GOOGLEDIRECTIONSTAB: Landkarte
+    ORIGIN: 'Ursprungspunkt'
+    PLURALNAME: Anfahrtsbeschreibungungen
+    PRINT: 'Drucken'
+    SHOWDIRECTIONS: 'Zeige Anfahrtsbeschreibung'
+    SINGULARNAME: Anfahrtsbeschreibung
+    INFOTEXT: 'Inhalt beim Draufklicken'
+  GoogleDirectionsMap:
+    ADDRESS: Adresse
+    HEADER: 'Lege eine Karte an...'
+    INFOTEXT: 'Inhalt beim Draufklicken'
+    LATLNG: 'Breite und Länge (durch Komma getrennt)'
+    LINKID: Titel
+    NOTE: '<strong>Hinweis:</strong> Breite und Länge  haben Vorrang vor der Addresse'
+    PAGE: Seite
+    PLURALNAME: Karten
+    SHOWONSTARTUP: 'Zeige beim Öffnen der Seite'
+    SINGULARNAME: Karte

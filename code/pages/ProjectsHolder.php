@@ -2,7 +2,7 @@
 class ProjectsHolder extends Page
 {
     private static $singular_name = 'Projekte';
-    private static $description = 'Seite zum Gruppieren von Projekte.';
+    private static $description = 'Seite zum Gruppieren von Projekten.';
     private static $icon = 'mysite/images/projects.png';
     private static $allowed_children = array(
         'ProjectsPage',
