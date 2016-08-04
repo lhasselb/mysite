@@ -61,19 +61,17 @@ class LocationPage extends Page
 
     function getCMSFields(){
         $fields = parent::getCMSFields();
-
-        $intro = HtmlEditorField::create('Content','Informationen');
+        HtmlEditorConfig::set_active('basic');
+        $intro = HtmlEditorField::create('Content','Informationen')->setRows(1);
         $schedule = TextareaField::create('Schedule','Wann');
         $location = TextareaField::create('Location','Wo');
-        $contact = HtmlEditorField::create('Contact','Ansprechpartner');
-        $remark = HtmlEditorField::create('Remark','Bemerkung für die Übersicht');
+        $contact = HtmlEditorField::create('Contact','Ansprechpartner')->setRows(1);
+        $remark = HtmlEditorField::create('Remark','Bemerkung für die Übersicht')->setRows(1);
         $fields->addFieldsToTab('Root.Main', array($intro, $schedule, $location, $contact, $remark),'Metadata');
-
         $description = new TextField('LocationDescription','Beschreibung');
         $fields->addFieldToTab('Root.Landkarte', $description);
         $map = TextAreaField::create('Map','Google-IFrame');
         $fields->addFieldToTab('Root.Landkarte', $map);
-
         return $fields;
     }
 
@@ -90,6 +88,7 @@ class LocationPage_Controller extends Page_Controller
 
 	public function init() {
 		parent::init();
+        Requirements::javascript('mysite/javascript/Maps.js');
 	}//init()
 
 }
