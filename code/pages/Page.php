@@ -14,6 +14,10 @@ class Page extends SiteTree {
         return $alerts = HomePage::get()->First()->Alarm();
     }
 
+    public function getFacebookLinks() {
+        return KontaktPage::get()->First()->FacebookLinks();
+    }
+
 }
 class Page_Controller extends ContentController {
 

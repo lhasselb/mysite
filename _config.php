@@ -44,6 +44,7 @@ error_reporting(E_ALL);
  * http://archive.tinymce.com/wiki.php/TinyMCE3x:Buttons/controls
  * See default configuration within file
  * framework/forms/HtmlEditorConfig.php
+ * plugins: contextmenu,table,emotions,paste
  */
 HtmlEditorConfig::get("basic")->setOptions(array(
     "language" => i18n::get_tinymce_lang(),
@@ -56,12 +57,12 @@ HtmlEditorConfig::get("basic")->setOptions(array(
     "skin" => "default",
     // Remove the bottom status bar
     "theme_advanced_statusbar_location" => "none"
-));
+))->disablePlugins('contextmenu');
 // Clear the default buttons
 HtmlEditorConfig::get("basic")->setButtonsForLine(1);
 HtmlEditorConfig::get("basic")->setButtonsForLine(2);
-HtmlEditorConfig::get("basic")->setButtonsForLine(3);
-HtmlEditorConfig::get("basic")->setButtonsForLine(1, "link","unlink","code","pastetext","styleselect");
+//HtmlEditorConfig::get("basic")->setButtonsForLine(3);
+HtmlEditorConfig::get("basic")->setButtonsForLine(1, "sslink","unlink","code","pastetext"); //,"styleselect"
 HtmlEditorConfig::get("basic")->setOption("content_css","/themes/jimev-theme/css/editor.css");
 /*
 HtmlEditorConfig::get("cmsNoP")->setOptions(array(

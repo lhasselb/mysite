@@ -1,5 +1,5 @@
 <?php
-class HomepageAlarm extends DataObject
+class Alarm extends DataObject
 {
 
     static $singular_name = 'Alarm';
@@ -71,6 +71,7 @@ class HomepageAlarm extends DataObject
     {
         $labels = parent::fieldLabels($includerelations);
         $labels['Title'] = 'Titel';
+        $labels['Meldung'] = 'Meldungen';
         $labels['StartDate'] = 'Anzeigen ab';
         $labels['EndDate'] = 'Anzeigen bis';
         return $labels;
@@ -83,7 +84,14 @@ class HomepageAlarm extends DataObject
     {
         $fields = parent::getCMSFields();
         $fields->removeByName('HomepageID');
+        $plugins = HtmlEditorConfig::get('cms')->getPlugins();
+        foreach ($plugins as $key => $value) {
+            SS_Log::log('key='.$key.' ,value='.$value,SS_Log::WARN);
+        }
 
+        HtmlEditorConfig::set_active('basic');
+        $alerts = HtmlEditorField::create('Meldung','Meldungen');
+        $fields->addFieldToTab('Root.Main', $alerts);
         //$fields->dataFieldByName('Meldung')->setTargetLength(300, 50, 300);
 
         //$fields->dataFieldByName('StartDate')->setConfig('datavalueformat', 'dd.MM.yyyy HH:mm');

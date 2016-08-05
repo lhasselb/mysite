@@ -7,7 +7,7 @@ class HomePage extends Page
 
     private static $has_many = array(
         'Sliders' => 'HomepageSlider.Parent',
-        'Alarm' => 'HomepageAlarm',
+        'Alarm' => 'Alarm',
         'News' => 'News'
     );
 

@@ -8,6 +8,7 @@ class ContactAddressPage extends Page
     private static $allowed_children = array();
 
     private static $db = array(
+       'ManagementTitle' => 'Varchar(255)',
     );
 
     private static $has_many = array(
@@ -20,6 +21,8 @@ class ContactAddressPage extends Page
 
 
         $directorsConfig = GridFieldConfig_RelationEditor::create();
+        $managementTitle = TextField::create('ManagementTitle','Vorstandstitel');
+        $fields->addFieldToTab('Root.Vorstand', $managementTitle);
         $directors = GridField::create('Directors', 'Vorstand', $this->Directors(), $directorsConfig);
         $fields->addFieldToTab('Root.Vorstand', $directors);
 

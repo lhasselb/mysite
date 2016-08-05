@@ -62,12 +62,12 @@ class LocationPage extends Page
     function getCMSFields(){
         $fields = parent::getCMSFields();
         HtmlEditorConfig::set_active('basic');
-        $intro = HtmlEditorField::create('Content','Informationen')->setRows(1);
+        $intro = HtmlEditorField::create('Content','Informationen')->setRows(18)->setColumns(10);
         $schedule = TextareaField::create('Schedule','Wann');
         $location = TextareaField::create('Location','Wo');
-        $contact = HtmlEditorField::create('Contact','Ansprechpartner')->setRows(1);
-        $remark = HtmlEditorField::create('Remark','Bemerkung für die Übersicht')->setRows(1);
-        $fields->addFieldsToTab('Root.Main', array($intro, $schedule, $location, $contact, $remark),'Metadata');
+        $contact = HtmlEditorField::create('Contact','Ansprechpartner')->setRows(18)->setColumns(10);
+        $remark = HtmlEditorField::create('Remark','Bemerkung für die Übersicht')->setRows(18)->setColumns(10);
+        $fields->addFieldsToTab('Root.Main', array($remark, $intro, $schedule, $location, $contact),'Metadata');
         $description = new TextField('LocationDescription','Beschreibung');
         $fields->addFieldToTab('Root.Landkarte', $description);
         $map = TextAreaField::create('Map','Google-IFrame');
