@@ -26,7 +26,7 @@ class News extends DataObject
         'Thumbnail' => 'Bild'
     );
 
-    public function NiceNewsDate()
+    public function getNiceNewsDate()
     {
         $date = new Date();
         $date->setValue($this->NewsDate);
@@ -77,7 +77,7 @@ class News extends DataObject
     {
         $labels = parent::fieldLabels($includerelations);
         $labels['NewsTitle'] = 'News-Schlagzeile';
-        $labels['NewsDate'] = 'News-Datum';
+        $labels['NewsDate'] = 'Anzeige-Datum';
         $labels['NewsContent'] = 'News-Inhalt';
         $labels['NewsImage'] = 'News-Bild';
         return $labels;

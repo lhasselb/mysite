@@ -32,6 +32,14 @@ class Course extends News
         'Thumbnail' => 'Bild',
     );
 
+    /*public function getNiceNewsDate()
+    {
+        $date = new Date();
+        $date->setValue($this->NewsDate);
+        SS_Log::log($date, SS_Log::WARN);
+        return $date->Format('d.m.Y');
+    }*/
+
     public function News()
     {
         if(!$this->HomepageSectionID) return 'Nicht auf der Startseite.';
