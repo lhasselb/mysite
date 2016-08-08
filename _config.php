@@ -37,17 +37,19 @@ ini_set("log_errors", "On");
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-
 /**
  * Add TinyMCE configuration
  * List of TinyMCE options available on
  * http://archive.tinymce.com/wiki.php/TinyMCE3x:Buttons/controls
  * See default configuration within file
+ * framework/admin/_config.php
  * framework/forms/HtmlEditorConfig.php
  * plugins: contextmenu,table,emotions,paste
  */
+#BASIC
 HtmlEditorConfig::get("basic")->setOptions(array(
     "language" => i18n::get_tinymce_lang(),
+    "body_class" => "typography",
     "friendly_name" => "basic editor",
     "priority" => 0,
     "mode" => "none",
@@ -62,14 +64,35 @@ HtmlEditorConfig::get("basic")->setOptions(array(
 HtmlEditorConfig::get("basic")->setButtonsForLine(1);
 HtmlEditorConfig::get("basic")->setButtonsForLine(2);
 //HtmlEditorConfig::get("basic")->setButtonsForLine(3);
-HtmlEditorConfig::get("basic")->setButtonsForLine(1, "sslink","unlink","code","pastetext"); //,"styleselect"
+HtmlEditorConfig::get("basic")->setButtonsForLine(1,"sslink","unlink","code","pastetext");
 HtmlEditorConfig::get("basic")->setOption("content_css","/themes/jimev-theme/css/editor.css");
-/*
-HtmlEditorConfig::get("cmsNoP")->setOptions(array(
-    //"forced_root_block" =>"",
-    "force_p_newlines" => false,
+HtmlEditorConfig::get('basic')->enablePlugins(array(
+    'ssbuttons' => sprintf('../../../%s/tinymce_ssbuttons/editor_plugin_src.js', THIRDPARTY_DIR)
 ));
-*/
+#LOCATION
+HtmlEditorConfig::get("location")->setOptions(array(
+    "language" => i18n::get_tinymce_lang(),
+    "body_class" => "typography",
+    "friendly_name" => "basic editor",
+    "priority" => 0,
+    "mode" => "none",
+    "editor_selector" => "htmleditor",
+    "auto_resize" => true,
+    "theme" => "advanced",
+    "skin" => "default",
+    // Remove the bottom status bar
+    "theme_advanced_statusbar_location" => "none"
+))->disablePlugins('contextmenu');
+// Clear the default buttons
+HtmlEditorConfig::get("location")->setButtonsForLine(1);
+HtmlEditorConfig::get("location")->setButtonsForLine(2);
+//HtmlEditorConfig::get("basic")->setButtonsForLine(3);
+HtmlEditorConfig::get("location")->setButtonsForLine(1,"sslink","unlink","code","pastetext","styleselect");
+HtmlEditorConfig::get("location")->setOption("content_css","/themes/jimev-theme/css/location.css");
+HtmlEditorConfig::get('location')->enablePlugins(array(
+    'ssbuttons' => sprintf('../../../%s/tinymce_ssbuttons/editor_plugin_src.js', THIRDPARTY_DIR)
+));
+
 // Add template to tinyMCE
 HtmlEditorConfig::get('cms')->enablePlugins('template');
 HtmlEditorConfig::get('cms')->insertButtonsAfter('tablecontrols', 'template');

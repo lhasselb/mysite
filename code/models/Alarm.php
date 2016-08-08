@@ -84,10 +84,6 @@ class Alarm extends DataObject
     {
         $fields = parent::getCMSFields();
         $fields->removeByName('HomepageID');
-        $plugins = HtmlEditorConfig::get('cms')->getPlugins();
-        foreach ($plugins as $key => $value) {
-            SS_Log::log('key='.$key.' ,value='.$value,SS_Log::WARN);
-        }
 
         HtmlEditorConfig::set_active('basic');
         $alerts = HtmlEditorField::create('Meldung','Meldungen');

@@ -6,10 +6,13 @@ class Course extends News
 {
     private static $singular_name = 'Kurs';
     private static $plural_name = 'Kurse';
+    //private static $icon = 'mysite/images/treffen.png';
+    private static $can_be_root = false;
+    private static $allowed_children = array();
 
     private static $db = array(
         'CourseTitle' => 'Varchar(255)',
-        'MenuTitle' => 'Varchar', // Not used
+        //'MenuTitle' => 'Varchar', // Not used
         'URLSegment' => 'Varchar(255)',
 //        'CourseDateStart' => 'SS_Datetime',
 //        'CourseDateEnd' => 'SS_Datetime',
@@ -57,6 +60,11 @@ class Course extends News
     }
 
     public function getTitle()
+    {
+        return $this->CourseTitle;
+    }
+
+    public function getMenuTitle()
     {
         return $this->CourseTitle;
     }

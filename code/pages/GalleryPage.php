@@ -5,6 +5,9 @@ class GalleryPage extends Page {
     // Add CMS description
     static $description = "Fotos zu einem Album hinzufügen";
     static $singular_name = 'Foto-Album';
+    //private static $icon = 'mysite/images/treffen.png';
+    private static $can_be_root = false;
+    private static $allowed_children = array();
 
     // Used to automatically include photos in a specific folder
     public static $db = array(
@@ -33,20 +36,23 @@ class GalleryPage extends Page {
             $gridFieldConfig->addComponent(new GridFieldBulkUpload());
             $gridFieldConfig->addComponent(new GridFieldBulkManager());
 
+            SS_Log::log($this->Parent()->Title,SS_Log::WARN);
+            SS_Log::log($this->Parent()->Link(),SS_Log::WARN);
 
             // Creates field where you can type in the folder name --- IT WILL CREATE IN ROOT OF ASSET DIRECTORY!!!
             $fields->addFieldToTab("Root.Fotos", new TextField('GalFolder','Verzeichnisname')
             );
-
+$gridFieldConfig->getComponentByType('GridFieldBulkUpload')->setUfSetup('setCanUpload', false);
             // Used to determine upload folder
-            if($this->GalFolder!='' || $this->GalFolder!=NULL) {
+            /*if($this->GalFolder!='' || $this->GalFolder!=NULL) {
             // Specify the upload folder
-            $uploadfoldername = $this->GalFolder;
-            $gridFieldConfig->getComponentByType('GridFieldBulkUpload')->setUfSetup('setFolderName', $uploadfoldername);
+                $uploadfoldername = 'projekte/' + $this->GalFolder + '/';
+                $gridFieldConfig->getComponentByType('GridFieldBulkUpload')->setUfSetup('setFolderName', $uploadfoldername);
             }
             else {
-            $gridFieldConfig->getComponentByType('GridFieldBulkUpload')->setUfSetup('setFolderName', 'Fotos');
-            }
+                $uploadfoldername = 'projekte/' + $this->Parent()->Title +'/';
+                $gridFieldConfig->getComponentByType('GridFieldBulkUpload')->setUfSetup('setFolderName', $uploadfoldername);
+            }*/
 
             // Customise gridfield
             $gridFieldConfig->removeComponentsByType('GridFieldPaginator'); // Remove default paginator

@@ -8,11 +8,10 @@ class LocationPage extends Page
     private static $allowed_children = array();
 
 	private static $db = array(
-       'Schedule' => 'Varchar(255)',            // Wann
-       'Location' => 'Varchar(255)',            // Wo
+       'Schedule' => 'HTMLVarchar(255)',            // Wann
+       'Location' => 'HTMLVarchar(255)',            // Wo
        'Contact' => 'HTMLVarchar(255)',         // Ansprechpartner
        'Remark' => 'HTMLVarchar(255)',          // Bemerkung (für die Uebersicht)
-
        'LocationDescription' => 'Varchar(255)', // Beschreibung
        'Map' => 'Text()',             // Karte
     );
@@ -61,12 +60,12 @@ class LocationPage extends Page
 
     function getCMSFields(){
         $fields = parent::getCMSFields();
-        HtmlEditorConfig::set_active('basic');
-        $intro = HtmlEditorField::create('Content','Informationen')->setRows(18)->setColumns(10);
-        $schedule = TextareaField::create('Schedule','Wann');
-        $location = TextareaField::create('Location','Wo');
-        $contact = HtmlEditorField::create('Contact','Ansprechpartner')->setRows(18)->setColumns(10);
-        $remark = HtmlEditorField::create('Remark','Bemerkung für die Übersicht')->setRows(18)->setColumns(10);
+        HtmlEditorConfig::set_active('location');
+        $intro = HtmlEditorField::create('Content','Informationen')->setRows(10);
+        $schedule = HtmlEditorField::create('Schedule','Wann')->setRows(10);
+        $location = HtmlEditorField::create('Location','Wo')->setRows(10);
+        $contact = HtmlEditorField::create('Contact','Ansprechpartner')->setRows(10);
+        $remark = HtmlEditorField::create('Remark','Bemerkung für die Übersicht')->setRows(10);
         $fields->addFieldsToTab('Root.Main', array($remark, $intro, $schedule, $location, $contact),'Metadata');
         $description = new TextField('LocationDescription','Beschreibung');
         $fields->addFieldToTab('Root.Landkarte', $description);
