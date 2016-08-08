@@ -1,5 +1,5 @@
-(function ($) {
-   $(document).ready(function() {
+(function($){
+   $(document).ready(function(){
 
         /*Galleria.loadTheme('mysite/javascript/galleria/themes/twelve/galleria.twelve.min.js');*/
         /*
