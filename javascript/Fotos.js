@@ -1,15 +1,28 @@
 (function ($) {
-
    $(document).ready(function() {
-        //Galleria.loadTheme('mysite/javascript/galleria/themes/twelve/galleria.twelve.min.js');
+
+        /*Galleria.loadTheme('mysite/javascript/galleria/themes/twelve/galleria.twelve.min.js');*/
+        /*
+         * Setting a relative height (16/9 ratio = 0.5625)
+         * Setting a relative height (4/3 ratio = 0.75)
+         * imageCrop: true,
+         * thumbCrop: 'height',
+         * transition: 'fade',
+         * easing: 'galleriaOut',
+         * initialTransition: 'fadeslide',
+         * show: 0,
+         * _hideDock: Galleria.TOUCH ? false : true,
+         * //autoplay: 5000
+         */
         Galleria.configure({
             variation: 'light',
             imageCrop: 'landscape',
             lightbox: true,
-            //fullscreenCrop: false,
+            swipe: true,
             maxScaleRatio: 1,
             thumbnails: 'lazy',
-
+            responsive:true,
+            height: 0.5625,
 
             // Toggles the fullscreen button
             _showFullscreen: true,
@@ -34,8 +47,6 @@
         });
 
         Galleria.run('.galleria', {
-            responsive:true,
-            height:0.5625,
             dataSource: data,
             dataConfig: function(img) {
                 return {
@@ -43,12 +54,10 @@
                 };
             }
         });
-
-        Galleria.ready(function() {
+        /* Show thunbs as default view */
+        /*Galleria.ready(function() {
             this.$('thumblink').click();
             this.lazyLoadChunks(5);
-        });
-
+        });*/
     });
-
 })(jQuery);

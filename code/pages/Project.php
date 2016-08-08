@@ -1,5 +1,5 @@
 <?php
-class ProjectsPage extends Page
+class ProjectPage extends Page
 {
     private static $singular_name = 'Projekt';
     private static $description = 'Seite für Projekte';
@@ -43,7 +43,7 @@ class ProjectsPage extends Page
 
 }
 
-class ProjectsPage_Controller extends Page_Controller
+class ProjectPage_Controller extends Page_Controller
 {
     private static $allowed_actions = array (
     );

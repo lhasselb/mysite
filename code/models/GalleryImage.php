@@ -12,7 +12,7 @@ class GalleryImage extends DataObject {
   // One-to-one relationship with gallery page
     public static $has_one = array(
     'Image' => 'Image',
-    'GalleryPage' => 'GalleryPage',
+    'GalleryPage' => 'Page',
   );
 
     //Permissions

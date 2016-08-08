@@ -5,7 +5,7 @@ class ProjectsHolder extends Page
     private static $description = 'Seite zum Gruppieren von Projekten.';
     private static $icon = 'mysite/images/projects.png';
     private static $allowed_children = array(
-        'ProjectsPage',
+        'ProjectPage',
         'Page'
     );
 

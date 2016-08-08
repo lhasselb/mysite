@@ -33,3 +33,7 @@ FocusPointImage:
 Email:
   admin_email: info@jimev.de
 
+# Inject Image with https://github.com/jonom/silverstripe-focuspoint/
+Injector:
+  Image:
+  class: FPImage

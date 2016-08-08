@@ -1,0 +1,8 @@
+---
+Name: gallery
+---
+# Extend DataObject Page
+ProjectPage:
+  extensions:
+    - GalleryExtension
+
