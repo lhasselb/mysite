@@ -6,3 +6,6 @@ ProjectPage:
   extensions:
     - GalleryExtension
 
+Course:
+  extensions:
+    - GalleryExtension

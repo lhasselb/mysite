@@ -37,11 +37,15 @@ class GoogleCalendarPage_Controller extends Page_Controller {
 		if(Director::isDev()) {
 			if(method_exists(Requirements::backend(), "add_dependency")){
 			    Requirements::backend()->add_dependency('mysite/javascript/Termine.js', $theme.'/bower_components/jquery/dist/jquery.js');
-			}
+			} else {
+                Requirements::javascript('mysite/javascript/Termine.js');
+            }
 		} else {
 			if(method_exists(Requirements::backend(), "add_dependency")){
 			    Requirements::backend()->add_dependency('mysite/javascript/Termine.js', $theme.'/bower_components/jquery/dist/jquery.min.js');
-			}
+			} else {
+                Requirements::javascript('mysite/javascript/Termine.js');
+            }
 		}
 
 	} //init

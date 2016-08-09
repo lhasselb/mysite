@@ -44,109 +44,48 @@ class GalleryExtension extends DataExtension
 
     public function ImagesJson() {
         $images = $this->owner->GalleryImages();
-        //$focuspoint = (class_exists('FocusPointImage')) ? true : false;
-        $data = array();
-        $thb = 'thumb';
-        $img = 'image';
-        $big = 'big';
-        $tle = 'title';
-        $des = 'description';
         foreach ($images as $image) {
             $data[] = array(
-                $thb => $image->Image()->CroppedImage(80, 80)->URL,
-                $img => $image->Image()->CroppedImage(800, 600)->URL,
-                $big => $image->Image()->URL,
-                $tle => $image->Title,
-                $des => $image->Description
+                'thumb' => $image->Image()->CroppedImage(40, 30)->URL,
+                'image' => $image->Image()->CroppedImage(800, 600)->URL,
+                'big' => $image->Image()->URL,
+                'title' => $image->Title,
+                'description' => $image->Description
             );
         }
         return Convert::array2json($data);
     }
 
-    public function contentcontrollerInit() {
-
-        $theme = $this->owner->themeDir();
-        if(Director::isDev()) {
-            Requirements::javascript($theme.'/bower_components/jquery/dist/jquery.js');
-        } else {
-            Requirements::javascript($theme.'/bower_components/jquery/dist/jquery.min.js');
+    function ImagesString()
+    {
+        $images_string = "data = [";
+        $images = $this->owner->GalleryImages();
+        $num_items = count($images);
+        $i = 1;
+        foreach ($images as $image)
+        {
+            $thumb = Convert::raw2js($image->Image()->CroppedImage(80, 60)->URL);
+            $img = Convert::raw2js($image->Image()->CroppedImage(400, 300)->URL);
+            $big = Convert::raw2js($image->Image()->URL);
+            $title = Convert::raw2js($image->Title);
+            $description = Convert::raw2js($image->Description);
+            $images_string .= "{thumb: '$thumb', image: '$img', big: '$big', title: '$title', description: '$description' }";
+            if ($i ++ < $num_items)
+                $images_string .= ",";
         }
-        //Requirements::javascriptTemplate('mysite/javascript/Data.js', array("ImageDataJson" => $json));
-        Requirements::css($theme.'mysite/javascript/galleria/themes/twelve/galleria.twelve.css');
-        Requirements::javascript($theme.'/bower_components/galleria/src/galleria.js');
-        Requirements::javascript('mysite/javascript/galleria/themes/twelve/galleria.twelve.min.js');
-        //Requirements::javascript('mysite/javascript/Fotos.js');
-        $json = $this->ImagesJson();
-        Requirements::customScript(
-<<<JS
-        var data = $json;
-        (function($) {
-        $(document).ready(function(){
+        $images_string .= "]";
 
-            /*Galleria.loadTheme('mysite/javascript/galleria/themes/twelve/galleria.twelve.min.js');*/
-            /*
-             * Setting a relative height (16/9 ratio = 0.5625)
-             * Setting a relative height (4/3 ratio = 0.75)
-             * imageCrop: true,
-             * thumbCrop: 'height',
-             * transition: 'fade',
-             * easing: 'galleriaOut',
-             * initialTransition: 'fadeslide',
-             * show: 0,
-             * _hideDock: Galleria.TOUCH ? false : true,
-             * //autoplay: 5000
-             */
-            Galleria.configure({
-                variation: 'light',
-                imageCrop: 'true',
-                lightbox: true,
-                swipe: true,
-                maxScaleRatio: 1,
-                thumbnails: 'lazy',
-                responsive:true,
-                height: 0.75,
+        return $images_string;
+    }
 
-                // Toggles the fullscreen button
-                _showFullscreen: true,
-                // Toggles the lightbox button
-                _showPopout: true,
-                // Toggles the progress bar when playing a slideshow
-                _showProgress: true,
-                // Toggles tooltip
-                _showTooltip: true,
-
-                // Localized strings, modify these if you want tooltips in your language
-                _locale: {
-                    show_thumbnails: "Zeige Miniaturbild ",
-                    hide_thumbnails: "Verberge Miniaturbild ",
-                    play: "Diashow abspielen ",
-                    pause: "Diashow anhalten",
-                    enter_fullscreen: "Öffne Vollbild",
-                    exit_fullscreen: "Beende Vollbild",
-                    popout_image: "Bild in eigenem Fenster",
-                    showing_image: "Anzeige von Bild %s von %s"
-                }
-            });
-
-            Galleria.run('.galleria', {
-                dataSource: data,
-                dataConfig: function(img) {
-                    return {
-                        description: $(img).next('p').html()
-                    };
-                }
-            });
-            /* Show thunbs as default view */
-            /*Galleria.ready(function() {
-                this.$('thumblink').click();
-                this.lazyLoadChunks(5);
-            });*/
-        });
-    })(jQuery);
-JS
-        );
-
-
+    public function contentcontrollerInit() {
+        $theme = $this->owner->themeDir();
+        if($this->owner->GalleryImages()->count() > 0) {
+            Requirements::css($theme.'mysite/javascript/galleria/themes/twelve/galleria.twelve.css');
+            Requirements::javascript($theme.'/bower_components/galleria/src/galleria.js');
+            Requirements::javascript('mysite/javascript/galleria/themes/twelve/galleria.twelve.min.js');
+            Requirements::javascriptTemplate('mysite/javascript/Gallery.js', array("imageJson" => $this->ImagesString()));
+        }
     } //init
 
 }

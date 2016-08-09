@@ -21,7 +21,7 @@ i18n::set_time_format('HH:mm');
 Director::set_environment_type('dev');//dev live
 
 //head.js
-Requirements::set_backend(Injector::inst()->get('HeadJsBackend'));
+//Requirements::set_backend(Injector::inst()->get('HeadJsBackend'));
 
 // Enable logging: log errors and warnings
 if(getenv('OS') == "Windows_NT") {

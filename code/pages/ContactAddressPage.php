@@ -9,6 +9,7 @@ class ContactAddressPage extends Page
 
     private static $db = array(
        'ManagementTitle' => 'Varchar(255)',
+       'AddressTitle' => 'Varchar(255)',
     );
 
     private static $has_many = array(
@@ -19,9 +20,13 @@ class ContactAddressPage extends Page
     {
         $fields = parent::getCMSFields();
 
+        $fields->fieldByName('Root.Main')->setTitle('Anschrift');
+        $addressTitle = TextField::create('AddressTitle','Anschrift-Ü̱berschrift');
+        $address = HtmlEditorField::create('Content','Anschrift');
+        $fields->addFieldsToTab('Root.Main', array($addressTitle,$address),'Metadata');
 
         $directorsConfig = GridFieldConfig_RelationEditor::create();
-        $managementTitle = TextField::create('ManagementTitle','Vorstandstitel');
+        $managementTitle = TextField::create('ManagementTitle','Vorstand-Ü̱berschrift');
         $fields->addFieldToTab('Root.Vorstand', $managementTitle);
         $directors = GridField::create('Directors', 'Vorstand', $this->Directors(), $directorsConfig);
         $fields->addFieldToTab('Root.Vorstand', $directors);
