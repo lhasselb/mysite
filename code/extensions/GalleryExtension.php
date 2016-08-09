@@ -30,7 +30,7 @@ class GalleryExtension extends DataExtension
         $gridFieldConfig->addComponent(new GridFieldSortableRows('SortOrder'));
         $gridFieldConfig->removeComponentsByType('GridFieldAddNewButton'); // We only use bulk upload button
         // Creates sortable grid field
-        $gridfield = new GridField("GalleryImages", "Fotos", $this->owner->GalleryImages()->sort("SortOrder"), $gridFieldConfig);
+        $gridfield = new GridField('GalleryImages', 'Fotos', $this->owner->GalleryImages()->sort('SortOrder'), $gridFieldConfig);
         $fields->addFieldToTab('Root.Fotos', $gridfield);
     }
 
@@ -39,7 +39,7 @@ class GalleryExtension extends DataExtension
     }
 
     public function GetGalleryImages() {
-        return $this->owner->GalleryImages()->sort("SortOrder");
+        return $this->owner->GalleryImages()->sort('SortOrder');
     }
 
     public function ImagesJson() {

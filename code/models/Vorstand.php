@@ -40,16 +40,26 @@ class Vorstand extends DataObject
         return $labels;
     }
 
-    function getCMSFields()
+    public function getCMSFields()
     {
         $fields = parent::getCMSFields();
+        $uploadfoldername = substr($this->Link(), 1, -1);
+        SS_Log::log($uploadfoldername ,SS_Log::WARN);
         $fields->removeByName('ContactAddressPageID');
         $name = TextField::create('Name','Name');
         $role = TextField::create('Role','Funktion');
         $mail = TextField::create('Mail','E-Mail');
         $bildUploadField = new UploadField('Bild', 'Bild');
         $bildUploadField->getValidator()->allowedExtensions = array('jpg', 'gif', 'png');
+        $bildUploadField->setFolderName($uploadfoldername);
+        $bildUploadField->setDisplayFolderName($uploadfoldername);
         $fields->addFieldsToTab('Root.Main', array($name,$role,$mail,$bildUploadField));
         return $fields;
+    }
+
+    public function Link() {
+        $page = DataObject::get_by_id('ContactAddressPage',$this->ContactAddressPageID);
+        return Controller::join_links($page->Link());
+        //return Controller::curr()->Link();
     }
 }
