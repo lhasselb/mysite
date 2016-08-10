@@ -4,10 +4,12 @@
  */
 class GalleryExtension extends DataExtension
 {
-    private static $db = array();
-    private static $has_one = array(
-        'AlbumDescription' => 'Varchar(100)'
+    private static $db = array(
+        'AlbumDescription' => 'Varchar()',
+        'ImageFolder' => 'Varchar()'
     );
+
+    private static $has_one = array();
 
     // Create a relation table [OWNER]_GalleryImages
     private static $has_many = array(
@@ -19,8 +21,12 @@ class GalleryExtension extends DataExtension
         $gridFieldConfig->addComponent(new GridFieldBulkUpload());
         $gridFieldConfig->addComponent(new GridFieldBulkManager());
         // Used to determine upload folder
-        $uploadfoldername = substr($this->owner->Link(), 1, -1);
-        SS_Log::log('if uploadfoldername=' . $uploadfoldername,SS_Log::WARN);
+        SS_Log::log('ImageFolder=' . $this->owner->ImageFolder,SS_Log::WARN);
+        if(empty($this->owner->ImageFolder)) {
+            $uploadfoldername = substr($this->owner->Link(), 1, -1);
+            $this->owner->ImageFolder = $uploadfoldername;
+        } else $uploadfoldername = $this->owner->ImageFolder;
+        SS_Log::log('uploadfoldername=' . $uploadfoldername,SS_Log::WARN);
         $gridFieldConfig->getComponentByType('GridFieldBulkUpload')->setUfSetup('setFolderName', $uploadfoldername);
         //$gridFieldConfig->getComponentByType('GridFieldBulkUpload')->setUfSetup('setCanUpload', false);
         $gridFieldConfig->getComponentByType('GridFieldBulkUpload')->setUfSetup('setDisplayFolderName', $uploadfoldername);
@@ -38,11 +44,11 @@ class GalleryExtension extends DataExtension
         return $this->owner->GalleryImages()->Sort($this->owner->Sorter)->limit(1)->First();
     }
 
-    public function GetGalleryImages() {
+    public function GetSortedImages() {
         return $this->owner->GalleryImages()->sort('SortOrder');
     }
 
-    public function ImagesJson() {
+    /*public function ImagesJson() {
         $images = $this->owner->GalleryImages();
         foreach ($images as $image) {
             $data[] = array(
@@ -54,12 +60,12 @@ class GalleryExtension extends DataExtension
             );
         }
         return Convert::array2json($data);
-    }
+    }*/
 
     function ImagesString()
     {
         $images_string = "data = [";
-        $images = $this->owner->GalleryImages();
+        $images = $this->owner->GetSortedImages();
         $num_items = count($images);
         $i = 1;
         foreach ($images as $image)

@@ -3,17 +3,19 @@
 
 class GalleryImage extends DataObject {
 
-    public static $db = array(
+    private static $db = array(
       'SortOrder' => 'Int',
       'Title' => 'Varchar',
       'Description' => 'Varchar(400)'
   );
 
   // One-to-one relationship with gallery page
-    public static $has_one = array(
+    private static $has_one = array(
     'Image' => 'Image',
-    'GalleryPage' => 'Page',
+    'Gallery' => 'DataObject',
   );
+
+    private static $default_sort='SortOrder';
 
     //Permissions
     function canEdit($Member = null){if(permission::check('EDIT_GALLERY')){return true;}else{return false;}}
@@ -22,7 +24,7 @@ class GalleryImage extends DataObject {
  // Add fields to dataobject
   public function getCMSFields() {
         $fields = parent::getCMSFields();
-        $fields->removeFieldFromTab("Root.Main","GalleryPageID");
+        $fields->removeFieldFromTab("Root.Main","GalleryID");
         $fields->removeFieldFromTab("Root.Main","SortOrder");
 
         $fields = new FieldList(

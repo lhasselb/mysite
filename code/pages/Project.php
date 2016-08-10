@@ -11,6 +11,10 @@ class ProjectPage extends Page
        'Title' => 'Varchar(255)',
     );
 
+    private static $has_many = array(
+        'Galleries' => 'Gallery',
+    );
+
     private static $casting = array(
         'ExistingGoogleMap' => 'HTMLText'
     );
@@ -36,8 +40,9 @@ class ProjectPage extends Page
         );
     }
 
-    function getCMSFields(){
+    function getCMSFields() {
         $fields = parent::getCMSFields();
+
         return $fields;
     }
 

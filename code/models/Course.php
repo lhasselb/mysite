@@ -185,44 +185,13 @@ class Course extends News
         return $labels;
     }
 
-    /**
-     * Get news items
-     *
-     * @param int $offset
-     * @param int $maxitems Max number of items to return
-     * @return DataList
-     */
-    /*public static function Entries($offset=0, $maxitems=5) {
-        $filters = array('HomepageSectionID:GreaterThan'=>'0');
-        //->sort('Date DESC')
-        return Course::get()->filter($filters)->limit($maxitems, $offset);
-    }*/
-
-    public function onBeforeWrite()
-    {
+    public function onBeforeWrite() {
         parent::onBeforeWrite();
 
-        /*$filter = URLSegmentFilter::create();
-        if (!$this->URLSegment) {
-            $this->URLSegment = $this->CourseTitle;
-        }
-        $this->URLSegment = $filter->filter($this->URLSegment);
-        if (!$this->URLSegment) {
-            $this->URLSegment = uniqid();
-        }
-        $count = 2;
-        while (static::get_by_url_segment($this->URLSegment, $this->ID)) {
-            // add a -n to the URLSegment if it already existed
-            $this->URLSegment = preg_replace('/-[0-9]+$/', null, $this->URLSegment) . '-' . $count;
-            $count++;
-        }*/
         // If there is no URLSegment set, generate one from Title
-        if(!$this->URLSegment)
-        {
+        if(!$this->URLSegment) {
             $this->URLSegment = $this->generateURLSegment($this->CourseTitle);
-        }
-        else if($this->isChanged('URLSegment'))
-        {
+        } else if($this->isChanged('URLSegment')) {
             // Make sure the URLSegment is valid for use in a URL
             $segment = preg_replace('/[^A-Za-z0-9]+/','-',$this->URLSegment);
             $segment = preg_replace('/-+/','-',$segment);
@@ -245,12 +214,6 @@ class Course extends News
 
         $this->addCourseNewsProperties();
     }
-
-    /*public function onAfterWrite()
-    {
-        parent::onAfterWrite();
-
-    }*/
 
     /**
      * Check if there is already a DOAP with this URLSegment

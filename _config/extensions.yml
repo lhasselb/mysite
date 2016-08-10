@@ -1,11 +1,15 @@
 ---
 Name: gallery
+After:
+  - 'framework/*'
+  - 'cms/*'
 ---
 # Extend DataObject Page
-ProjectPage:
-  extensions:
-    - GalleryExtension
+#ProjectPage:
+#  extensions:
+#    - GalleryExtension
 
-Course:
-  extensions:
-    - GalleryExtension
+# Extend DataObject Course (extends News)
+#Course:
+#  extensions:
+#    - GalleryExtension
