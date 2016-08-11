@@ -10,13 +10,18 @@ class Gallery extends DataObject
         'AlbumYear' => 'Date',
     );
 
+    private static $belongs_to = array(
+        'Project' => 'ProjectPage.Gallery'
+    );
+
     private static $has_one = array(
-        'ProjectPage' => 'ProjectPage'
+        'FotosPage' => 'FotosPage'
     );
 
     private static $has_many = array(
         'GalleryImages' => 'GalleryImage'
     );
+
     private static $many_many = array(
         'GalleryTags' => 'GalleryTag'
     );
@@ -55,6 +60,8 @@ class Gallery extends DataObject
         $fields = parent::getCMSFields();
         $fields->removeByName('GalleryImages');
         $fields->removeByName('GalleryTags');
+        $fields->removeByName('FotosPageID');
+
         $fields->fieldByName('Root.Main')->setTitle('Album');
         $fields->addFieldToTab('Root.Main',ReadonlyField::create('ImageFolder','Verzeichnis'));
         $year = DateField::create('AlbumYear','Datum')
@@ -71,10 +78,11 @@ class Gallery extends DataObject
         ->setShouldLazyLoad(true) // tags should be lazy loaded
         ->setCanCreate(true);     // new tag DataObjects can be created
         $fields->addFieldToTab('Root.Main', $tag);
-        $fields->addFieldToTab('Root.Main',
-            DropdownField::create('ProjectPageID', 'Projekt', ProjectPage::get()->map('ID', 'Title'))
+
+        /*$fields->addFieldToTab('Root.Main',
+            DropdownField::create('ProjectID', 'Projekt', ProjectPage::get()->map('ID', 'Title'))
                 ->setEmptyString('(Bitte auswählen)')
-        );
+        );*/
 
         $uploadfoldername = $this->ImageFolder;
         if(!empty($uploadfoldername)) {

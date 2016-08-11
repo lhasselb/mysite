@@ -10,7 +10,7 @@ class GalleryAdmin extends ModelAdmin
 {
 
     private static $url_segment = 'gallerymanager';
-    //private static $menu_icon = 'mysite/images/workshops.png';
+    private static $menu_icon = 'mysite/images/gallery.png';
     private static $menu_title = 'Foto-Alben';
     private static $managed_models = array(
         'Gallery' => array('title' => 'Foto-Alben')

@@ -5,44 +5,28 @@ class ProjectPage extends Page
     private static $description = 'Seite für Projekte';
     //private static $icon = 'mysite/images/treffen.png';
     private static $can_be_root = false;
-    private static $allowed_children = array('GalleryPage');
+    //private static $allowed_children = array('GalleryPage');
 
     private static $db = array(
        'Title' => 'Varchar(255)',
     );
 
-    private static $has_many = array(
-        'Galleries' => 'Gallery',
+    private static $has_one = array(
+        'Gallery' => 'Gallery',
     );
 
     private static $casting = array(
         'ExistingGoogleMap' => 'HTMLText'
     );
 
-    /* Declared within _config.php
-     * ShortcodeParser::get('default')
-     * ->register('existinggooglemap', array('LocationPage','ExistingGoogleMap'));
-    */
-    public static function ExistingGoogleMap($arguments, $address = null, $parser = null, $shortcode) {
-        $iframeUrl = sprintf(
-            "https://mapsengine.google.com/map/embed?mid=%s",
-            urlencode($address)
-        );
-
-        $width = (isset($arguments['width']) && $arguments['width']) ? $arguments['width'] : "100%";
-        $height = (isset($arguments['height']) && $arguments['height']) ? $arguments['height'] : "100%";
-
-        return sprintf(
-            '<iframe class="embedded-maps" width="%s" height="%s" src="%s" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>',
-            $width,
-            $height,
-            $iframeUrl
-        );
-    }
-
     function getCMSFields() {
         $fields = parent::getCMSFields();
-
+        $fields->addFieldToTab('Root.Main', new LiteralField('Info','
+        <p><span style="color:red;">Achtung: </span>Wenn das gewünschte Album noch nicht existiert, kann es unter <a href="admin/gallerymanager/">Foto-Alben</a> (auf der linken Seite in der Navigation) angelegt werden.</p>
+        '),'Content');
+        $fields->addFieldToTab('Root.Main',
+            DropdownField::create('GalleryID', 'Foto-Album', Gallery::get()->map('ID', 'Title'))
+            ->setEmptyString('(Bitte Album auswählen)'),'Content');
         return $fields;
     }
 
