@@ -26,26 +26,22 @@ class News extends DataObject
         'Thumbnail' => 'Bild'
     );
 
-    public function getNiceNewsDate()
-    {
+    public function getNiceNewsDate() {
         $date = new Date();
         $date->setValue($this->NewsDate);
         return $date->Format('d.m.Y');
     }
 
-    public function getTitle()
-    {
+    public function getTitle() {
         return $this->NewsTitle;
     }
 
-    public function Thumbnail()
-    {
+    public function Thumbnail() {
         return $this->NewsImage()->SetHeight(50);
     }
 
 
-    public function getCMSFields()
-    {
+    public function getCMSFields() {
         $fields = parent::getCMSFields();
 
         $title = TextField::create('NewsTitle', $this->fieldLabel('NewsTitle'))->setDescription('Der Titel der News.');
@@ -73,8 +69,7 @@ class News extends DataObject
         return $fields;
     }
 
-    public function fieldLabels($includerelations = true)
-    {
+    public function fieldLabels($includerelations = true) {
         $labels = parent::fieldLabels($includerelations);
         $labels['NewsTitle'] = 'News-Schlagzeile';
         $labels['NewsDate'] = 'Anzeige-Datum';
@@ -90,8 +85,7 @@ class News extends DataObject
      * @param int $maxitems Max number of items to return
      * @return DataList
      */
-    public static function Entries($offset=0, $maxitems=5)
-    {
+    public static function Entries($offset=0, $maxitems=5) {
         $newsList = News::get();
         foreach ($newsList as $item) {
             //SS_Log::log('Classname='.$item->ClassName,SS_Log::WARN);

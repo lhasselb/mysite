@@ -4,10 +4,10 @@ class Gallery extends DataObject
     private static $singular_name = 'Album';
 
     private static $db = array(
+        'ImageFolder' => 'Varchar()',
         'AlbumName' => 'Varchar()',
         'AlbumDescription' => 'Varchar()',
         'AlbumYear' => 'Date',
-        'ImageFolder' => 'Varchar()'
     );
 
     private static $has_one = array(
@@ -29,10 +29,18 @@ class Gallery extends DataObject
     private static $summary_fields = array(
         'AlbumName' => 'Name',
         'AlbumDescription' => 'Beschreibung',
-        'AlbumYear' => 'Jahr',
+        'NiceAlbumYear' => 'Datum',
         'Tags' => 'Tags',
-        'ImageNumber' => 'Anzahl der Bilder'
+        'ImageNumber' => 'Anzahl der Bilder',
+        'ImageFolder' => 'Verzeichnis'
     );
+
+    public function getNiceAlbumYear()
+    {
+        $date = new Date();
+        $date->setValue($this->AlbumYear);
+        return $date->Format('d.m.Y');
+    }
 
     public function getImageNumber() {
         return $this->GalleryImages()->count();
@@ -46,9 +54,9 @@ class Gallery extends DataObject
 
         $fields = parent::getCMSFields();
         $fields->removeByName('GalleryImages');
-        $fields->removeByName('ImageFolder');
         $fields->removeByName('GalleryTags');
         $fields->fieldByName('Root.Main')->setTitle('Album');
+        $fields->addFieldToTab('Root.Main',ReadonlyField::create('ImageFolder','Verzeichnis'));
         $year = DateField::create('AlbumYear','Datum')
             ->setConfig('dataformat', 'yyyy')
             ->setConfig('showcalendar', true);
@@ -68,39 +76,36 @@ class Gallery extends DataObject
                 ->setEmptyString('(Bitte auswählen)')
         );
 
-
-
-        // Obtain configured default folder name
-        $gallery_folder_name = Config::inst()->get("Gallery", "gallery_folder_name");
-
-        $gridFieldConfig = GridFieldConfig_RecordEditor::create();
-        $gridFieldConfig->addComponent(new GridFieldBulkUpload());
-        $gridFieldConfig->addComponent(new GridFieldBulkManager());
-        // Used to determine upload folder
-        SS_Log::log('ImageFolder=' . $this->ImageFolder,SS_Log::WARN);
         $uploadfoldername = $this->ImageFolder;
-        if(empty($uploadfoldername)) {
-            //$uploadfoldername = substr($this->Link(), 1, -1);
-            $albumName = preg_replace('/[^A-Za-z0-9]+/','-',$this->AlbumName);
-            $albumName = strtolower(preg_replace('/-+/','-',$albumName));
-            $uploadfoldername = $gallery_folder_name.'/'.$albumName;
-            $this->ImageFolder = $gallery_folder_name.'/'.$albumName;
+        if(!empty($uploadfoldername)) {
+            $gridFieldConfig = GridFieldConfig_RecordEditor::create();
+            $gridFieldConfig->addComponent(new GridFieldBulkUpload());
+            $gridFieldConfig->addComponent(new GridFieldBulkManager());
+            // Used to determine upload folder
+            $gridFieldConfig->getComponentByType('GridFieldBulkUpload')->setUfSetup('setFolderName', $uploadfoldername);
+            //$gridFieldConfig->getComponentByType('GridFieldBulkUpload')->setUfSetup('setCanUpload', false);
+            $gridFieldConfig->getComponentByType('GridFieldBulkUpload')->setUfSetup('setDisplayFolderName', $uploadfoldername);
+            // Customise gridfield
+            $gridFieldConfig->removeComponentsByType('GridFieldPaginator'); // Remove default paginator
+            $gridFieldConfig->addComponent(new GridFieldPaginator(20)); // Add custom paginator
+            $gridFieldConfig->addComponent(new GridFieldSortableRows('SortOrder'));
+            $gridFieldConfig->removeComponentsByType('GridFieldAddNewButton'); // We only use bulk upload button
+            // Creates sortable grid field
+            $gridfield = new GridField('GalleryImages', 'Fotos', $this->GalleryImages()->sort('SortOrder'), $gridFieldConfig);
+            $fields->addFieldToTab('Root.Fotos', $gridfield);
         }
-        SS_Log::log('uploadfoldername=' . $uploadfoldername,SS_Log::WARN);
-
-        $gridFieldConfig->getComponentByType('GridFieldBulkUpload')->setUfSetup('setFolderName', $uploadfoldername);
-        //$gridFieldConfig->getComponentByType('GridFieldBulkUpload')->setUfSetup('setCanUpload', false);
-        $gridFieldConfig->getComponentByType('GridFieldBulkUpload')->setUfSetup('setDisplayFolderName', $uploadfoldername);
-        // Customise gridfield
-        $gridFieldConfig->removeComponentsByType('GridFieldPaginator'); // Remove default paginator
-        $gridFieldConfig->addComponent(new GridFieldPaginator(20)); // Add custom paginator
-        $gridFieldConfig->addComponent(new GridFieldSortableRows('SortOrder'));
-        $gridFieldConfig->removeComponentsByType('GridFieldAddNewButton'); // We only use bulk upload button
-        // Creates sortable grid field
-        $gridfield = new GridField('GalleryImages', 'Fotos', $this->GalleryImages()->sort('SortOrder'), $gridFieldConfig);
-        $fields->addFieldToTab('Root.Fotos', $gridfield);
 
         return $fields;
+    }
+
+    public function onBeforeWrite() {
+        if(empty($this->ImageFolder)) {
+            $base = Config::inst()->get('Gallery', 'gallery_folder_name');
+            $albumName = preg_replace('/[^A-Za-z0-9]+/','-',$this->AlbumName);
+            $albumName = strtolower(preg_replace('/-+/','-',$albumName));
+            $this->ImageFolder = $base.'/'.$albumName;
+        }
+        return parent::onBeforeWrite();
     }
 
     public function fieldLabels($includerelations = true) {
