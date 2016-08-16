@@ -19,7 +19,7 @@ class Gallery extends DataObject
     );
 
     private static $belongs_many_many = array(
-        'FotosPages' => 'FotosPage'
+        'FotosPage' => 'FotosPage'
     );
 
     private static $has_many = array(
@@ -59,12 +59,16 @@ class Gallery extends DataObject
         return $this->AlbumName;
     }
 
+    public function getAlbumImage() {
+        if($this->getField('AlbumImage')) return $this->AlbumImage->croppedImage(273,273);
+    }
+
     public function getCMSFields() {
 
         $fields = parent::getCMSFields();
         $fields->removeByName('GalleryImages');
         $fields->removeByName('GalleryTags');
-        $fields->removeByName('FotosPageID');
+        $fields->removeByName('FotosPage');
         $fields->removeByName('AlbumImage');
 
         $fields->fieldByName('Root.Main')->setTitle('Album');
@@ -124,8 +128,9 @@ class Gallery extends DataObject
             $albumName = strtolower(preg_replace('/-+/','-',$albumName));
             $this->ImageFolder = $base.'/'.$albumName;
         }
-        $this->FotosPageID = DataObject::get_one('FotosPage')->ID;
-        SS_Log::log('page = '.$this->FotosPageID,SS_Log::WARN);
+        // FotosPage is not visible in Editor, store a value automatically
+        $fotosPage = DataObject::get_one('FotosPage');
+        $this->FotosPage()->add($fotosPage);
         return parent::onBeforeWrite();
     }
 
