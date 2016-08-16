@@ -23,8 +23,10 @@
                 maxScaleRatio: 1,
                 thumbnails: 'lazy',
                 responsive:true,
-                height: 300,
+                show: 0,
                 width: 400,
+                height: 300,
+
 
                 // Toggles the fullscreen button
                 _showFullscreen: true,

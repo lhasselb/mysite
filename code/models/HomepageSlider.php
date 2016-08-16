@@ -49,7 +49,8 @@ class HomepageSlider extends DataObject
         // Settings for UploadField : SliderImage
         $sliderUploadField = new UploadField('SliderImage', 'Slider Bild');
         $sliderUploadField->getValidator()->allowedExtensions = array('jpg', 'gif', 'png');
-        $sliderUploadField->setFolderName('Uploads/homepage');
+        $sliderUploadField->setFolderName('homepage');
+        $sliderUploadField->setDisplayFolderName('homepage');
 
         // Link Text
         $linkText = TextField::create('LinkText', 'Link Text');

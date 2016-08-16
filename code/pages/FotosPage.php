@@ -11,15 +11,19 @@ class FotosPage extends Page
        'Title' => 'Varchar(255)',
     );
 
-    private static $has_many = array(
+    private static $many_many = array(
         'Galleries' => 'Gallery',
     );
+
+    public function getTags() {
+        return GalleryTag::get();
+    }
 
 
     function getCMSFields() {
         $fields = parent::getCMSFields();
         $galleries = CheckboxSetField::create('Galleries','Zeige Alben', DataObject::get('Gallery')->map());
-        $fields->addFieldToTab('Root.Main', $galleries);
+        $fields->addFieldToTab('Root.Main', $galleries,'Content');
         return $fields;
     }
 
@@ -31,6 +35,8 @@ class FotosPage_Controller extends Page_Controller
 
     public function init() {
         parent::init();
+        $theme = $this->themeDir();
+        Requirements::javascript($theme.'/dist/javascript/scripts/pages/index-gallery.js');
     }//init()
 
 }

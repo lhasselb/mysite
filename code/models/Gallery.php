@@ -15,7 +15,11 @@ class Gallery extends DataObject
     );
 
     private static $has_one = array(
-        'FotosPage' => 'FotosPage'
+        'AlbumImage' => 'Image'
+    );
+
+    private static $belongs_many_many = array(
+        'FotosPages' => 'FotosPage'
     );
 
     private static $has_many = array(
@@ -61,8 +65,10 @@ class Gallery extends DataObject
         $fields->removeByName('GalleryImages');
         $fields->removeByName('GalleryTags');
         $fields->removeByName('FotosPageID');
+        $fields->removeByName('AlbumImage');
 
         $fields->fieldByName('Root.Main')->setTitle('Album');
+
         $fields->addFieldToTab('Root.Main',ReadonlyField::create('ImageFolder','Verzeichnis'));
         $year = DateField::create('AlbumYear','Datum')
             ->setConfig('dataformat', 'yyyy')
@@ -71,7 +77,7 @@ class Gallery extends DataObject
         $fields->addFieldToTab('Root.Main', $year);
         $tag = TagField::create(
             'GalleryTags',
-            'Album Bereich',
+            'Album-Tag(s)',
             GalleryTag::get(),
             $this->GalleryTags()
         )
@@ -86,6 +92,11 @@ class Gallery extends DataObject
 
         $uploadfoldername = $this->ImageFolder;
         if(!empty($uploadfoldername)) {
+            $albumImage = new UploadField('AlbumImage', 'Album-Bild');
+            $albumImage->setFolderName($uploadfoldername);
+            $albumImage->setDisplayFolderName($uploadfoldername);
+            $fields->addFieldToTab('Root.Main', $albumImage);
+
             $gridFieldConfig = GridFieldConfig_RecordEditor::create();
             $gridFieldConfig->addComponent(new GridFieldBulkUpload());
             $gridFieldConfig->addComponent(new GridFieldBulkManager());
@@ -113,6 +124,8 @@ class Gallery extends DataObject
             $albumName = strtolower(preg_replace('/-+/','-',$albumName));
             $this->ImageFolder = $base.'/'.$albumName;
         }
+        $this->FotosPageID = DataObject::get_one('FotosPage')->ID;
+        SS_Log::log('page = '.$this->FotosPageID,SS_Log::WARN);
         return parent::onBeforeWrite();
     }
 
@@ -121,6 +134,7 @@ class Gallery extends DataObject
         $labels['AlbumName'] = 'Name';
         $labels['AlbumDescription'] = 'Beschreibung';
         $labels['ImageFolder'] = 'Verzeichnisname';
+        $labels['AlbumImage'] = 'Album-Bild';
         return $labels;
     }
 
@@ -132,31 +146,31 @@ class Gallery extends DataObject
         return implode(',',$tags);
     }
 
-    public function GetFirstImage() {
-        return $this->GalleryImages()->Sort($this->Sorter)->limit(1)->First();
+    public function getFirstImage() {
+        return $this->GalleryImages()->sort('SortOrder')->limit(1)->First();
     }
 
-    public function GetSortedImages() {
+    public function getSortedImages() {
         return $this->GalleryImages()->sort('SortOrder');
     }
 
-    /*public function ImagesJson() {
-        $images = $this->GalleryImages();
+    public function getImagesJson() {
+        $images = $this->getSortedImages();
         foreach ($images as $image) {
             $data[] = array(
-                'thumb' => $image->Image()->CroppedImage(40, 30)->URL,
-                'image' => $image->Image()->CroppedImage(800, 600)->URL,
+                'thumb' => $image->Image()->CroppedImage(80, 60)->URL,
+                'image' => $image->Image()->CroppedImage(400, 300)->URL,
                 'big' => $image->Image()->URL,
                 'title' => $image->Title,
                 'description' => $image->Description
             );
         }
         return Convert::array2json($data);
-    }*/
+    }
 
-    function ImagesString() {
+    function getImagesString() {
         $images_string = "data = [";
-        $images = $this->GetSortedImages();
+        $images = $this->getSortedImages();
         $num_items = count($images);
         $i = 1;
         foreach ($images as $image)
