@@ -62,7 +62,8 @@ class Gallery extends DataObject
     public function AlbumOrFirstImage() {
         if($this->AlbumImageID) {
             return $image = DataObject::get_by_id('Image',$this->AlbumImageID);
-        } else {
+        }
+        if($this->getFirstImage()) {
             return $image = DataObject::get_by_id('Image',$this->getFirstImage()->ImageID);
         }
     }

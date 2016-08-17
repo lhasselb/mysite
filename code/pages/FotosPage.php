@@ -50,4 +50,12 @@ class FotosPage_Controller extends Page_Controller
         Requirements::javascript($theme.'/dist/javascript/scripts/pages/masonry-portfolio.js'); //index-gallery.js
     }//init()
 
+    public function index(SS_HTTPRequest $request) {
+        $data = array('Message' => 'Ajax response');
+        if($request->isAjax()) {
+            return $this->customize($data)->renderWidth('FotosPageGallery');
+        }
+        return $data;
+    }
+
 }
