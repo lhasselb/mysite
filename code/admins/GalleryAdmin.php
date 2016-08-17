@@ -13,7 +13,8 @@ class GalleryAdmin extends ModelAdmin
     private static $menu_icon = 'mysite/images/gallery.png';
     private static $menu_title = 'Foto-Alben';
     private static $managed_models = array(
-        'Gallery' => array('title' => 'Foto-Alben')
+        'Gallery' => array('title' => 'Foto-Alben'),
+        'GalleryTag' => array('title' => 'Foto-Alben-Tags')
     );
     public $showImportForm = false;
     /**

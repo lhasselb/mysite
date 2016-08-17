@@ -15,8 +15,19 @@ class FotosPage extends Page
         'Galleries' => 'Gallery',
     );
 
-    public function getTags() {
-        return GalleryTag::get();
+    public function getFotosPageTags() {
+
+        $usedtags = array();
+        foreach ($this->Galleries() as $gallery) {
+            $currentTagList = $gallery->GalleryTags();
+            foreach ($currentTagList as $tag) {
+                array_push($usedtags,$tag);
+            }
+        }
+        // Limit to used ones
+        return new ArrayList(array_unique($usedtags));
+        // return all even the non used ones
+        //return GalleryTag::get();
     }
 
 
@@ -36,7 +47,7 @@ class FotosPage_Controller extends Page_Controller
     public function init() {
         parent::init();
         $theme = $this->themeDir();
-        Requirements::javascript($theme.'/dist/javascript/scripts/pages/index-gallery.js');
+        Requirements::javascript($theme.'/dist/javascript/scripts/pages/masonry-portfolio.js'); //index-gallery.js
     }//init()
 
 }

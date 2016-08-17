@@ -39,7 +39,7 @@ class Gallery extends DataObject
         'AlbumName' => 'Name',
         'AlbumDescription' => 'Beschreibung',
         'NiceAlbumYear' => 'Datum',
-        'Tags' => 'Tags',
+        'getTags' => 'Tags',
         'ImageNumber' => 'Anzahl der Bilder',
         'ImageFolder' => 'Verzeichnis'
     );
@@ -59,8 +59,12 @@ class Gallery extends DataObject
         return $this->AlbumName;
     }
 
-    public function getAlbumImage() {
-        if($this->getField('AlbumImage')) return $this->AlbumImage->croppedImage(273,273);
+    public function AlbumOrFirstImage() {
+        if($this->AlbumImageID) {
+            return $image = DataObject::get_by_id('Image',$this->AlbumImageID);
+        } else {
+            return $image = DataObject::get_by_id('Image',$this->getFirstImage()->ImageID);
+        }
     }
 
     public function getCMSFields() {
@@ -143,7 +147,7 @@ class Gallery extends DataObject
         return $labels;
     }
 
-    public function Tags() {
+    public function getTags() {
         $tags = [];
         foreach ($this->GalleryTags() as $tag) {
             array_push($tags,$tag->Title);
@@ -151,12 +155,12 @@ class Gallery extends DataObject
         return implode(',',$tags);
     }
 
-    public function getFirstImage() {
-        return $this->GalleryImages()->sort('SortOrder')->limit(1)->First();
-    }
-
     public function getSortedImages() {
         return $this->GalleryImages()->sort('SortOrder');
+    }
+
+    public function getFirstImage() {
+        return $this->getSortedImages()->limit(1)->First();
     }
 
     public function getImagesJson() {
@@ -173,7 +177,12 @@ class Gallery extends DataObject
         return Convert::array2json($data);
     }
 
-    function getImagesString() {
+    function Link() {
+        return DataObject::get_one('FotosPage')->Link();//Link("showfaculty")."/".$this->ID;
+    }
+
+/*
+    public function getImagesString() {
         $images_string = "data = [";
         $images = $this->getSortedImages();
         $num_items = count($images);
@@ -203,5 +212,5 @@ class Gallery extends DataObject
             Requirements::javascriptTemplate('mysite/javascript/Gallery.js', array("imageJson" => $this->ImagesString()));
         }
     } //init
-
+*/
 }
