@@ -42,20 +42,38 @@ class FotosPage extends Page
 
 class FotosPage_Controller extends Page_Controller
 {
-    private static $allowed_actions = array ();
+    private static $allowed_actions = array ('album');
 
     public function init() {
         parent::init();
+        Requirements::javascript('mysite/javascript/FotoPageAlbum.js');
         $theme = $this->themeDir();
-        Requirements::javascript($theme.'/dist/javascript/scripts/pages/masonry-portfolio.js'); //index-gallery.js
+        Requirements::css('mysite/javascript/galleria/themes/twelve/galleria.twelve.css');
+        Requirements::javascript($theme.'/bower_components/galleria/src/galleria.js');
+        Requirements::javascript('mysite/javascript/galleria/themes/twelve/galleria.twelve.min.js');
     }//init()
 
-    public function index(SS_HTTPRequest $request) {
-        $data = array('Message' => 'Ajax response');
-        if($request->isAjax()) {
-            return $this->customize($data)->renderWidth('FotosPageGallery');
+    public function album(SS_HTTPRequest $request) {
+
+        $gallery = Gallery::get_by_id('Gallery',$request->param('ID'));
+        $imageJson = $gallery->getFotosJson();
+
+        $data = array(
+            'Gallery' => $gallery,
+            'ImageJson' => $imageJson
+        );
+
+        if(!$gallery) {
+            return $this->httpError(404,'Das gewünschte Album existiert nicht.');
         }
-        return $data;
+
+        if($request->isAjax()) {
+            return $this->customise($data)->renderWith('FotosPageGallery');
+        }
+
+        return array ();
     }
+
+    //public function index(SS_HTTPRequest $request) {}
 
 }

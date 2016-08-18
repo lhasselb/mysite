@@ -164,9 +164,18 @@ class Gallery extends DataObject
         return $this->getSortedImages()->limit(1)->First();
     }
 
+    public function cropImageFor($image, $width,$height) {
+        return ($image->getWidth() > $width && $image->getHeight() > $height) ? 1 : 0;
+    }
+
     public function getImagesJson() {
         $images = $this->getSortedImages();
         foreach ($images as $image) {
+            //SS_Log::log($image->Image()->getWidth().' '.$image->Image()->getHeight(),SS_Log::WARN);
+            $width = '400';
+            $height ='300';
+            $crop = $this->cropImageFor($image->Image(),$width,$height);
+            //SS_Log::log('crop ? '.$crop,SS_Log::WARN);
             $data[] = array(
                 'thumb' => $image->Image()->CroppedImage(80, 60)->URL,
                 'image' => $image->Image()->CroppedImage(400, 300)->URL,
@@ -178,8 +187,29 @@ class Gallery extends DataObject
         return Convert::array2json($data);
     }
 
+    public function getFotosJson() {
+        $images = $this->getSortedImages();
+        foreach ($images as $image) {
+            //SS_Log::log($image->Image()->getWidth().' '.$image->Image()->getHeight(),SS_Log::WARN);
+            $width = '800';
+            $height ='600';
+            $crop = $this->cropImageFor($image->Image(),$width,$height);
+            //SS_Log::log('crop ? '.$crop,SS_Log::WARN);
+            $data[] = array(
+                'thumb' => $image->Image()->CroppedImage(80, 60)->URL,
+                'image' => ($crop) ? $image->Image()->CroppedImage(800, 600)->URL : $image->Image()->URL,
+                'big' => $image->Image()->URL,
+                'title' => $image->Title,
+                'description' => $image->Description
+            );
+        }
+        return Convert::array2json($data);
+    }
     function Link() {
-        return DataObject::get_one('FotosPage')->Link();//Link("showfaculty")."/".$this->ID;
+        $fotoPage = DataObject::get_one('FotosPage');//->Link('album').'?Album='.$this->AlbumName;
+        return Controller::join_links($fotoPage->Link(),'album',$this->ID);
+        //Link("showfaculty")."/".$this->ID;
+        //return $this->AlbumName;
     }
 
 /*

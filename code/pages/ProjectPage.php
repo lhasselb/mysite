@@ -113,7 +113,7 @@ var data = $images;
 })(jQuery);
 JS;
 
-            Requirements::css($theme.'mysite/javascript/galleria/themes/twelve/galleria.twelve.css');
+            Requirements::css('mysite/javascript/galleria/themes/twelve/galleria.twelve.css');
             Requirements::javascript($theme.'/bower_components/galleria/src/galleria.js');
             Requirements::javascript('mysite/javascript/galleria/themes/twelve/galleria.twelve.min.js');
             //Requirements::javascriptTemplate('mysite/javascript/Gallery.js', array("imageJson" => $images));
