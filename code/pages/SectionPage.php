@@ -20,12 +20,8 @@ class SectionPage extends Page
     function getCMSFields(){
         $fields = parent::getCMSFields();
         $fields->removeFieldFromTab('Root.Main','Content');
-        $fields->addFieldToTab('Root.Main', new LiteralField('CustomCode1','
-        <p style="color:red; font-size: 20px;">Achtung</p>
-        <p style="font-size: 15px;">Diese Seite wird nicht zum Editieren von Workshops und Kursen verwendet !<br/>
-        Sie dient als Bereich dem Workshops und Kurse zugeonet werden können.<br/>
-        Bitte <a href="admin/coursemanager/">Workshops und Kurse</a> auf der linken Seite in der Navigation wählen <br/>
-        um diese zu editieren.</p>
+        $fields->addFieldToTab('Root.Main', new LiteralField('Info','
+        <p><span style="color:red;">Achtung: </span>Zum Bearbeiten der Kurse bitte <a href="admin/coursemanager/">Workshops und Kurse</a> auf der linken Seite in der Navigation wählen und dort editieren.</p>
         '),'Metadata');
         return $fields;
     }
