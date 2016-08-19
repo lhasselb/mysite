@@ -93,7 +93,7 @@ HtmlEditorConfig::get('location')->enablePlugins(array(
     'ssbuttons' => sprintf('../../../%s/tinymce_ssbuttons/editor_plugin_src.js', THIRDPARTY_DIR)
 ));
 
-// Add template to tinyMCE
+// Add template to default tinyMCE "cms"
 HtmlEditorConfig::get('cms')->enablePlugins('template');
 HtmlEditorConfig::get('cms')->insertButtonsAfter('tablecontrols', 'template');
 HtmlEditorConfig::get('cms')->setOptions(array('template_templates' => array(

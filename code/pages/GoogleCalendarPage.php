@@ -28,7 +28,8 @@ class GoogleCalendarPage_Controller extends Page_Controller {
 
         //Requirements::css($theme.'/bower_components/fullcalendar/dist/fullcalendar.print.css');
 		Requirements::css($theme.'/bower_components/fullcalendar/dist/fullcalendar.min.css');
-		Requirements::javascript($theme.'/bower_components/moment/min/moment-with-locales.js');
+		//Requirements::javascript($theme.'/bower_components/moment/min/moment-with-locales.js');
+        Requirements::javascript($theme.'/bower_components/moment/min/moment.min.js');
 		Requirements::javascript($theme.'/bower_components/fullcalendar/dist/fullcalendar.min.js');
 		Requirements::javascript($theme.'/bower_components/fullcalendar/dist/lang/de.js');
 		Requirements::javascript($theme.'/bower_components/fullcalendar/dist/gcal.js');

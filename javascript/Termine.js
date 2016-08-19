@@ -37,14 +37,14 @@
             eventClick:  function(event, jsEvent, view) {
                 $('#modalTitle').html(event.title);
                 if(event.start.format('MM.DD.YYYY') != event.end.format('MM.DD.YYYY')){//Multiple days
-                    $('#modalDate').html("Wann: " + event.start.format("LL") + " " + event.start.format("HH:mm") +
-                        " - " + event.end.format("LL")  + " " + event.end.format("HH:mm"));
+                    $('#modalDate').html('Wann: ' + event.start.format('LL') + ' ' + event.start.format('HH:mm') +
+                        ' - ' + event.end.format('LL')  + ' ' + event.end.format('HH:mm'));
                 }
                 else if(event.start.format('MM.DD.YYYY') == event.end.format('MM.DD.YYYY')) {
-                    $('#modalDate').html("Wann: " + event.start.format("LL") + " " + event.start.format("HH:mm") +
-                        " - " + event.end.format("HH:mm"));
+                    $('#modalDate').html('Wann: ' + event.start.format('LL') + ' ' + event.start.format('HH:mm') +
+                        ' - ' + event.end.format('HH:mm'));
                 }
-                $('#modalLocation').html("Wo: " + event.location);
+                $('#modalLocation').html('Wo: ' + event.location);
                 $('#modalBody').html(event.description);
                 $('#eventUrl').attr('href',event.url);
                 $('#fullCalModal').modal();

@@ -20,8 +20,8 @@ class HomepageSlider extends DataObject
 
     private static $summary_fields = array (
         'Headline' => 'Schlagzeile',
-        'Link' => 'Link zu Seite',
-        'LinkText' => 'Text für den Link',
+        'Link' => 'Link',
+        'LinkText' => 'Text',
         'GridThumbnail' => 'Vorschau'
     );
 
@@ -47,7 +47,7 @@ class HomepageSlider extends DataObject
         $headline = TextareaField::create('Headline','Schlagzeile');
 
         // Settings for UploadField : SliderImage
-        $sliderUploadField = new UploadField('SliderImage', 'Slider Bild');
+        $sliderUploadField = new UploadField('SliderImage', 'Bild');
         $sliderUploadField->getValidator()->allowedExtensions = array('jpg', 'gif', 'png');
         $sliderUploadField->setFolderName('homepage');
         $sliderUploadField->setDisplayFolderName('homepage');
@@ -61,7 +61,7 @@ class HomepageSlider extends DataObject
         $selectedOption = ($this->InternalURLID) ? 'InternalURLID' : 'ExternalURL';
         $linkTypeField = OptionsetField::create('LinkType', '', $linkOptions, $selectedOption);
 
-        $externalURLField = TextField::create('ExternalURL', 'Link to external page')
+        $externalURLField = TextField::create('ExternalURL', 'Wählen Sie eine externe Seite')
             ->addExtraClass('switchable');
         $internalURLField = TreeDropdownField::create('InternalURLID', 'Wählen Sie eine interne Seite', 'SiteTree')
             ->setTreeBaseID(0)->addExtraClass('switchable');

@@ -16,9 +16,17 @@ class HomePage extends Page
         $sliderConfig = GridFieldConfig_RecordEditor::create();
         $sliderGridField = new GridField('SLider', 'Bild(er) auf der Startseite', $this->Sliders());
         $sliderGridField->setConfig($sliderConfig);
+
         $alarmConfig = GridFieldConfig_RecordEditor::create();
+        if ($this->Alarm()->count() > 0) {
+            // remove the buttons if we don't want to allow more records to be added/created
+            $alarmConfig->removeComponentsByType('GridFieldAddNewButton');
+            $alarmConfig->removeComponentsByType('GridFieldAddExistingAutocompleter');
+        }
+
         $alarmGridField = new GridField('Alarm', 'Alarm auf der Startseite', $this->Alarm());
         $alarmGridField->setConfig($alarmConfig);
+
         /*$newsConfig = GridFieldConfig_RecordEditor::create();
         $newsGridField = new GridField('News', 'News auf der Startseite', $this->News());
         $newsGridField->setConfig($newsConfig);*/

@@ -13,7 +13,9 @@ class Page extends SiteTree {
     public function getAlert() {
         return $alerts = HomePage::get()->First()->Alarm();
     }
-
+    /**
+     * Make Facebook Links accessible from all pages
+     */
     public function getFacebookLinks() {
         return KontaktPage::get()->First()->FacebookLinks();
     }
@@ -60,7 +62,6 @@ class Page_Controller extends ContentController {
         Requirements::javascript($theme.'/dist/javascript/plugins/jquery.easing.min.js');
         Requirements::javascript($theme.'/dist/javascript/plugins/reveal-animate/wow.js');
         Requirements::javascript($theme.'/dist/javascript/scripts/reveal-animate/reveal-animate.js');
-
         Requirements::javascript($theme.'/dist/javascript/plugins/revo-slider/js/jquery.themepunch.tools.min.js');
         Requirements::javascript($theme.'/dist/javascript/plugins/revo-slider/js/jquery.themepunch.revolution.min.js');
         Requirements::javascript($theme.'/dist/javascript/plugins/revo-slider/js/extensions/revolution.extension.slideanims.min.js');
