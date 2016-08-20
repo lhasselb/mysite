@@ -68,7 +68,7 @@ class HomePage_Controller extends Page_Controller
 	{
 		parent::init();
 		$theme = $this->themeDir();
-
+        Requirements::javascript($theme.'/dist/javascript/scripts/revo-slider/slider-4.js');
 
 	}//init()
 

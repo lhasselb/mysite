@@ -42,32 +42,14 @@
         singlePageInlineInFocus: true,
         singlePageCounter: '<div class="cbp-popup-singlePage-counter">{{current}} von {{total}} Alben</div>',
         singlePageCallback: function(url, element) {
+            // close
+            $('.cbp-popup-close').prop('title', 'Schließen (Escape Taste)').addClass('c-font-blue-3');
+            // next
+            $('.cbp-popup-next').prop('title', 'Nächstes Album (Pfeiltaste rechts)');
+            // prev
+            $('.cbp-popup-prev').prop('title', 'Vorheriges Album (Pfeiltaste links)');
             // to update singlePage content use the following method: this.updateSinglePage(yourContent)
             var t = this;
-            var body = $('body');
-            $(document).off('keydown.cbp');
-
-            // close
-            t.closeButton = $('<div/>', {
-                'class': 'cbp-popup-close',
-                'title': 'Schließen (Escape Taste)',
-                'data-action': 'close'
-            }).appendTo(t.navigation);
-
-            // next
-            t.nextButton = $('<div/>', {
-                'class': 'cbp-popup-next',
-                'title': 'Weiter',
-                'data-action': 'next'
-            }).appendTo(t.navigation);
-
-            // prev
-            t.prevButton = $('<div/>', {
-                'class': 'cbp-popup-prev',
-                'title': 'Zurück',
-                'data-action': 'prev'
-            }).appendTo(t.navigation);
-
             $.ajax({
                     url: url,
                     type: 'GET',

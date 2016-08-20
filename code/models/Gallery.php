@@ -191,13 +191,13 @@ class Gallery extends DataObject
         $images = $this->getSortedImages();
         foreach ($images as $image) {
             //SS_Log::log($image->Image()->getWidth().' '.$image->Image()->getHeight(),SS_Log::WARN);
-            $width = '800';
-            $height ='600';
+            $width = '1024';
+            $height ='768';
             $crop = $this->cropImageFor($image->Image(),$width,$height);
             //SS_Log::log('crop ? '.$crop,SS_Log::WARN);
             $data[] = array(
                 'thumb' => $image->Image()->CroppedImage(80, 60)->URL,
-                'image' => ($crop) ? $image->Image()->CroppedImage(800, 600)->URL : $image->Image()->URL,
+                'image' => ($crop) ? $image->Image()->CroppedImage(1024, 786)->URL : $image->Image()->URL,
                 'big' => $image->Image()->URL,
                 'title' => $image->Title,
                 'description' => $image->Description

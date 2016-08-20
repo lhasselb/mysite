@@ -49,7 +49,11 @@ class FotosPage_Controller extends Page_Controller
         Requirements::javascript('mysite/javascript/FotoPageAlbum.js');
         $theme = $this->themeDir();
         Requirements::css('mysite/javascript/galleria/themes/twelve/galleria.twelve.css');
-        Requirements::javascript($theme.'/bower_components/galleria/src/galleria.js');
+        if(Director::isDev()) {
+            Requirements::javascript($theme.'/bower_components/galleria/src/galleria.js');
+        } else {
+            Requirements::javascript($theme.'/dist/bower/galleria.js');
+        }
         Requirements::javascript('mysite/javascript/galleria/themes/twelve/galleria.twelve.min.js');
     }//init()
 

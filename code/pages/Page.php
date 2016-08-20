@@ -44,19 +44,21 @@ class Page_Controller extends ContentController {
 
 		// You can include any CSS or JS required by your project here.
 		// See: http://doc.silverstripe.org/framework/en/reference/requirements
-
 		$theme = $this->themeDir();
 
 		if(Director::isDev()) {
 			Requirements::javascript($theme.'/bower_components/jquery/dist/jquery.js');
             Requirements::javascript($theme.'/bower_components/velocity/velocity.js');
             Requirements::javascript($theme.'/bower_components/velocity/velocity.ui.js');
+            Requirements::javascript($theme.'/bower_components/bootstrap-sass/assets/javascripts/bootstrap.min.js');
+            Requirements::javascript($theme.'/bower_components/js-cookie/src/js.cookie.js');
 		} else {
-			Requirements::javascript($theme.'/bower_components/jquery/dist/jquery.min.js');
-            Requirements::javascript($theme.'/bower_components/velocity/velocity.min.js');
-            Requirements::javascript($theme.'/bower_components/velocity/velocity.ui.min.js');
+			Requirements::javascript($theme.'/dist/bower/jquery.min.js');
+            Requirements::javascript($theme.'/dist/bower/velocity.min.js');
+            Requirements::javascript($theme.'/dist/bower/velocity.ui.min.js');
+            Requirements::javascript($theme.'/dist/bower/bootstrap.min.js');
+            Requirements::javascript($theme.'/dist/bower/js.cookie.js');
 		}
-        Requirements::javascript($theme.'/bower_components/js-cookie/src/js.cookie.js');
 
 		Requirements::javascript($theme.'/dist/javascript/plugins/jquery-migrate.min.js');
         Requirements::javascript($theme.'/dist/javascript/plugins/jquery.easing.min.js');
@@ -75,12 +77,9 @@ class Page_Controller extends ContentController {
         Requirements::javascript($theme.'/dist/javascript/plugins/fancybox/jquery.fancybox.pack.js');
         Requirements::javascript($theme.'/dist/javascript/plugins/slider-for-bootstrap/js/bootstrap-slider.js');
 
-		Requirements::javascript($theme.'/dist/javascript/components.js');
-		//Requirements::javascript($theme.'/dist/javascript/components-shop.js');
-		Requirements::javascript($theme.'/dist/javascript/app.js');
 		if(Director::isDev()) {
-			Requirements::javascript($theme.'/bower_components/bootstrap-sass/assets/javascripts/bootstrap.min.js');
-			Requirements::javascript($theme.'/dist/javascript/plugins.js');
+            Requirements::javascript($theme.'/dist/javascript/components.js');
+            Requirements::javascript($theme.'/dist/javascript/app.js');
 			Requirements::javascript($theme.'/dist/javascript/main.js');
 		} else {
 			Requirements::javascript($theme.'/dist/javascript/script.min.js');
