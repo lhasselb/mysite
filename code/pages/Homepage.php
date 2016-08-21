@@ -70,6 +70,17 @@ class HomePage_Controller extends Page_Controller
 		$theme = $this->themeDir();
         Requirements::javascript($theme.'/dist/javascript/scripts/revo-slider/slider-4.js');
 
+        if(Director::isDev()) {
+            //Requirements::javascript($theme.'/dist/javascript/app.js');
+            if(method_exists(Requirements::backend(), "add_dependency")) {
+                Requirements::backend()->add_dependency($theme.'/dist/javascript/scripts/revo-slider/slider-4.js', $theme.'/dist/javascript/app.js');
+            }
+        } else {
+            //Requirements::javascript($theme.'/dist/javascript/script.min.js');
+            if(method_exists(Requirements::backend(), "add_dependency")) {
+                Requirements::backend()->add_dependency($theme.'/dist/javascript/scripts/revo-slider/slider-4.js', $theme.'/dist/javascript/script.min.js');
+            }
+        }
 	}//init()
 
 }

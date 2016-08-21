@@ -114,11 +114,11 @@ var data = $images;
 JS;
 
             Requirements::css('mysite/javascript/galleria/themes/twelve/galleria.twelve.css');
-            Requirements::javascript($theme.'/bower_components/galleria/src/galleria.js');
+            Requirements::javascript($theme.'/javascript/galleria/src/galleria.js');
             Requirements::javascript('mysite/javascript/galleria/themes/twelve/galleria.twelve.min.js');
             //Requirements::javascriptTemplate('mysite/javascript/Gallery.js', array("imageJson" => $images));
             if(method_exists(Requirements::backend(), "add_callback")) {
-                Requirements::backend()->add_callback($theme.'/bower_components/galleria/src/galleria.js', $custom_js);
+                Requirements::backend()->add_callback($theme.'/javascript/galleria/src/galleria.js', $custom_js);
             } else Requirements::customScript($custom_js);
 
         }//if gallery

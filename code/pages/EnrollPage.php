@@ -198,22 +198,12 @@ class EnrollPage_Controller extends Page_Controller
         Requirements::javascript('mysite/javascript/jquery-validate/additional-methods.js');
         Requirements::javascript('mysite/javascript/jquery-validate/localization/messages_de.js');
 
-        if(Director::isDev()) {
-            // eonasdan Datetimepicker
-            Requirements::css($theme.'/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css');
-            Requirements::javascript($theme.'/bower_components/moment/min/moment-with-locales.js');
-            Requirements::javascript($theme.'/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js');
-            if(method_exists(Requirements::backend(), 'add_dependency')){
-                Requirements::backend()->add_dependency('mysite/javascript/Enroll.js',$theme.'/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js');
-            }
-        } else {
-            // eonasdan Datetimepicker
-            Requirements::css($theme.'/dist/bower/css/bootstrap-datetimepicker.css');
-            Requirements::javascript($theme.'/dist/bower/moment-with-locales.js');
-            Requirements::javascript($theme.'/dist/bower/bootstrap-datetimepicker.min.js');
-            if(method_exists(Requirements::backend(), 'add_dependency')){
-                Requirements::backend()->add_dependency('mysite/javascript/Enroll.js',$theme.'/dist/bower/bootstrap-datetimepicker.min.js');
-            }
+        // eonasdan Datetimepicker
+        Requirements::css($theme.'/javascript/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css');
+        Requirements::javascript($theme.'/javascript/moment/min/moment-with-locales.js');
+        Requirements::javascript($theme.'/javascript/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js');
+        if(method_exists(Requirements::backend(), 'add_dependency')){
+            Requirements::backend()->add_dependency('mysite/javascript/Enroll.js',$theme.'/javascript/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js');
         }
 
     } //init

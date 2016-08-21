@@ -17,7 +17,9 @@ class Page extends SiteTree {
      * Make Facebook Links accessible from all pages
      */
     public function getFacebookLinks() {
-        return KontaktPage::get()->First()->FacebookLinks();
+        if(KontaktPage::get()->First()) {
+            return KontaktPage::get()->First()->FacebookLinks();
+        }
     }
 
 }
@@ -47,18 +49,16 @@ class Page_Controller extends ContentController {
 		$theme = $this->themeDir();
 
 		if(Director::isDev()) {
-			Requirements::javascript($theme.'/bower_components/jquery/dist/jquery.js');
-            Requirements::javascript($theme.'/bower_components/velocity/velocity.js');
-            Requirements::javascript($theme.'/bower_components/velocity/velocity.ui.js');
-            Requirements::javascript($theme.'/bower_components/bootstrap-sass/assets/javascripts/bootstrap.min.js');
-            Requirements::javascript($theme.'/bower_components/js-cookie/src/js.cookie.js');
+			Requirements::javascript($theme.'/javascript/jquery/dist/jquery.js');
+            Requirements::javascript($theme.'/javascript/velocity/velocity.js');
+            Requirements::javascript($theme.'/javascript/velocity/velocity.ui.js');
 		} else {
-			Requirements::javascript($theme.'/dist/bower/jquery.min.js');
-            Requirements::javascript($theme.'/dist/bower/velocity.min.js');
-            Requirements::javascript($theme.'/dist/bower/velocity.ui.min.js');
-            Requirements::javascript($theme.'/dist/bower/bootstrap.min.js');
-            Requirements::javascript($theme.'/dist/bower/js.cookie.js');
+            Requirements::javascript($theme.'/javascript/jquery/dist/jquery.min.js');
+            Requirements::javascript($theme.'/javascript/velocity/velocity.min.js');
+            Requirements::javascript($theme.'/javascript/velocity/velocity.ui.js');
 		}
+        Requirements::javascript($theme.'/javascript/js-cookie/src/js.cookie.js');
+        Requirements::javascript($theme.'/javascript/bootstrap-sass/assets/javascripts/bootstrap.min.js');
 
 		Requirements::javascript($theme.'/dist/javascript/plugins/jquery-migrate.min.js');
         Requirements::javascript($theme.'/dist/javascript/plugins/jquery.easing.min.js');
@@ -84,7 +84,6 @@ class Page_Controller extends ContentController {
 		} else {
 			Requirements::javascript($theme.'/dist/javascript/script.min.js');
 		}
-
         parent::init();
 	} //init
 
