@@ -12,16 +12,12 @@ class Course extends News
 
     private static $db = array(
         'CourseTitle' => 'Varchar(255)',
-        //'MenuTitle' => 'Varchar', // Not used
         'URLSegment' => 'Varchar(255)',
-//        'CourseDateStart' => 'SS_Datetime',
-//        'CourseDateEnd' => 'SS_Datetime',
         'Content' => 'HTMLText',
     );
 
     private static $has_one = array(
-        'ContentImage' => 'Image',
-        'HomepageSection' => 'SectionPage'
+        'ContentImage' => 'Image'
     );
 
     private static $many_many = array(
@@ -124,6 +120,14 @@ class Course extends News
             $fields->removeByName('NewsLinkID');
             $fields->addFieldToTab('Root.Main', TextField::create('CourseTitle', $this->fieldLabel('CourseTitle'))
                 ->setDescription('Der Titel des Kurses, Workshops oder der Veranstaltung.'));
+
+            $newsDate = DateField::create('NewsDate', $this->fieldLabel('NewsDate'))
+                ->setConfig('dataformat', 'dd.MM.yyyy')
+                ->setConfig('showcalendar', true);
+            $newsDate->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('dd.MM.yyyy'))));
+            $fields->addFieldToTab('Root.Main', $newsDate);
+
+
             $fields->addFieldToTab('Root.Main', TextField::create('URLSegment', $this->fieldLabel('URLSegment'))
                 ->setDescription('Wird beim Speichern generiert, bitte nur in vollem Bewusstsein ändern.'));
             //$fields->addFieldToTab('Root.Main', TextField::create('MenuTitle', $this->fieldLabel('MenuTitle'))
@@ -135,20 +139,7 @@ class Course extends News
             }*/
             $sectionCheck = CheckboxSetField::create('Sections','Bereiche', $map);
             $fields->addFieldToTab('Root.Main', $sectionCheck);
-            /*
-            $startDate = DatetimeField::create('CourseDateStart', $this->fieldLabel('CourseDateStart'))
-                ->setConfig('datavalueformat', 'dd.MM.yyyy HH:mm');
-            $startDate->getDateField()->setConfig('showcalendar', true);
-            $startDate->getDateField()->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('dd.MM.yyyy'))));
-            $startDate->getTimeField()->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('HH:mm'))));
-            $fields->addFieldToTab('Root.Main', $startDate);
-            $endDate = DatetimeField::create('CourseDateEnd', $this->fieldLabel('CourseDateEnd'))
-                ->setConfig('datavalueformat', 'dd-MM-yyyy HH:mm');
-            $endDate->getDateField()->setConfig('showcalendar', true);
-            $endDate->getDateField()->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('dd.MM.yyyy'))));
-            $endDate->getTimeField()->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('HH:mm'))));
-            $fields->addFieldToTab('Root.Main', $endDate);
-            */
+
             $contentImage = new UploadField('ContentImage', $this->fieldLabel('ContentImage'));
             $contentImage->setConfig('allowedMaxFileNumber', 1);
             $contentImage->getValidator()->allowedExtensions = array('jpg', 'gif', 'png');
@@ -157,13 +148,6 @@ class Course extends News
             $fields->addFieldToTab('Root.Main', HtmlEditorField::create('Content', $this->fieldLabel('Content')));
             $fields->removeFieldsFromTab('Root.Main',array('NewsTitle','NewsContent','NewsImage','NewsLink','HomepageSectionID'));
         }
-
-/*
-        $config = GridFieldConfig_RelationEditor::create();
-        $config->removeComponentsByType($config->getComponentByType('GridFieldAddNewButton'));
-        $gridfield = GridField::create("Sections", "Bereich", $this->Sections(), $config);
-        $fields->addFieldToTab('Root.Bereiche', $gridfield);
-*/
 
         return $fields;
     }

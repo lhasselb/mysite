@@ -36,11 +36,6 @@ class HomePage extends Page
         return $fields;
 	}
 
-    public function LatestNews() {
-        $itemsToSkip = 0;
-        $itemsToReturn = 5;
-        return News::Entries($itemsToSkip, $itemsToReturn);
-    }
 }
 
 
@@ -64,23 +59,23 @@ class HomePage_Controller extends Page_Controller
 	 */
 	private static $allowed_actions = array ();
 
-	public function init()
-	{
+	public function init() {
 		parent::init();
 		$theme = $this->themeDir();
-        Requirements::javascript($theme.'/dist/javascript/scripts/revo-slider/slider-4.js');
-
-        if(Director::isDev()) {
-            //Requirements::javascript($theme.'/dist/javascript/app.js');
-            if(method_exists(Requirements::backend(), "add_dependency")) {
-                Requirements::backend()->add_dependency($theme.'/dist/javascript/scripts/revo-slider/slider-4.js', $theme.'/dist/javascript/app.js');
-            }
-        } else {
-            //Requirements::javascript($theme.'/dist/javascript/script.min.js');
-            if(method_exists(Requirements::backend(), "add_dependency")) {
-                Requirements::backend()->add_dependency($theme.'/dist/javascript/scripts/revo-slider/slider-4.js', $theme.'/dist/javascript/script.min.js');
-            }
-        }
+        Requirements::javascript('mysite/javascript/slider-4.js');
 	}//init()
 
+    public function PaginatedLatestNews() {
+        /*
+        $itemsToSkip = 0;
+        $itemsToReturn = 5;
+        return News::Entries($itemsToSkip, $itemsToReturn);*/
+        //$item->ClassName == 'Course' && $item->HomepageSectionID == 0
+        $list = News::get()->filter(array(
+            'ClassName' => 'Course',
+            'HomepageSectionID:GreaterThan' => '0'
+        ));
+
+        return new PaginatedList($list, $this->getRequest());
+    }
 }

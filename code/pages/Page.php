@@ -59,6 +59,7 @@ class Page_Controller extends ContentController {
 		}
         Requirements::javascript($theme.'/javascript/js-cookie/src/js.cookie.js');
         Requirements::javascript($theme.'/javascript/bootstrap-sass/assets/javascripts/bootstrap.min.js');
+        Requirements::javascript($theme.'/javascript/jquery_lazyload/jquery.lazyload.js');
 
 		Requirements::javascript($theme.'/dist/javascript/plugins/jquery-migrate.min.js');
         Requirements::javascript($theme.'/dist/javascript/plugins/jquery.easing.min.js');

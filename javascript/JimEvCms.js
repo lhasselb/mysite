@@ -11,23 +11,22 @@
          */
         $('.cms-edit-form .field.switchable').entwine({
             onmatch: function() {
-                var id = this.attr('id'),
-                    form = this.closest('form');
+                var id = this.attr('id'), form = this.closest('form');
                 //console.log('id=' + id);
                 //console.log('val=' + form.find('input[name=LinkType]:checked').val());
                 //console.log(id.indexOf(form.find('input[name=LinkType]:checked').val()));
                 if(id.indexOf(form.find('input[name=LinkType]:checked').val()) <= 0) {
-                //if(form.find('input[name=LinkType]:checked').val() !== id) {
+                    //if(form.find('input[name=LinkType]:checked').val() !== id) {
                     this.hide();
                 }
 
                 this._super();
             },
             disappear: function() {
-                this.slideUp(500);
+                this.slideUp(100);
             },
             reappear: function() {
-                this.slideDown(500);
+                this.slideDown(100);
             }
         });
 

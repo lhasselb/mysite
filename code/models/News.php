@@ -16,6 +16,7 @@ class News extends DataObject
     private static $has_one = array(
         'NewsImage' => 'Image',
         'NewsLink' => 'Link',
+        'HomepageSection' => 'SectionPage'
     );
 
     private static $default_sort='NewsDate DESC';
@@ -85,18 +86,18 @@ class News extends DataObject
      * @param int $maxitems Max number of items to return
      * @return DataList
      */
-    public static function Entries($offset=0, $maxitems=5) {
+    /*public static function Entries($offset=0, $maxitems=5) {
         $newsList = News::get();
         foreach ($newsList as $item) {
             //SS_Log::log('Classname='.$item->ClassName,SS_Log::WARN);
             //SS_Log::log('HomepageSectionID='.$item->HomepageSectionID,SS_Log::WARN);
-            if($item->ClassName == 'Course' && $item->HomepageSectionID == 0) $newsList->remove($item);
+            //if($item->ClassName == 'Course' && $item->HomepageSectionID == 0) $newsList->remove($item);
         }
         $filters = array();
         //->sort('Date DESC')
         //$news = News::get()->filter($filters)->limit($maxitems, $offset);
         return $newsList;
-    }
+    }*/
 
 
     /**

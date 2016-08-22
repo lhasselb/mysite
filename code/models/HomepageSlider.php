@@ -59,6 +59,7 @@ class HomepageSlider extends DataObject
         $linkOptions = array('ExternalURL' => 'Link zu einer externer Seite', 'InternalURLID' => 'Link zu einer internen Seite');
         // If we've set an internal link already, then that option should be pre-selected
         $selectedOption = ($this->InternalURLID) ? 'InternalURLID' : 'ExternalURL';
+
         $linkTypeField = OptionsetField::create('LinkType', '', $linkOptions, $selectedOption);
 
         $externalURLField = TextField::create('ExternalURL', 'Wählen Sie eine externe Seite')
@@ -92,13 +93,12 @@ class HomepageSlider extends DataObject
     /**
      * @return void
      */
-    public function onBeforeWrite()
-    {
+    public function onBeforeWrite() {
         // If we've set an external link unset any existing internal link
         if($this->ExternalURL && $this->isChanged('ExternalURL')) {
             $this->InternalURLID = false;
         // Otherwise, if we've set an internal link unset any existing external link
-        } elseif($this->InternalURLID && $this->isChanged('InternalURLID')) {
+        } elseif($this->InternalURLID) {
             $this->ExternalURL = false;
         }
         parent::onBeforeWrite();
