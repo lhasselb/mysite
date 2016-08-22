@@ -18,7 +18,7 @@ i18n::set_locale('de_DE');
 i18n::set_date_format('dd.MM.YYYY');
 i18n::set_time_format('HH:mm');
 
-Director::set_environment_type('dev');//dev live
+Director::set_environment_type('live');//dev live
 
 //head.js
 //Requirements::set_backend(Injector::inst()->get('HeadJsBackend'));

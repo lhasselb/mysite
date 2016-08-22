@@ -65,16 +65,19 @@ class HomePage_Controller extends Page_Controller
         Requirements::javascript('mysite/javascript/slider-4.js');
 	}//init()
 
-    public function PaginatedLatestNews() {
+    public function PaginatedLatestNews($num = 10) {
+        $start = isset($_GET['start']) ? (int) $_GET['start'] : 0;
         /*
         $itemsToSkip = 0;
         $itemsToReturn = 5;
         return News::Entries($itemsToSkip, $itemsToReturn);*/
         //$item->ClassName == 'Course' && $item->HomepageSectionID == 0
-        $list = News::get()->filter(array(
-            'ClassName' => 'Course',
+        $list = News::get()
+        ->filterAny(array(
+            'ClassName' => 'News',
             'HomepageSectionID:GreaterThan' => '0'
         ));
+        //->sort('NewsDate','DESC');
 
         return new PaginatedList($list, $this->getRequest());
     }

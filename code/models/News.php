@@ -44,7 +44,7 @@ class News extends DataObject
 
     public function getCMSFields() {
         $fields = parent::getCMSFields();
-
+        $fields->removeByName('HomepageSectionID');
         $title = TextField::create('NewsTitle', $this->fieldLabel('NewsTitle'))->setDescription('Der Titel der News.');
         $fields->addFieldToTab('Root.Main', $title);
 
