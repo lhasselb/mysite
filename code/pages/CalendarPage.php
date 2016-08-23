@@ -10,8 +10,8 @@ class CalendarPage extends Page {
 
     static $defaults = array();
 
-    function getCMSFields(){
-        HtmlEditorConfig::get("cms")->setOption("content_css","/themes/jimev-theme/css/calendar.css");
+    function getCMSFields() {
+        HtmlEditorConfig::set_active('calendar');
         $fields = parent::getCMSFields();
         return $fields;
     }
@@ -24,7 +24,6 @@ class CalendarPage_Controller extends Page_Controller {
 	public function init() {
 		parent::init();
 		$theme = $this->themeDir();
-
         //Requirements::css($theme.'/javascript/fullcalendar/dist/fullcalendar.print.css');
 		Requirements::css($theme.'/javascript/fullcalendar/dist/fullcalendar.min.css');
 		//Requirements::javascript($theme.'/javascript/moment/min/moment-with-locales.js');

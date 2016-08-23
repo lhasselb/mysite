@@ -46,6 +46,7 @@ error_reporting(E_ALL);
  * framework/forms/HtmlEditorConfig.php
  * plugins: contextmenu,table,emotions,paste
  */
+
 #BASIC
 HtmlEditorConfig::get("basic")->setOptions(array(
     "language" => i18n::get_tinymce_lang(),
@@ -69,8 +70,8 @@ HtmlEditorConfig::get("basic")->setOption("content_css","/themes/jimev-theme/css
 HtmlEditorConfig::get('basic')->enablePlugins(array(
     'ssbuttons' => sprintf('../../../%s/tinymce_ssbuttons/editor_plugin_src.js', THIRDPARTY_DIR)
 ));
+
 #LOCATION
-/*
 HtmlEditorConfig::get("location")->setOptions(array(
     "language" => i18n::get_tinymce_lang(),
     "body_class" => "typography",
@@ -93,7 +94,31 @@ HtmlEditorConfig::get("location")->setOption("content_css","/themes/jimev-theme/
 HtmlEditorConfig::get('location')->enablePlugins(array(
     'ssbuttons' => sprintf('../../../%s/tinymce_ssbuttons/editor_plugin_src.js', THIRDPARTY_DIR)
 ));
-*/
+
+#CALENDAR
+HtmlEditorConfig::get("calendar")->setOptions(array(
+    "language" => i18n::get_tinymce_lang(),
+    "body_class" => "typography",
+    "friendly_name" => "basic editor",
+    "priority" => 0,
+    "mode" => "none",
+    "editor_selector" => "htmleditor",
+    "auto_resize" => true,
+    "theme" => "advanced",
+    "skin" => "default",
+    // Remove the bottom status bar
+    "theme_advanced_statusbar_location" => "none"
+))->disablePlugins('contextmenu');
+// Clear the default buttons
+HtmlEditorConfig::get("calendar")->setButtonsForLine(1);
+HtmlEditorConfig::get("calendar")->setButtonsForLine(2);
+//HtmlEditorConfig::get("basic")->setButtonsForLine(3);
+HtmlEditorConfig::get("calendar")->setButtonsForLine(1,"sslink","unlink","code","pastetext","styleselect");
+HtmlEditorConfig::get("calendar")->setOption("content_css","/themes/jimev-theme/css/calendar.css");
+HtmlEditorConfig::get('calendar')->enablePlugins(array(
+    'ssbuttons' => sprintf('../../../%s/tinymce_ssbuttons/editor_plugin_src.js', THIRDPARTY_DIR)
+));
+
 // Add template to default tinyMCE "cms"
 HtmlEditorConfig::get('cms')->enablePlugins('template');
 HtmlEditorConfig::get('cms')->insertButtonsAfter('tablecontrols', 'template');

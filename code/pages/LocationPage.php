@@ -58,12 +58,11 @@ class LocationPage extends Page
         );
     }
 
-    function getCMSFields(){
+    function getCMSFields() {
+
         $fields = parent::getCMSFields();
-        //HtmlEditorConfig::set_active('location');
-        HtmlEditorConfig::set_active('basic');
-        HtmlEditorConfig::get("basic")->setButtonsForLine(1,"sslink","unlink","code","pastetext","styleselect");
-        HtmlEditorConfig::get("basic")->setOption("content_css","/themes/jimev-theme/css/location.css");
+
+        HtmlEditorConfig::set_active('location');
 
         $intro = HtmlEditorField::create('Content','Informationen')->setRows(10);
         $schedule = HtmlEditorField::create('Schedule','Wann')->setRows(10);
