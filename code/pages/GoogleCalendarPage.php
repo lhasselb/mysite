@@ -1,10 +1,8 @@
 <?php
 class GoogleCalendarPage extends Page {
 
-    private static $singular_name = 'Calendar Page';
-    private static $description = 'Google Kalender';
-
-
+    private static $singular_name = 'Termine';
+    private static $description = 'Terminkalender mit Daten vom Google Kalender';
     private static $icon = 'mysite/images/calendar.png';
 
 	private static $db = array(
@@ -13,6 +11,7 @@ class GoogleCalendarPage extends Page {
     static $defaults = array();
 
     function getCMSFields(){
+        HtmlEditorConfig::get("cms")->setOption("content_css","/themes/jimev-theme/css/termine.css");
         $fields = parent::getCMSFields();
         return $fields;
     }

@@ -18,7 +18,7 @@ i18n::set_locale('de_DE');
 i18n::set_date_format('dd.MM.YYYY');
 i18n::set_time_format('HH:mm');
 
-Director::set_environment_type('live');//dev live
+Director::set_environment_type('dev');//dev live
 
 //head.js
 //Requirements::set_backend(Injector::inst()->get('HeadJsBackend'));
@@ -70,6 +70,7 @@ HtmlEditorConfig::get('basic')->enablePlugins(array(
     'ssbuttons' => sprintf('../../../%s/tinymce_ssbuttons/editor_plugin_src.js', THIRDPARTY_DIR)
 ));
 #LOCATION
+/*
 HtmlEditorConfig::get("location")->setOptions(array(
     "language" => i18n::get_tinymce_lang(),
     "body_class" => "typography",
@@ -92,7 +93,7 @@ HtmlEditorConfig::get("location")->setOption("content_css","/themes/jimev-theme/
 HtmlEditorConfig::get('location')->enablePlugins(array(
     'ssbuttons' => sprintf('../../../%s/tinymce_ssbuttons/editor_plugin_src.js', THIRDPARTY_DIR)
 ));
-
+*/
 // Add template to default tinyMCE "cms"
 HtmlEditorConfig::get('cms')->enablePlugins('template');
 HtmlEditorConfig::get('cms')->insertButtonsAfter('tablecontrols', 'template');

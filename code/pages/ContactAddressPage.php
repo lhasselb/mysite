@@ -16,21 +16,18 @@ class ContactAddressPage extends Page
         'Directors' => 'Vorstand'
     );
 
-    function getCMSFields()
-    {
+    function getCMSFields() {
         $fields = parent::getCMSFields();
-
         $fields->fieldByName('Root.Main')->setTitle('Anschrift');
         $addressTitle = TextField::create('AddressTitle','Anschrift-Ü̱berschrift');
         $address = HtmlEditorField::create('Content','Anschrift');
         $fields->addFieldsToTab('Root.Main', array($addressTitle,$address),'Metadata');
-
         $directorsConfig = GridFieldConfig_RelationEditor::create();
+        $fields->insertBefore(new Tab('Vorstand', 'Vorstand'), 'Dependent');
         $managementTitle = TextField::create('ManagementTitle','Vorstand-Ü̱berschrift');
         $fields->addFieldToTab('Root.Vorstand', $managementTitle);
         $directors = GridField::create('Directors', 'Vorstand', $this->Directors(), $directorsConfig);
         $fields->addFieldToTab('Root.Vorstand', $directors);
-
         return $fields;
     }
 
@@ -43,6 +40,6 @@ class ContactAddressPage_Controller extends Page_Controller
     public function init() {
         parent::init();
         $theme = $this->themeDir();
-    }//init()
+    } //init()
 
 }
