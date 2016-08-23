@@ -10,7 +10,7 @@ class News extends DataObject
     private static $db = array(
         'NewsTitle' => 'Varchar(255)',
         'NewsDate' => 'Date',
-        'NewsContent' => 'HTMLVarchar(255)', //HTMLText 2MB
+        'NewsContent' => 'HTMLText',
     );
 
     private static $has_one = array(
@@ -42,7 +42,8 @@ class News extends DataObject
     }
 
 
-    public function getCMSFields() {
+    /*public function getCMSFields() {
+
         $fields = parent::getCMSFields();
         $fields->removeByName('HomepageSectionID');
         $title = TextField::create('NewsTitle', $this->fieldLabel('NewsTitle'))->setDescription('Der Titel der News.');
@@ -63,12 +64,10 @@ class News extends DataObject
         $fields->addFieldToTab('Root.Main', $newsImage);
         $fields->addFieldToTab('Root.Main',
             HtmlEditorField::create('NewsContent', $this->fieldLabel('NewsContent'))
-            ->setRows(3)
-            ->setTargetLength(250, 50, 250)
-            ->setDescription('Die maximale Textlänge ist begrenzt. Eingaben über 100% werden abgeschnitten.')
+            ->setDescription('Bitte die maximale Textlänge begrenzen. Es handelt sich hier um eine News für die Homepage!')
         );
         return $fields;
-    }
+    }*/
 
     public function fieldLabels($includerelations = true) {
         $labels = parent::fieldLabels($includerelations);

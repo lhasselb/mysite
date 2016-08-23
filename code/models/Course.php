@@ -86,6 +86,7 @@ class Course extends News
 
         if($controller == 'NewsAdmin')
         {
+            HtmlEditorConfig::set_active('basic');
             //News Main TAB
             $title = TextField::create('NewsTitle', $this->fieldLabel('NewsTitle'))->setDescription('Der Titel der News.');
             $fields->addFieldToTab('Root.Main', $title);
@@ -108,14 +109,14 @@ class Course extends News
             $fields->addFieldToTab('Root.Main', $newsImage);
             $fields->addFieldToTab('Root.Main',
                 HtmlEditorField::create('NewsContent', $this->fieldLabel('NewsContent'))
-                ->setRows(3)
-                ->setTargetLength(250, 50, 250)
-                ->setDescription('Die maximale Textlänge ist begrenzt. Eingaben über 100% werden abgeschnitten.')
+                ->setRows(12)
+                ->setDescription('Bitte die maximale Textlänge begrenzen. Es handelt sich hier um eine News für die Homepage!')
             );
             $fields->removeFieldsFromTab('Root.Main',array('CourseTitle','URLSegment','MenuTitle','CourseDateStart','CourseDateEnd','Content','ContentImage'));
         }
         if($controller == 'CourseAdmin')
         {
+            HtmlEditorConfig::set_active('cms');
             //Course Main TAB
             $fields->removeByName('NewsLinkID');
             $fields->addFieldToTab('Root.Main', TextField::create('CourseTitle', $this->fieldLabel('CourseTitle'))

@@ -1,5 +1,5 @@
 <?php
-class GoogleCalendarPage extends Page {
+class CalendarPage extends Page {
 
     private static $singular_name = 'Termine';
     private static $description = 'Terminkalender mit Daten vom Google Kalender';
@@ -11,7 +11,7 @@ class GoogleCalendarPage extends Page {
     static $defaults = array();
 
     function getCMSFields(){
-        HtmlEditorConfig::get("cms")->setOption("content_css","/themes/jimev-theme/css/termine.css");
+        HtmlEditorConfig::get("cms")->setOption("content_css","/themes/jimev-theme/css/calendar.css");
         $fields = parent::getCMSFields();
         return $fields;
     }
@@ -19,7 +19,7 @@ class GoogleCalendarPage extends Page {
 }
 
 
-class GoogleCalendarPage_Controller extends Page_Controller {
+class CalendarPage_Controller extends Page_Controller {
 
 	public function init() {
 		parent::init();

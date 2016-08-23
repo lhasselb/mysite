@@ -88,7 +88,6 @@ class Alarm extends DataObject
         HtmlEditorConfig::set_active('basic');
         $alerts = HtmlEditorField::create('Meldung','Meldungen');
         $fields->addFieldToTab('Root.Main', $alerts);
-        //$fields->dataFieldByName('Meldung')->setTargetLength(300, 50, 300);
 
         //$fields->dataFieldByName('StartDate')->setConfig('datavalueformat', 'dd.MM.yyyy HH:mm');
         $fields->dataFieldByName('StartDate')->timefield->setConfig('timeformat', 'HH:mm');
