@@ -71,6 +71,9 @@ class LocationPage extends Page
         $fields->addFieldToTab('Root.Landkarte', $description);
         $map = TextAreaField::create('Map','Google-IFrame');
         $fields->addFieldToTab('Root.Landkarte', $map);
+        $fields->addFieldToTab('Root.Landkarte', new LiteralField('Info','
+        <p><span style="color:red;">Achtung: </span>Den Inhalt ür dieses Feld findet man im Quelltext der existierenden JIM-Seite im HTML-Tag iframe, z.B. &lt;iframe src="https://mapsengine.google.com/map/embed?mid=zc1l0sHie8lY.kjVxveFjAD0Q" width="100%" height="550" &gt;&lt;/iframe&gt;. <br/> Die Breite (width) immer auf 100% setzen und die Höhe (height) auf 550. Für neue Karten kann man den <a href="https://www.google.de/mapmaker" target="_blank">Mapmaker</a> nutzen.</p>
+        '));
         return $fields;
     }
 
