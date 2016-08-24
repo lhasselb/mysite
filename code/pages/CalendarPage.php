@@ -11,8 +11,10 @@ class CalendarPage extends Page {
     static $defaults = array();
 
     function getCMSFields() {
-        HtmlEditorConfig::set_active('calendar');
+        //HtmlEditorConfig::set_active('calendar');
         $fields = parent::getCMSFields();
+        $fields->removeByName('Content');
+        $fields->addFieldToTab('Root.Main', new HTMLEditorField('Content','Legende',$this->Content,'calendar'));
         return $fields;
     }
 

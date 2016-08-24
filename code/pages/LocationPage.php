@@ -59,11 +59,8 @@ class LocationPage extends Page
     }
 
     function getCMSFields() {
-
         $fields = parent::getCMSFields();
-
         HtmlEditorConfig::set_active('location');
-
         $intro = HtmlEditorField::create('Content','Informationen')->setRows(10);
         $schedule = HtmlEditorField::create('Schedule','Wann')->setRows(10);
         $location = HtmlEditorField::create('Location','Wo')->setRows(10);
