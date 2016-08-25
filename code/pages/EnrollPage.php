@@ -1,9 +1,16 @@
 <?php
+
+/**
+ * Enroll page
+ *
+ * @package mysite
+ * @subpackage pages
+ *
+ */
 class EnrollPage extends Page
 {
     private static $singular_name = 'Mitgliedsantrag';
-    private static $description = 'Seite für Mitgliedsantrag';
-    private static $icon = 'pageimages/images/enrollform.png';
+    private static $description = 'Seite für den Mitgliedsantrag';
     private static $can_be_root = false;
     private static $allowed_children = array('EnrollSuccessPage');
 
@@ -88,9 +95,7 @@ class EnrollPage extends Page
 class EnrollPage_Controller extends Page_Controller
 {
 
-    private static $allowed_actions = array(
-        'EnrollForm'
-    );
+    private static $allowed_actions = array('EnrollForm');
 
     public function EnrollForm() {
         $today = SS_Datetime::now()->FormatI18N("%d.%m.%Y");
@@ -154,6 +159,9 @@ class EnrollPage_Controller extends Page_Controller
     {
         // Add a success message
         //$form->sessionMessage('Vielen Dank für die Anmeldung ' .$data['FirstName']. ' ' .$data['LastName'], 'success');
+        /*foreach ($data as $key => $value) {
+            SS_Log::log("key=".$key." value=".$value,SS_Log::WARN);
+        }*/
         // Create a ClubMember object
         $clubMember = new ClubMemberPending();
         // Save data into object
@@ -182,8 +190,7 @@ class EnrollPage_Controller extends Page_Controller
         return $this->redirect(EnrollSuccessPage::get()->First()->Link());
     }
 
-    function init()
-    {
+    function init() {
         parent::init();
         $theme = $this->themeDir();
         //Add javascript here

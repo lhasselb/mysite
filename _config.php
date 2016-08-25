@@ -20,9 +20,6 @@ i18n::set_time_format('HH:mm');
 
 Director::set_environment_type('dev');//dev live
 
-//head.js
-//Requirements::set_backend(Injector::inst()->get('HeadJsBackend'));
-
 // Enable logging: log errors and warnings
 if(getenv('OS') == "Windows_NT") {
     SS_Log::add_writer(new SS_LogFileWriter("c:\\xampp\\apache\\logs\\JimevLog.log"), SS_Log::WARN, '<=');
