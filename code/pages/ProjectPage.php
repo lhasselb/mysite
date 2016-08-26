@@ -2,10 +2,12 @@
 class ProjectPage extends Page
 {
     private static $singular_name = 'Projekt';
-    private static $description = 'Seite für Projekte';
-    //private static $icon = 'mysite/images/treffen.png';
+    private static $description = 'Seite für ein Projekt';
     private static $can_be_root = false;
-    //private static $allowed_children = array('GalleryPage');
+    private static $allowed_children = array(
+        'ProjectPage',
+        '*Page'
+    );
 
     private static $db = array(
        'Title' => 'Varchar(255)',

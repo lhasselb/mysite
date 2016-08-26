@@ -1,13 +1,11 @@
 <?php
 class SectionPage extends Page
 {
-    private static $singular_name = 'Bereich in Workshops und Kurse';
+    private static $singular_name = 'Bereich in WS und Kurse';
     private static $description = 'Enhält Workshops und Kurse für einen Bereich.';
     //private static $icon = 'mysite/images/workshops.png';
     private static $can_be_root = false;
-    private static $allowed_children = array(
-        'SectionPage'
-    );
+    private static $allowed_children = 'none'; //array('SectionPage');
 
     private static $belongs_many_many = array(
         'Courses' => 'Course'

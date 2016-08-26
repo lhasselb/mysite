@@ -3,9 +3,8 @@ class FotosPage extends Page
 {
     private static $singular_name = 'Fotos';
     private static $description = 'Seite für Fotos';
-    //private static $icon = 'mysite/images/treffen.png';
     private static $can_be_root = true;
-    //private static $allowed_children = array('Page');
+    private static $allowed_children = 'none';
 
     private static $db = array(
        'Title' => 'Varchar(255)',

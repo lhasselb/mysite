@@ -5,7 +5,7 @@ class EnrollSuccessPage extends Page
     private static $description = 'Seite für erfolgreichen Mitgliedsantrag';
     //private static $icon = 'mysite/images/treffen.png';
     private static $can_be_root = false;
-    private static $allowed_children = array();
+    private static $allowed_children = 'none';
     private static $defaults = array (
         'ShowInMenus' => false,
         'ShowInSearch' => false

@@ -1,23 +1,20 @@
 <?php
 /**
- * Course
+ * Course object
  */
 class Course extends News
 {
     private static $singular_name = 'Kurs';
     private static $plural_name = 'Kurse';
-    //private static $icon = 'mysite/images/treffen.png';
-    private static $can_be_root = false;
-    private static $allowed_children = array();
 
     private static $db = array(
         'CourseTitle' => 'Varchar(255)',
         'URLSegment' => 'Varchar(255)',
-        'Content' => 'HTMLText',
+        'CourseContent' => 'HTMLText',
     );
 
     private static $has_one = array(
-        'ContentImage' => 'Image'
+        'CourseImage' => 'Image'
     );
 
     private static $many_many = array(
@@ -31,28 +28,28 @@ class Course extends News
         'Thumbnail' => 'Bild',
     );
 
-    /*public function getNiceNewsDate()
-    {
-        $date = new Date();
-        $date->setValue($this->NewsDate);
-        SS_Log::log($date, SS_Log::WARN);
-        return $date->Format('d.m.Y');
-    }*/
-
-    public function News()
+    /*public function News()
     {
         if(!$this->HomepageSectionID) return 'Nicht auf der Startseite.';
         elseif($this->HomepageSectionID) {
             return DataObject::get_by_id('SectionPage',$this->HomepageSectionID)->Title;
         }
-    }
+    }*/
 
-    public function SectionList ()
+    public function SectionList()
     {
-        //SS_Log::log('getChildList - Children? '.$this->Children()->exists().' for ' .$this->Title,SS_Log::WARN);
         if($this->Sections()->exists()) {
             return implode(', ', $this->Sections()->column('Title'));
         }
+    }
+
+    public function getThumbnail()
+    {
+        return $this->CourseImage()->SetHeight(50);
+    }
+
+    public function onHomepage() {
+        return ($this->HomepageSectionID > 0 ) ? 'Ja' : 'Nein';
     }
 
     public function getTitle()
@@ -65,12 +62,7 @@ class Course extends News
         return $this->CourseTitle;
     }
 
-    public function Thumbnail()
-    {
-        return $this->NewsImage()->SetHeight(50);
-    }
-
-    public function NewsSection()
+    public function getNewsSection()
     {
             return $this->HomepageSection()->Title;
     }
@@ -102,21 +94,32 @@ class Course extends News
                 ->setEmptyString('(Zur Anzeige bitte wählen)')
                 ->setDescription('Wenn kein Bereich gewählt ist erscheint die News nicht auf der Startseite!')
              );
+
             $newsImage = new UploadField('NewsImage', $this->fieldLabel('NewsImage'));
             $newsImage->setConfig('allowedMaxFileNumber', 1);
             $newsImage->getValidator()->allowedExtensions = array('jpg', 'gif', 'png');
-            $newsImage->setFolderName('news');
+            $newsImage->setFolderName('news')->setDisplayFolderName('news');
             $fields->addFieldToTab('Root.Main', $newsImage);
+
             $fields->addFieldToTab('Root.Main',
                 HtmlEditorField::create('NewsContent', $this->fieldLabel('NewsContent'))
                 ->setRows(12)
                 ->setDescription('Bitte die maximale Textlänge begrenzen. Es handelt sich hier um eine News für die Homepage!')
             );
-            $fields->removeFieldsFromTab('Root.Main',array('CourseTitle','URLSegment','MenuTitle','NewsSection','Content','ContentImage'));
+            $fields->removeFieldsFromTab('Root.Main',array('CourseTitle','URLSegment','MenuTitle','Section','CourseContent','CourseImage'));
         }
         if($controller == 'CourseAdmin')
         {
             HtmlEditorConfig::set_active('cms');
+            $fields->addFieldToTab('Root.Main', new LiteralField('Info','
+            <p><span style="color:red;">Achtung: </span> Beim erstmaligen speichern eines Kurses wird automatisch auch eine News angelegt.
+                <br/>
+                Diese News übernimmt den Titel, das Anzeige-Datum, das Bild und den ersten Absatz des Inhalts.
+                <br/>
+                Sie wird jedoch erst dann auf der Startseite angezeigt wenn beim editieren der <a href="http://jimev.internal.epo.org/admin/newsmanager/">News</a> ein Bereich gewählt wird.
+            </p>
+            '));
+
             //Course Main TAB
             $fields->removeByName('NewsLinkID');
             $fields->addFieldToTab('Root.Main', TextField::create('CourseTitle', $this->fieldLabel('CourseTitle'))
@@ -141,13 +144,14 @@ class Course extends News
             $sectionCheck = CheckboxSetField::create('Sections','Bereiche', $map);
             $fields->addFieldToTab('Root.Main', $sectionCheck);
 
-            $contentImage = new UploadField('ContentImage', $this->fieldLabel('ContentImage'));
-            $contentImage->setConfig('allowedMaxFileNumber', 1);
-            $contentImage->getValidator()->allowedExtensions = array('jpg', 'gif', 'png');
-            $contentImage->setFolderName('kurse');
-            $fields->addFieldToTab('Root.Main', $contentImage);
-            $fields->addFieldToTab('Root.Main', HtmlEditorField::create('Content', $this->fieldLabel('Content')));
-            $fields->removeFieldsFromTab('Root.Main',array('NewsTitle','NewsContent','NewsImage','NewsLink','HomepageSectionID'));
+            $courseImage = new UploadField('CourseImage', $this->fieldLabel('CourseImage'));
+            $courseImage->setConfig('allowedMaxFileNumber', 1);
+            $courseImage->getValidator()->allowedExtensions = array('jpg', 'gif', 'png');
+            $courseImage->setFolderName('kurse')->setDisplayFolderName('kurse');
+            $fields->addFieldToTab('Root.Main', $courseImage);
+
+            $fields->addFieldToTab('Root.Main', HtmlEditorField::create('CourseContent', $this->fieldLabel('CourseContent')));
+            $fields->removeFieldsFromTab('Root.Main',array('NewsTitle','NewsContent','Section','NewsImage','NewsLink','HomepageSectionID'));
         }
 
         return $fields;
@@ -158,13 +162,8 @@ class Course extends News
         $labels['CourseTitle'] = 'Kursname';
         $labels['MenuTitle'] = 'Navigationsbezeichnung';
         $labels['URLSegment'] = 'URL-Segment';
-        $labels['CourseDateStart'] = 'Kurs-Datum - Anfang';
-        $labels['CourseDateEnd'] = 'Kurs-Datum - Ende';
-        $labels['Content'] = 'Inhalt';
-        $labels['NewsTitle'] = 'Schlagzeile';
-        $labels['News'] = 'News';
-        $labels['NewsImage'] = 'News-Bild';
-        $labels['ContentImage'] = 'Bild';
+        $labels['CourseContent'] = 'Kurs-Inhalt';
+        $labels['CourseImage'] = 'Kurs-Bild';
         $labels['HomepageSection'] = 'Bereich';
         $labels['Sections'] = 'Bereiche';
         return $labels;
@@ -243,9 +242,9 @@ class Course extends News
         // NewsDate
         if(empty($this->NewsDate)) $this->NewsDate = $this->CourseDateStart;
         // NewsContent
-        if(empty($this->NewsContent)) $this->NewsContent = $this->dbobject('Content')->FirstParagraph();
+        if(empty($this->NewsContent)) $this->NewsContent = $this->dbobject('CourseContent')->FirstParagraph();
         // NewsImage
-        if(empty($this->NewsImageID)) $this->NewsImageID = $this->ContentImageID;
+        if(empty($this->NewsImageID)) $this->NewsImageID = $this->CourseImageID;
     }
 
     /**

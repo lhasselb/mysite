@@ -5,7 +5,7 @@ class LocationPage extends Page
     private static $description = 'Seite für einen Treffpunkt in den Jongliertreffen';
     //private static $icon = 'mysite/images/treffen.png';
     private static $can_be_root = false;
-    private static $allowed_children = array();
+    private static $allowed_children = 'none';//array('*Page');
 
 	private static $db = array(
        'Schedule' => 'HTMLVarchar(255)',            // Wann

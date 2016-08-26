@@ -5,7 +5,7 @@ class ContactAddressPage extends Page
     private static $description = 'Seite für Adresse und Vorstand';
     //private static $icon = 'mysite/images/treffen.png';
     private static $can_be_root = false;
-    private static $allowed_children = array();
+    private static $allowed_children = 'none';
 
     private static $db = array(
        'ManagementTitle' => 'Varchar(255)',

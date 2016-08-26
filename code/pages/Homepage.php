@@ -4,6 +4,8 @@ class HomePage extends Page
     private static $singular_name = 'Startseite';
     private static $description = 'Startseite für JIMEV';
     private static $icon = 'mysite/images/homepage.png';
+    private static $can_be_root = true;
+    private static $allowed_children = 'none';
 
     private static $has_many = array(
         'Sliders' => 'HomepageSlider.Parent',

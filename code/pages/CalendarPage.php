@@ -4,6 +4,8 @@ class CalendarPage extends Page {
     private static $singular_name = 'Termine';
     private static $description = 'Terminkalender mit Daten vom Google Kalender';
     private static $icon = 'mysite/images/calendar.png';
+    private static $can_be_root = true;
+    private static $allowed_children = 'none';
 
 	private static $db = array(
 	);

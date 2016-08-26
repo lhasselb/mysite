@@ -1,6 +1,6 @@
 <?php
 /**
- * News
+ * News object
  */
 class News extends DataObject
 {
@@ -11,12 +11,11 @@ class News extends DataObject
         'NewsTitle' => 'Varchar(255)',
         'NewsDate' => 'Date',
         'NewsContent' => 'HTMLText',
-        'NewsSection' => 'Varchar(255)',
+        'Section' => 'Varchar(255)',
     );
 
     private static $has_one = array(
         'NewsImage' => 'Image',
-        //'NewsLink' => 'Link',
         'HomepageSection' => 'SectionPage'
     );
 
@@ -25,6 +24,7 @@ class News extends DataObject
     private static $summary_fields = array(
         'NewsTitle' => 'Schlagzeile',
         'NiceNewsDate' => 'Datum',
+        'onHomepage' => 'Wird auf der Startseite angezeigt?',
         'Thumbnail' => 'Bild'
     );
 
@@ -34,14 +34,21 @@ class News extends DataObject
         return $date->Format('d.m.Y');
     }
 
+    public function getThumbnail() {
+        return $this->NewsImage()->SetHeight(50);
+    }
+
+    public function onHomepage() {
+        return 'Ja';
+    }
+
     public function getTitle() {
         return $this->NewsTitle;
     }
 
-    public function Thumbnail() {
-        return $this->NewsImage()->SetHeight(50);
+    public function getNewsSection() {
+        return empty($this->Section) ? 'News' : $this->Section;
     }
-
 
     public function getCMSFields() {
 
@@ -58,15 +65,15 @@ class News extends DataObject
         $newsDate->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('dd.MM.yyyy'))));
         $fields->addFieldToTab('Root.Main', $newsDate);
 
-        //$fields->addFieldToTab('Root.Main', LinkField::create('NewsLinkID', 'Link'));
-        $fields->addFieldToTab('Root.Main', TextField::create('NewsSection', 'Bereich')
-            ->setDescription('Bereich ist optional. Ohne Bereich wird als Bereich News angezeigt.'));
+        $fields->addFieldToTab('Root.Main', TextField::create('Section', 'Bereich')
+            ->setDescription('Bereich ist optional. Ohne Eingabe wird "News" als Bereich angezeigt.'));
 
         $newsImage = new UploadField('NewsImage', $this->fieldLabel('NewsImage'));
         $newsImage->setConfig('allowedMaxFileNumber', 1);
         $newsImage->getValidator()->allowedExtensions = array('jpg', 'gif', 'png');
-        $newsImage->setFolderName('news');
+        $newsImage->setFolderName('news')->setDisplayFolderName('news');
         $fields->addFieldToTab('Root.Main', $newsImage);
+
         $fields->addFieldToTab('Root.Main',
             HtmlEditorField::create('NewsContent', $this->fieldLabel('NewsContent'))
             ->setDescription('Bitte die maximale Textlänge begrenzen. Es handelt sich hier um eine News für die Homepage!')
@@ -84,29 +91,11 @@ class News extends DataObject
         return $labels;
     }
 
-    /**
-     * Get news items
-     *
-     * @param int $offset
-     * @param int $maxitems Max number of items to return
-     * @return DataList
-     */
-    /*public static function Entries($offset=0, $maxitems=5) {
-        $newsList = News::get();
-        foreach ($newsList as $item) {
-            //SS_Log::log('Classname='.$item->ClassName,SS_Log::WARN);
-            //SS_Log::log('HomepageSectionID='.$item->HomepageSectionID,SS_Log::WARN);
-            //if($item->ClassName == 'Course' && $item->HomepageSectionID == 0) $newsList->remove($item);
-        }
-        $filters = array();
-        //->sort('Date DESC')
-        //$news = News::get()->filter($filters)->limit($maxitems, $offset);
-        return $newsList;
-    }*/
-
 
     /**
      * @return string
+     * NOT used yet, a link to news is not required
+     * because they will only be displayed on the Homepage
      */
     public function Link() {
         //SS_Log::log('Link() called',SS_Log::WARN);

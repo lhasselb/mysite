@@ -4,9 +4,10 @@ class LocationHolder extends Page
     private static $singular_name = 'Jongliertreffen';
     private static $description = 'Seite zum Gruppieren von Treffpunkten.';
     private static $icon = 'mysite/images/treffen.png';
+    private static $can_be_root = true;
     private static $allowed_children = array(
         'LocationPage',
-        'Page'
+        '*Page'
     );
 
     function getCMSFields(){

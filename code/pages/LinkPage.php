@@ -5,7 +5,7 @@ class LinkPage extends Page
     private static $description = 'Seite für Links';
     //private static $icon = 'mysite/images/treffen.png';
     private static $can_be_root = true;
-    private static $allowed_children = array();
+    private static $allowed_children = 'none';
 
     private static $db = array();
 
