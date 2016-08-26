@@ -112,7 +112,7 @@ class Course extends News
                 ->setRows(12)
                 ->setDescription('Bitte die maximale Textlänge begrenzen. Es handelt sich hier um eine News für die Homepage!')
             );
-            $fields->removeFieldsFromTab('Root.Main',array('CourseTitle','URLSegment','MenuTitle','CourseDateStart','CourseDateEnd','Content','ContentImage'));
+            $fields->removeFieldsFromTab('Root.Main',array('CourseTitle','URLSegment','MenuTitle','NewsSection','Content','ContentImage'));
         }
         if($controller == 'CourseAdmin')
         {
@@ -163,9 +163,9 @@ class Course extends News
         $labels['Content'] = 'Inhalt';
         $labels['NewsTitle'] = 'Schlagzeile';
         $labels['News'] = 'News';
-        $labels['NewsImage'] = 'Bild';
+        $labels['NewsImage'] = 'News-Bild';
         $labels['ContentImage'] = 'Bild';
-        $labels['HomepageSection'] = 'Link';
+        $labels['HomepageSection'] = 'Bereich';
         $labels['Sections'] = 'Bereiche';
         return $labels;
     }

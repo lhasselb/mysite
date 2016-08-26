@@ -11,11 +11,12 @@ class News extends DataObject
         'NewsTitle' => 'Varchar(255)',
         'NewsDate' => 'Date',
         'NewsContent' => 'HTMLText',
+        'NewsSection' => 'Varchar(255)',
     );
 
     private static $has_one = array(
         'NewsImage' => 'Image',
-        'NewsLink' => 'Link',
+        //'NewsLink' => 'Link',
         'HomepageSection' => 'SectionPage'
     );
 
@@ -42,9 +43,11 @@ class News extends DataObject
     }
 
 
-    /*public function getCMSFields() {
+    public function getCMSFields() {
 
         $fields = parent::getCMSFields();
+        HtmlEditorConfig::set_active('basic');
+
         $fields->removeByName('HomepageSectionID');
         $title = TextField::create('NewsTitle', $this->fieldLabel('NewsTitle'))->setDescription('Der Titel der News.');
         $fields->addFieldToTab('Root.Main', $title);
@@ -55,7 +58,9 @@ class News extends DataObject
         $newsDate->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('dd.MM.yyyy'))));
         $fields->addFieldToTab('Root.Main', $newsDate);
 
-        $fields->addFieldToTab('Root.Main', LinkField::create('NewsLinkID', 'Link'));
+        //$fields->addFieldToTab('Root.Main', LinkField::create('NewsLinkID', 'Link'));
+        $fields->addFieldToTab('Root.Main', TextField::create('NewsSection', 'Bereich')
+            ->setDescription('Bereich ist optional. Ohne Bereich wird als Bereich News angezeigt.'));
 
         $newsImage = new UploadField('NewsImage', $this->fieldLabel('NewsImage'));
         $newsImage->setConfig('allowedMaxFileNumber', 1);
@@ -65,13 +70,14 @@ class News extends DataObject
         $fields->addFieldToTab('Root.Main',
             HtmlEditorField::create('NewsContent', $this->fieldLabel('NewsContent'))
             ->setDescription('Bitte die maximale Textlänge begrenzen. Es handelt sich hier um eine News für die Homepage!')
+            ->setRows(12)
         );
         return $fields;
-    }*/
+    }
 
     public function fieldLabels($includerelations = true) {
         $labels = parent::fieldLabels($includerelations);
-        $labels['NewsTitle'] = 'News-Schlagzeile';
+        $labels['NewsTitle'] = 'Schlagzeile';
         $labels['NewsDate'] = 'Anzeige-Datum';
         $labels['NewsContent'] = 'News-Inhalt';
         $labels['NewsImage'] = 'News-Bild';
