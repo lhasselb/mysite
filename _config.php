@@ -116,12 +116,24 @@ HtmlEditorConfig::get('calendar')->enablePlugins(array(
     'ssbuttons' => sprintf('../../../%s/tinymce_ssbuttons/editor_plugin_src.js', THIRDPARTY_DIR)
 ));
 
-// Add template to default tinyMCE "cms"
-HtmlEditorConfig::get('cms')->enablePlugins('template');
-HtmlEditorConfig::get('cms')->insertButtonsAfter('tablecontrols', 'template');
-HtmlEditorConfig::get('cms')->setOptions(array('template_templates' => array(
-    array('title' => 'Ein DIV', 'src' => SSViewer::get_theme_folder().'/templates/helper/test.html', 'description' => 'Füge Beispielinhalt ein')
+
+HtmlEditorConfig::get('cms')->setOption(
+        'extended_valid_elements','span'
+        //'div[itemprop|itemscope|itemtype],' . 'span[itemprop]' . 'meta[itemprop|content]'
+    );
+HtmlEditorConfig::get("cms")->enablePlugins('template');
+HtmlEditorConfig::get("cms")->insertButtonsAfter('tablecontrols', 'template');
+//SS_Log::log(SSViewer::get_theme_folder().'/templates/helper/pdfIcon.html',SS_Log::WARN);
+HtmlEditorConfig::get("cms")->setOptions(array('template_templates' => array(
+    array('title' => 'PDF Icon', 'src' => SSViewer::get_theme_folder().'/templates/helper/pdfIcon.html', 'description' => 'Füge PDF Icon ein')
 )));
+// Add template to default tinyMCE "cms"
+//HtmlEditorConfig::get('cms')->enablePlugins('template');
+//HtmlEditorConfig::get('cms')->insertButtonsAfter('tablecontrols', 'template');
+/*HtmlEditorConfig::get('cms')->setOptions(array('template_templates' => array(
+    array('title' => 'Ein DIV', 'src' => SSViewer::get_theme_folder().'/templates/helper/test.html', 'description' => 'Füge Beispielinhalt ein')
+)));*/
+
 
 // Add a Google Maps shortcode
 //ShortcodeParser::get('default')->register('directionsgooglemap', array('LocationPage', 'DirectionsGoogleMap'));

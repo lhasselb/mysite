@@ -27,9 +27,15 @@ class EnrollPage extends Page
      */
     private static $request_folder = 'antraege';
 
-    function onBeforeWrite()
-    {
+    public function getCMSFields() {
+        $fields = parent::getCMSFields();
+        $fields->addFieldToTab('Root.Main',LabelField::create('Das Formular wird im PHP-Code gepflegt.'),'Content');
+        $fields->removeFieldFromTab('Root.Main','Content');
+        $fields->addFieldToTab('Root.Main', HtmlEditorField::create('Content','Inhalt',$this->Content,'cms'),'Metadata');
+        return $fields;
+    }
 
+    public function onBeforeWrite() {
         parent::onBeforeWrite();
         // Create a default folder to store forms
         if ($this->Folder()->ID == '0') {
@@ -39,21 +45,10 @@ class EnrollPage extends Page
         }
     }
 
-    public function getCMSFields()
-    {
-        $fields = parent::getCMSFields();
-        $fields->addFieldToTab('Root.Main',LabelField::create('Das Formular wird im PHP-Code gepflegt.'),'Content');
-        $fields->removeFieldFromTab('Root.Main','Content');
-        //$config = HtmlEditorConfig::get('basic');
-        //$fields->addFieldToTab('Root.Main', HtmlEditorField::create('Content','Inhalt',$config));
-        return $fields;
-    }
-
     /**
      * {@inheritdoc}
      */
-    public function getSettingsFields()
-    {
+    public function getSettingsFields() {
         $fields = parent::getSettingsFields();
         // Get the current member
         $member = $this->getMember();
@@ -78,8 +73,7 @@ class EnrollPage extends Page
      *
      * @return null|Member
      */
-    protected function getMember($member = null)
-    {
+    protected function getMember($member = null) {
         if (!$member) {
             $member = Member::currentUser();
         }
@@ -155,8 +149,7 @@ class EnrollPage_Controller extends Page_Controller
         return $form;
     }
 
-    public function doEnroll($data, Form $form)
-    {
+    public function doEnroll($data, Form $form) {
         // Add a success message
         //$form->sessionMessage('Vielen Dank für die Anmeldung ' .$data['FirstName']. ' ' .$data['LastName'], 'success');
         /*foreach ($data as $key => $value) {
