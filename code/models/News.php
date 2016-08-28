@@ -101,4 +101,20 @@ class News extends DataObject
         //SS_Log::log('Link() called',SS_Log::WARN);
     }
 
+    public function canView($member = null) {
+        return Permission::check('CMS_ACCESS_CourseAdmin', 'any', $member);
+    }
+
+    public function canEdit($member = null) {
+        return Permission::check('CMS_ACCESS_CourseAdmin', 'any', $member);
+    }
+
+    public function canDelete($member = null) {
+        return Permission::check('CMS_ACCESS_CourseAdmin', 'any', $member);
+    }
+
+    public function canCreate($member = null) {
+        return Permission::check('CMS_ACCESS_CourseAdmin', 'any', $member);
+    }
+
 }

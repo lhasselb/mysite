@@ -28,6 +28,7 @@ class CalendarPage_Controller extends Page_Controller {
 	public function init() {
 		parent::init();
 		$theme = $this->themeDir();
+
         //Requirements::css($theme.'/javascript/fullcalendar/dist/fullcalendar.print.css');
 		Requirements::css($theme.'/javascript/fullcalendar/dist/fullcalendar.min.css');
 		//Requirements::javascript($theme.'/javascript/moment/min/moment-with-locales.js');

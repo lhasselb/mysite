@@ -1,0 +1,80 @@
+/**
+ * This support file is used to style the WYSIWYG editor in the CMS
+ */
+@import url(//fonts.googleapis.com/css?family=Roboto+Condensed:300italic,400italic,700italic,400,300,700&amp;subset=all);
+@import url(//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css);
+
+/*@import "typography.css";*/
+
+/* General typography */
+body.mceContentBody {
+    min-height: 100px;
+    font-size: 12px; /*62.5%;*/
+}
+
+body.mceContentBody a.broken {
+    background-color: #FF7B71;
+    border: 1px red solid;
+}
+
+/* General typography */
+.typography a {
+    text-decoration: none;
+    outline: none !important;
+    color: #57bfe1;
+    font-weight: 500;
+}
+
+.typography a:hover {
+    color: #fff;/*#5c6873;*/
+    background-color: #57bfe1;
+    cursor: pointer;
+}
+
+.typography p {
+    color: #5c6873;
+    font-family: "Roboto Condensed", sans-serif;
+    font-weight: 300;
+    font-size: 17px;
+    margin: 0 0 10px;
+}
+
+.typography img {
+    max-width: 100%;
+    height: auto;
+    margin: 20px;
+}
+
+.typography h1,h2,h3,h4,h5,h6 {
+    font-weight: 500;
+}
+.typography h6 {
+  color: #3f444a;
+  font-size: 12px;
+  margin: 5px 0;
+}
+.typography h5 {
+  color: #3f444a;
+  font-size: 14px;
+  margin: 7px 0;
+}
+.typography h4 {
+  color: #3f444a;
+  font-size: 16px;
+  margin: 8px 0;
+}
+.typography h3 {
+  color: #3f444a;
+  font-size: 18px;
+  margin: 10px 0;
+}
+.typography h2 {
+  color: #3f444a;
+  font-size: 20px;
+  margin: 10px 0;
+}
+.typography h1 {
+  color: #3f444a;
+  font-size: 22px;
+  margin: 10px 0;
+}

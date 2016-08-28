@@ -1,0 +1,13 @@
+/**
+ * This support file is used to style the WYSIWYG editor in the CMS
+ */
+@import "editor.css";
+
+/* LocationPage.php, location.css - Jongliertreffen */
+.typography .rot {
+    color:red;
+    font-weight: 500 !important;
+}
+.typography .fett {
+    font-weight: 800 !important;
+}

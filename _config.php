@@ -18,7 +18,7 @@ i18n::set_locale('de_DE');
 i18n::set_date_format('dd.MM.YYYY');
 i18n::set_time_format('HH:mm');
 
-Director::set_environment_type('dev');//dev live
+Director::set_environment_type('live');//dev live
 
 // Enable logging: log errors and warnings
 if(getenv('OS') == "Windows_NT") {
@@ -63,7 +63,7 @@ HtmlEditorConfig::get("basic")->setButtonsForLine(1);
 HtmlEditorConfig::get("basic")->setButtonsForLine(2);
 //HtmlEditorConfig::get("basic")->setButtonsForLine(3);
 HtmlEditorConfig::get("basic")->setButtonsForLine(1,"sslink","unlink","code","pastetext");
-HtmlEditorConfig::get("basic")->setOption("content_css","/themes/jimev-theme/css/editor.css");
+HtmlEditorConfig::get("basic")->setOption("content_css","/mysite/css/editor.css");
 HtmlEditorConfig::get('basic')->enablePlugins(array(
     'ssbuttons' => sprintf('../../../%s/tinymce_ssbuttons/editor_plugin_src.js', THIRDPARTY_DIR)
 ));
@@ -87,7 +87,7 @@ HtmlEditorConfig::get("location")->setButtonsForLine(1);
 HtmlEditorConfig::get("location")->setButtonsForLine(2);
 //HtmlEditorConfig::get("basic")->setButtonsForLine(3);
 HtmlEditorConfig::get("location")->setButtonsForLine(1,"sslink","unlink","code","pastetext","styleselect");
-HtmlEditorConfig::get("location")->setOption("content_css","/themes/jimev-theme/css/location.css");
+HtmlEditorConfig::get("location")->setOption("content_css","/mysite/css/location.css");
 HtmlEditorConfig::get('location')->enablePlugins(array(
     'ssbuttons' => sprintf('../../../%s/tinymce_ssbuttons/editor_plugin_src.js', THIRDPARTY_DIR)
 ));
@@ -111,7 +111,7 @@ HtmlEditorConfig::get("calendar")->setButtonsForLine(1);
 HtmlEditorConfig::get("calendar")->setButtonsForLine(2);
 //HtmlEditorConfig::get("basic")->setButtonsForLine(3);
 HtmlEditorConfig::get("calendar")->setButtonsForLine(1,"sslink","unlink","code","pastetext","styleselect");
-HtmlEditorConfig::get("calendar")->setOption("content_css","/themes/jimev-theme/css/calendar.css");
+HtmlEditorConfig::get("calendar")->setOption("content_css","/mysite/css/calendar.css");
 HtmlEditorConfig::get('calendar')->enablePlugins(array(
     'ssbuttons' => sprintf('../../../%s/tinymce_ssbuttons/editor_plugin_src.js', THIRDPARTY_DIR)
 ));

@@ -1,0 +1,12 @@
+/**
+ * This support file is used to style the WYSIWYG editor in the CMS
+ */
+@import "editor.css";
+
+/* GoogleCalendarPage.php, calendar.css - Termine */
+.typography li.Jongliertreffen {color: #0D7813;}
+.typography li.Jongliertreffen-faellt-leider-aus {color: #A32929;}
+.typography li.Jonglier-Events-und-Veranstaltungen {color: #E0C240;}
+.typography li.Workshops {color: #060D5E;}
+.typography li.Jongliertreffen,.typography li.Jongliertreffen-faellt-leider-aus,.typography li.Jonglier-Events-und-Veranstaltungen,
+.typography li.Workshops {font-weight: 500 !important;}

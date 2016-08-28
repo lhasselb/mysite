@@ -302,10 +302,21 @@ class Course extends News
         return static::$_cached_get_by_url[$str];
     }
 
+    public function canView($member = null) {
+        return Permission::check('CMS_ACCESS_NewsAdmin', 'any', $member);
+    }
+
+    public function canEdit($member = null) {
+        return Permission::check('CMS_ACCESS_NewsAdmin', 'any', $member);
+    }
+
     public function canDelete($member = null) {
-        //Avoid deleting Course as from within NewsAdmin
         if (Controller::curr() == 'NewsAdmin') return false;
-        else return Permission::check('SITETREE_EDIT_ALL', 'any', $member);
+        return Permission::check('CMS_ACCESS_NewsAdmin', 'any', $member);
+    }
+
+    public function canCreate($member = null) {
+        return Permission::check('CMS_ACCESS_NewsAdmin', 'any', $member);
     }
 
 }
