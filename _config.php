@@ -18,7 +18,7 @@ i18n::set_locale('de_DE');
 i18n::set_date_format('dd.MM.YYYY');
 i18n::set_time_format('HH:mm');
 
-Director::set_environment_type('live');//dev live
+Director::set_environment_type('dev');//dev live
 
 // Enable logging: log errors and warnings
 if(getenv('OS') == "Windows_NT") {
@@ -116,11 +116,12 @@ HtmlEditorConfig::get('calendar')->enablePlugins(array(
     'ssbuttons' => sprintf('../../../%s/tinymce_ssbuttons/editor_plugin_src.js', THIRDPARTY_DIR)
 ));
 
-
+#DEFAULT
 HtmlEditorConfig::get('cms')->setOption(
         'extended_valid_elements','span'
         //'div[itemprop|itemscope|itemtype],' . 'span[itemprop]' . 'meta[itemprop|content]'
     );
+HtmlEditorConfig::get("cms")->setOption("content_css","/mysite/css/editor.css");
 HtmlEditorConfig::get("cms")->enablePlugins('template');
 HtmlEditorConfig::get("cms")->insertButtonsAfter('tablecontrols', 'template');
 //SS_Log::log(SSViewer::get_theme_folder().'/templates/helper/pdfIcon.html',SS_Log::WARN);

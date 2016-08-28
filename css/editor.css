@@ -17,6 +17,17 @@ body.mceContentBody a.broken {
     border: 1px red solid;
 }
 
+body.mceContentBody img.left {  float: left; margin-top: 5px;}
+body.mceContentBody img.right {  float: right; margin-top: 5px;}
+body.mceContentBody img.center {  display: block;  margin: 0 auto 0 auto;  text-align: center;}
+body.mceContentBody img.leftAlone {  float: left;  margin-right: 100%;}
+body.mceContentBody img.rightAlone {  float: right;  margin-left: 100%;}
+.typography img {
+    max-width: 100%;
+    height: auto;
+    margin: 20px;
+}
+
 /* General typography */
 .typography a {
     text-decoration: none;
@@ -37,12 +48,6 @@ body.mceContentBody a.broken {
     font-weight: 300;
     font-size: 17px;
     margin: 0 0 10px;
-}
-
-.typography img {
-    max-width: 100%;
-    height: auto;
-    margin: 20px;
 }
 
 .typography h1,h2,h3,h4,h5,h6 {
