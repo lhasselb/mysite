@@ -27,25 +27,25 @@ class News extends DataObject
         'onHomepage' => 'Wird auf der Startseite angezeigt?',
         'Thumbnail' => 'Bild'
     );
-
+    // Used for $summary_fields
     public function getNiceNewsDate() {
         $date = new Date();
         $date->setValue($this->NewsDate);
         return $date->Format('d.m.Y');
     }
-
+    // Used for $summary_fields
     public function getThumbnail() {
         return $this->NewsImage()->SetHeight(50);
     }
-
+    // Used for $summary_fields
     public function onHomepage() {
         return 'Ja';
     }
-
+    // Offer a Title
     public function getTitle() {
         return $this->NewsTitle;
     }
-
+    // Get the section - Frontend
     public function getNewsSection() {
         return empty($this->Section) ? 'News' : $this->Section;
     }

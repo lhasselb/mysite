@@ -27,43 +27,30 @@ class Course extends News
         'SectionList' => 'Bereiche',
         'Thumbnail' => 'Bild',
     );
-
-    /*public function News()
-    {
-        if(!$this->HomepageSectionID) return 'Nicht auf der Startseite.';
-        elseif($this->HomepageSectionID) {
-            return DataObject::get_by_id('SectionPage',$this->HomepageSectionID)->Title;
-        }
-    }*/
-
-    public function SectionList()
-    {
+    // Used for $summary_fields
+    public function getSectionList() {
         if($this->Sections()->exists()) {
             return implode(', ', $this->Sections()->column('Title'));
         }
     }
-
-    public function getThumbnail()
-    {
+    // Used for $summary_fields
+    public function getThumbnail() {
         return $this->CourseImage()->SetHeight(50);
     }
-
+    // Used for $summary_fields
     public function onHomepage() {
         return ($this->HomepageSectionID > 0 ) ? 'Ja' : 'Nein';
     }
-
-    public function getTitle()
-    {
+    // Offer a Title
+    public function getTitle() {
         return $this->CourseTitle;
     }
-
-    public function getMenuTitle()
-    {
+    // Offer a MenuTitle
+    public function getMenuTitle() {
         return $this->CourseTitle;
     }
-
-    public function getNewsSection()
-    {
+    // Get the section - Frontend
+    public function getNewsSection() {
             return $this->HomepageSection()->Title;
     }
 

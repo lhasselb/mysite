@@ -10,6 +10,7 @@ class HomepageSlider extends DataObject
         'Headline' => 'Varchar(255)',
         'LinkText' => 'Varchar(50)',
         'ExternalURL' => 'Text',
+        'HeadlineColor' => "Enum('Weiss,Schwarz,Grau,Blau(wie die Links)','Weiss')",
         'SortOrder'=>'Int'
     );
 
@@ -45,10 +46,14 @@ class HomepageSlider extends DataObject
         $fields->removeByName('Headline');
         $fields->removeByName('LinkText');
         $fields->removeByName('SliderImage');
+        $fields->removeByName('SortOrder');
+        $fields->removeByName('HeadlineColor');
 
         // Slider Headline
         //$headline = HtmlEditorField::create('Headline',_t('Homepage.HEADLINE','Slider Headline'));
         $headline = TextareaField::create('Headline','Schlagzeile');
+        // Headline Color used on the SliderImage
+        $color = DropdownField::create('HeadlineColor','Schlagzeilen-Farbe:',singleton('HomepageSlider')->dbObject('HeadlineColor')->enumValues());
 
         // Settings for UploadField : SliderImage
         $sliderUploadField = new UploadField('SliderImage', 'Bild');
@@ -57,7 +62,7 @@ class HomepageSlider extends DataObject
         $sliderUploadField->setDisplayFolderName('homepage');
 
         // Link Text
-        $linkText = TextField::create('LinkText', 'Link Text');
+        $linkText = TextField::create('LinkText', 'Link-Text');
 
         // The two options for which type of link to add
         $linkOptions = array('ExternalURL' => 'Link zu einer externer Seite', 'InternalURLID' => 'Link zu einer internen Seite');
@@ -71,7 +76,7 @@ class HomepageSlider extends DataObject
         $internalURLField = TreeDropdownField::create('InternalURLID', 'Wählen Sie eine interne Seite', 'SiteTree')
             ->setTreeBaseID(0)->addExtraClass('switchable');
 
-        $fields->addFieldsToTab('Root.Main', array($headline,$sliderUploadField,$linkText,$linkTypeField,$externalURLField, $internalURLField));
+        $fields->addFieldsToTab('Root.Main', array($headline,$color,$sliderUploadField,$linkText,$linkTypeField,$externalURLField, $internalURLField));
 
         return $fields;
     }
@@ -120,4 +125,26 @@ class HomepageSlider extends DataObject
         }
         return false;
     }
+
+    public function getColor()
+    {
+        //Grau #8797ae; Weiss #ffffff, Schwarz #000000, Blau #57bfe1;
+        $color = $this->getField('HeadlineColor');
+        SS_Log::log($color, SS_Log::WARN);
+        switch ($color) {
+            case "Weiss":
+                return '#ffffff !important';
+                break;
+            case "Schwarz":
+                return '#000000 !important';
+                break;
+            case "Grau":
+                return '#8797ae !important';
+                break;
+            case "Blau":
+                return '#57bfe1 !important';
+                break;
+        }
+    }
+
 }
