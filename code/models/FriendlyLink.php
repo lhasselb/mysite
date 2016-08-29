@@ -17,8 +17,8 @@ class FriendlyLink extends DataObject
     );
 
     private static $summary_fields = array(
+        'Description'=>'Beschreibung',
         'FriendlyLink'=>'Link',
-        'Description'=>'Beschreibung'
     );
 
     public function getTitle() {

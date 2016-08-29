@@ -25,10 +25,13 @@ class LinkPage extends Page
             HtmlEditorField::create('Content', $this->fieldLabel('Content'))
             ->setRows(3)
         );*/
+        $fields->removeByName('Content');
         $config = GridFieldConfig_RelationEditor::create();
         //$config->removeComponentsByType($config->getComponentByType('GridFieldAddNewButton'));
         $gridfield = GridField::create("Linkset", "Link-Sammlungen", $this->Linkset(), $config);
-        $fields->addFieldToTab('Root.Link-Sammlungen', $gridfield);
+        //$fields->addFieldToTab('Root.Link-Sammlungen', $gridfield);
+        $fields->addFieldToTab('Root.Main', $gridfield,'Metadata');
+
         return $fields;
     }
 

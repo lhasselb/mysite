@@ -1,9 +1,16 @@
 <?php
+/**
+ * ContactAddressPage object
+ *
+ * @package mysite
+ * @subpackage pages
+ *
+ */
 class ContactAddressPage extends Page
 {
     private static $singular_name = 'Adresse und Vorstand';
     private static $description = 'Seite für Adresse und Vorstand';
-    //private static $icon = 'mysite/images/treffen.png';
+    //private static $icon = 'mysite/images/image.png';
     private static $can_be_root = false;
     private static $allowed_children = 'none';
 
@@ -35,6 +42,21 @@ class ContactAddressPage extends Page
 
 class ContactAddressPage_Controller extends Page_Controller
 {
+    /**
+     * An array of actions that can be accessed via a request. Each array element should be an action name, and the
+     * permissions or conditions required to allow the user to access it.
+     *
+     * <code>
+     * array (
+     *     'action', // anyone can access this action
+     *     'action' => true, // same as above
+     *     'action' => 'ADMIN', // you must have ADMIN permissions to access this action
+     *     'action' => '->checkAction' // you can only access this action if $this->checkAction() returns true
+     * );
+     * </code>
+     *
+     * @var array
+     */
     private static $allowed_actions = array ();
 
     public function init() {
@@ -42,4 +64,4 @@ class ContactAddressPage_Controller extends Page_Controller
         $theme = $this->themeDir();
     } //init()
 
-}
+} //eof
