@@ -9,7 +9,8 @@ class HomepageSlider extends DataObject
     private static $db = array(
         'Headline' => 'Varchar(255)',
         'LinkText' => 'Varchar(50)',
-        'ExternalURL' => 'Text'
+        'ExternalURL' => 'Text',
+        'SortOrder'=>'Int'
     );
 
     private static $has_one = array(
@@ -24,6 +25,9 @@ class HomepageSlider extends DataObject
         'LinkText' => 'Text',
         'GridThumbnail' => 'Vorschau'
     );
+
+    /* SortOrder used by sortable gridfield */
+    public static $default_sort='SortOrder';
 
     /**
      * @return FieldList

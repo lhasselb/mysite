@@ -13,12 +13,17 @@ class HomePage extends Page
         'News' => 'News'
     );
 
-	function getCMSFields() {
-		$fields = parent::getCMSFields();
+    function getCMSFields() {
+
+        $fields = parent::getCMSFields();
+
+        // SLIDER
         $sliderConfig = GridFieldConfig_RecordEditor::create();
+        $sliderConfig->addComponent(new GridFieldSortableRows('SortOrder'));
         $sliderGridField = new GridField('SLider', 'Bild(er) auf der Startseite', $this->Sliders());
         $sliderGridField->setConfig($sliderConfig);
 
+        // ALARM
         $alarmConfig = GridFieldConfig_RecordEditor::create();
         if ($this->Alarm()->count() > 0) {
             // remove the buttons if we don't want to allow more records to be added/created
