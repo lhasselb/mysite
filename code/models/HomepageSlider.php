@@ -10,7 +10,7 @@ class HomepageSlider extends DataObject
         'Headline' => 'Varchar(255)',
         'LinkText' => 'Varchar(50)',
         'ExternalURL' => 'Text',
-        'HeadlineColor' => "Enum('Weiss,Schwarz,Grau,Blau(wie die Links)','Weiss')",
+        'HeadlineColor' => "Enum('Weiss,Schwarz,Grau,Blau','Weiss')",
         'SortOrder'=>'Int'
     );
 
@@ -133,16 +133,16 @@ class HomepageSlider extends DataObject
         SS_Log::log($color, SS_Log::WARN);
         switch ($color) {
             case "Weiss":
-                return '#ffffff !important';
+                return 'color: #ffffff !important;';
                 break;
             case "Schwarz":
-                return '#000000 !important';
+                return 'color: #000000 !important;';
                 break;
             case "Grau":
-                return '#8797ae !important';
+                return 'color: #8797ae !important;';
                 break;
             case "Blau":
-                return '#57bfe1 !important';
+                return 'color: #57bfe1 !important;';
                 break;
         }
     }

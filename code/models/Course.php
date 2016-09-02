@@ -10,6 +10,7 @@ class Course extends News
     private static $db = array(
         'CourseTitle' => 'Varchar(255)',
         'URLSegment' => 'Varchar(255)',
+        'CourseShort' => 'HTMLText',
         'CourseContent' => 'HTMLText',
     );
 
@@ -93,7 +94,7 @@ class Course extends News
                 ->setRows(12)
                 ->setDescription('Bitte die maximale Textlänge begrenzen. Es handelt sich hier um eine News für die Homepage!')
             );
-            $fields->removeFieldsFromTab('Root.Main',array('CourseTitle','URLSegment','MenuTitle','Section','CourseContent','CourseImage'));
+            $fields->removeFieldsFromTab('Root.Main',array('CourseTitle','URLSegment','MenuTitle','Section','CourseContent','CourseShort','CourseImage'));
         }
         if($controller == 'CourseAdmin')
         {
@@ -136,7 +137,7 @@ class Course extends News
             $courseImage->getValidator()->allowedExtensions = array('jpg', 'gif', 'png');
             $courseImage->setFolderName('kurse')->setDisplayFolderName('kurse');
             $fields->addFieldToTab('Root.Main', $courseImage);
-
+            $fields->addFieldToTab('Root.Main', HtmlEditorField::create('CourseShort', $this->fieldLabel('CourseShort'))->setRows(14));
             $fields->addFieldToTab('Root.Main', HtmlEditorField::create('CourseContent', $this->fieldLabel('CourseContent')));
             $fields->removeFieldsFromTab('Root.Main',array('NewsTitle','NewsContent','Section','NewsImage','NewsLink','HomepageSectionID'));
         }
@@ -149,6 +150,7 @@ class Course extends News
         $labels['CourseTitle'] = 'Kursname';
         $labels['MenuTitle'] = 'Navigationsbezeichnung';
         $labels['URLSegment'] = 'URL-Segment';
+        $labels['CourseShort'] = 'Kurs-Kurzbeschreibung';
         $labels['CourseContent'] = 'Kurs-Inhalt';
         $labels['CourseImage'] = 'Kurs-Bild';
         $labels['HomepageSection'] = 'Bereich';
