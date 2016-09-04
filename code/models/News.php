@@ -23,7 +23,7 @@ class News extends DataObject
 
     private static $summary_fields = array(
         'NewsTitle' => 'Schlagzeile',
-        'NiceNewsDate' => 'Datum',
+        'NiceNewsDate' => 'Anzeige-Datum',
         'onHomepage' => 'Wird auf der Startseite angezeigt?',
         'Thumbnail' => 'Bild'
     );
