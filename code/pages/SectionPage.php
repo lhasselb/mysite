@@ -50,7 +50,10 @@ class SectionPage_Controller extends Page_Controller
         //SS_Log::log('start='.$start,SS_Log::WARN);
         //SS_Log::log('list count='.$this->Courses()->count(),SS_Log::WARN);
         $list = $this->Courses()->sort('NewsDate', 'DESC');
-        $courses = PaginatedList::create($list,$this->getRequest())->setPageLength($num);
+        if ($list) 
+        {
+            $courses = PaginatedList::create($list,$this->getRequest())->setPageLength($num);
+        }
         //SS_Log::log('paginated course count='.$courses->count(),SS_Log::WARN);
         return $courses;
     }
