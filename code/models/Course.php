@@ -92,8 +92,11 @@ class Course extends News
             $fields->addFieldToTab('Root.Main',
                 HtmlEditorField::create('NewsContent', $this->fieldLabel('NewsContent'))
                 ->setRows(12)
-                ->setDescription('Bitte die maximale Textlänge begrenzen. Es handelt sich hier um eine News für die Homepage!')
+                //->setDescription('Bitte die maximale Textlänge begrenzen. Es handelt sich hier um eine News für die Homepage!')
             );
+            $fields->addFieldToTab('Root.Main', new LiteralField('Info','
+            <p><span style="color:red;">Achtung: </span>Bitte die maximale Textlänge begrenzen. Es handelt sich hier um eine News für die Homepage!</p>'),'NewsContent');
+            
             $fields->removeFieldsFromTab('Root.Main',array('CourseTitle','URLSegment','MenuTitle','Section','CourseContent','CourseShort','CourseImage'));
         }
         if($controller == 'CourseAdmin')

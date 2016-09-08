@@ -76,9 +76,10 @@ class News extends DataObject
 
         $fields->addFieldToTab('Root.Main',
             HtmlEditorField::create('NewsContent', $this->fieldLabel('NewsContent'))
-            ->setDescription('Bitte die maximale Textlänge begrenzen. Es handelt sich hier um eine News für die Homepage!')
+            //->setDescription('Bitte die maximale Textlänge begrenzen. Es handelt sich hier um eine News für die Homepage!')
             ->setRows(12)
         );
+
         return $fields;
     }
 
