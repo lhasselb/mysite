@@ -11,7 +11,8 @@ class Gallery extends DataObject
     );
 
     private static $belongs_to = array(
-        'Project' => 'ProjectPage.Gallery'
+        'Project' => 'ProjectPage.Gallery',
+        'Course' => 'Course.Album'
     );
 
     private static $has_one = array(
