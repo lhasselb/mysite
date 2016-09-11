@@ -15,7 +15,7 @@ class SectionPage extends Page
         'Title' => 'Bereich',
     );
 
-    function getCMSFields(){
+    public function getCMSFields(){
         $fields = parent::getCMSFields();
         $fields->removeFieldFromTab('Root.Main','Content');
         $fields->addFieldToTab('Root.Main', new LiteralField('Info','

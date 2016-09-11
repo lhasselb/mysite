@@ -15,6 +15,7 @@ class ClubHolder extends Page
     private static $allowed_children = array(
         '*Page',
         'EnrollPage',
+        'ContactAddressPage'
     );
 
     function getCMSFields(){
