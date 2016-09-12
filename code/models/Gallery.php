@@ -1,5 +1,5 @@
 <?php
-class Gallery extends DataObject
+class Gallery extends DataObject implements Linkable
 {
     private static $singular_name = 'Album';
 
@@ -12,7 +12,7 @@ class Gallery extends DataObject
 
     private static $belongs_to = array(
         'Project' => 'ProjectPage.Gallery',
-        'Course' => 'Course.Album'
+        //'Course' => 'Course.Album'
     );
 
     private static $has_one = array(
@@ -206,11 +206,53 @@ class Gallery extends DataObject
         }
         return Convert::array2json($data);
     }
-    function Link() {
-        $fotoPage = DataObject::get_one('FotosPage');//->Link('album').'?Album='.$this->AlbumName;
+
+    public function AlbumLink() {
+        $fotoPage = DataObject::get_one('FotosPage');
         return Controller::join_links($fotoPage->Link(),'album',$this->ID);
-        //Link("showfaculty")."/".$this->ID;
-        //return $this->AlbumName;
+    }
+
+    public function Link() {
+        $fotoPage = DataObject::get_one('FotosPage');
+        return $fotoPage->Link().'#cbp='.$fotoPage->Link().'album/'.$this->ID;
+        //return Controller::join_links($fotoPage->Link(),'album',$this->ID).'#cbp='.$fotoPage->Link().'album/'.$this->ID;
+    }
+
+    /**
+     * Label displayed in "Insert link" menu
+     * @return string
+     */
+    public static function LinkLabel() {
+         return 'Foto-Album';
+    }
+
+    /**
+     * Replace a "[{$class}_link,id=n]" shortcode with a link to the page with the corresponding ID.
+     * @param array  $arguments Arguments to the shortcode
+     * @param string $content   Content of the returned link (optional)
+     * @param object $parser    Specify a parser to parse the content (see {@link ShortCodeParser})
+     * @return string anchor Link to the DO page
+     *
+     * @return string
+     */
+    static public function link_shortcode_handler($arguments, $content = null, $parser = null) {
+        if (!isset($arguments['id']) || !is_numeric($arguments['id'])) {
+            return;
+        }
+
+        $id =  $arguments['id'];
+        $do = DataObject::get_one(__CLASS__, "ID=$id");
+
+        if (!$do) {
+            $do = DataObject::get_one('ErrorPage', '"ErrorCode" = \'404\'');
+            return $do->Link();
+        }
+
+        if ($content) {
+            return sprintf('<a href="%s">%s</a>', $do->Link(), $parser->parse($content));
+        } else {
+            return $do->Link();
+        }
     }
 
 /*

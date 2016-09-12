@@ -139,3 +139,5 @@ HtmlEditorConfig::get("cms")->setOptions(array('template_templates' => array(
 // Add a Google Maps shortcode
 //ShortcodeParser::get('default')->register('directionsgooglemap', array('LocationPage', 'DirectionsGoogleMap'));
 //ShortcodeParser::get('default')->register('existinggooglemap', array('LocationPage', 'ExistingGoogleMap'));
+
+ShortcodeParser::get('default')->register('gallery_link', array('Gallery', 'link_shortcode_handler'));
