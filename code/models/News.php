@@ -80,6 +80,8 @@ class News extends DataObject
             ->setRows(12)
         );
 
+        $fields->fieldByName('Root.Main')->setTitle('Haupt-Inhalt');
+
         return $fields;
     }
 
