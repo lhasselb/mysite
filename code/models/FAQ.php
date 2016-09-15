@@ -56,6 +56,7 @@ class FAQ extends DataObject
         ->setCanCreate(true);     // new tag DataObjects can be created
 
         $fields->addFieldsToTab('Root.Main', array($question,$answer,$tag));
+
         return $fields;
     }
 }

@@ -6,8 +6,8 @@ class Gallery extends DataObject implements Linkable
     private static $db = array(
         'ImageFolder' => 'Varchar()',
         'AlbumName' => 'Varchar()',
-        'AlbumDescription' => 'Varchar()',
-        'AlbumYear' => 'Date',
+        'AlbumDescription' => 'Varchar(255)',
+        'AlbumDate' => 'Date',
     );
 
     private static $belongs_to = array(
@@ -39,17 +39,24 @@ class Gallery extends DataObject implements Linkable
     private static $summary_fields = array(
         'AlbumName' => 'Name',
         'AlbumDescription' => 'Beschreibung',
-        'NiceAlbumYear' => 'Datum',
+        'NiceAlbumDate' => 'Datum',
         'getTags' => 'Tags',
         'ImageNumber' => 'Anzahl der Bilder',
         'ImageFolder' => 'Verzeichnis'
     );
 
-    public function getNiceAlbumYear()
+    public function getNiceAlbumDate()
     {
         $date = new Date();
-        $date->setValue($this->AlbumYear);
+        $date->setValue($this->AlbumDate);
         return $date->Format('d.m.Y');
+    }
+
+    public function getAlbumYear() {
+        $date = new Date();
+        $date->setValue($this->AlbumDate);
+        //SS_Log::log('YEAR='. $date->Year(), SS_Log::WARN);
+        return $date->Year();
     }
 
     public function getImageNumber() {
@@ -69,6 +76,13 @@ class Gallery extends DataObject implements Linkable
         }
     }
 
+    /*
+     * Used to compare within array_unique() in FotosPage.php
+     */
+    public function __toString() {
+        return $this->getAlbumYear();
+    }
+
     public function getCMSFields() {
 
         $fields = parent::getCMSFields();
@@ -80,7 +94,7 @@ class Gallery extends DataObject implements Linkable
         $fields->fieldByName('Root.Main')->setTitle('Album');
 
         $fields->addFieldToTab('Root.Main',ReadonlyField::create('ImageFolder','Verzeichnis'));
-        $year = DateField::create('AlbumYear','Datum')
+        $year = DateField::create('AlbumDate','Datum')
             ->setConfig('dataformat', 'yyyy')
             ->setConfig('showcalendar', true);
         $year->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('dd.MM.yyyy'))));

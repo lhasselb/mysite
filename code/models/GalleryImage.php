@@ -6,7 +6,7 @@ class GalleryImage extends DataObject {
     private static $db = array(
       'SortOrder' => 'Int',
       'Title' => 'Varchar',
-      'Description' => 'Varchar(400)'
+      'Description' => 'Varchar'
   );
 
   // One-to-one relationship with gallery page

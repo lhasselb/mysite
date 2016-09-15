@@ -9,7 +9,8 @@ class FAQTag extends DataObject
         'FAQS' => 'FAQ'
     );
 
-    function getCMSFields(){
+    function getCMSFields()
+    {
         $fields = parent::getCMSFields();
         return $fields;
     }

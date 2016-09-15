@@ -23,18 +23,33 @@ class FotosPage extends Page
     );
 
     public function getFotosPageTags() {
-
         $usedtags = array();
         foreach ($this->Galleries() as $gallery) {
             $currentTagList = $gallery->GalleryTags();
             foreach ($currentTagList as $tag) {
+                // Add GalleryTag object to array
                 array_push($usedtags,$tag);
             }
         }
         // Limit to used ones
+        // this requires a __toString() method for the object compared
+        // see GalleryTag __toString()
         return new ArrayList(array_unique($usedtags));
         // return all even the non used ones
         //return GalleryTag::get();
+    }
+
+    public function getFotosPageYears() {
+
+        $usedYears = array();
+        foreach ($this->Galleries() as $gallery) {
+            array_push($usedYears,$gallery);
+        }
+
+        // Limit to used ones
+        // this requires a __toString() method for the object compared
+        // see Gallery __toString()
+        return new ArrayList(array_unique($usedYears));
     }
 
 

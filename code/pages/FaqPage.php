@@ -17,6 +17,11 @@ class FaqPage extends Page
         $config = GridFieldConfig_RelationEditor::create();
         $gridfield = GridField::create('FAQS', 'FAQs', $this->FAQS(), $config);
         $fields->addFieldToTab('Root.FAQs', $gridfield);
+
+        $gridfield = GridField::create('Tags', 'Tags', FAQTag::get(), GridFieldConfig_RecordEditor::create());
+        $fields->addFieldToTab('Root.Tags', $gridfield);
+
+
         return $fields;
     }
 

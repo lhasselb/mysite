@@ -130,7 +130,7 @@ class HomepageSlider extends DataObject
     {
         //Grau #8797ae; Weiss #ffffff, Schwarz #000000, Blau #57bfe1;
         $color = $this->getField('HeadlineColor');
-        SS_Log::log($color, SS_Log::WARN);
+        //SS_Log::log($color, SS_Log::WARN);
         switch ($color) {
             case "Weiss":
                 return 'color: #ffffff !important;';
