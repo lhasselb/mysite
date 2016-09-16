@@ -6,7 +6,7 @@ class LinkSet extends DataObject
     static $description = 'Zusammenfassung von Links';
 
     private static $db = array(
-        'Title' => 'Varchar',
+        'Title' => 'Varchar(255)',
     );
 
     private static $has_one = array(

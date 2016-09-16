@@ -11,7 +11,7 @@ class LocationPage extends Page
        'Schedule' => 'HTMLVarchar(255)',            // Wann
        'Location' => 'HTMLVarchar(255)',            // Wo
        'Contact' => 'HTMLVarchar(255)',         // Ansprechpartner
-       'Remark' => 'HTMLVarchar(255)',          // Bemerkung (für die Uebersicht)
+       'Remark' => 'HTMLText(255)',          // Bemerkung (für die Uebersicht)
        'LocationDescription' => 'Varchar(255)', // Beschreibung
        'Map' => 'Text()',             // Karte
     );
