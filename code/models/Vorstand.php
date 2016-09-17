@@ -44,7 +44,7 @@ class Vorstand extends DataObject
     {
         $fields = parent::getCMSFields();
         $uploadfoldername = substr($this->Link(), 1, -1);
-        SS_Log::log($uploadfoldername ,SS_Log::WARN);
+        //SS_Log::log($uploadfoldername ,SS_Log::WARN);
         $fields->removeByName('ContactAddressPageID');
         $name = TextField::create('Name','Name');
         $role = TextField::create('Role','Funktion');

@@ -14,7 +14,7 @@ class FaqPage extends Page
     function getCMSFields()
     {
         $fields = parent::getCMSFields();
-        $config = GridFieldConfig_RelationEditor::create();
+        $config = GridFieldConfig_RecordEditor::create();
         $gridfield = GridField::create('FAQS', 'FAQs', $this->FAQS(), $config);
         $fields->addFieldToTab('Root.FAQs', $gridfield);
 

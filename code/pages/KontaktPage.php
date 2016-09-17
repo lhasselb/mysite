@@ -10,6 +10,7 @@ class KontaktPage extends Page
     private static $db = array(
        //'Mailinglists' => 'HTMLText'
     );
+
     private static $has_many = array(
         'FacebookLinks' => 'FacebookLink'
     );
@@ -17,13 +18,8 @@ class KontaktPage extends Page
     function getCMSFields()
     {
         $fields = parent::getCMSFields();
-        $facebooConfig = GridFieldConfig_RelationEditor::create();
-
-        $facebookGruppen = GridField::create('FacebookLinks', 'Facebook Gruppen', $this->FacebookLinks(), $facebooConfig);
+        $facebookGruppen = GridField::create('FacebookLinks', 'Facebook Gruppen', $this->FacebookLinks(), GridFieldConfig_RecordEditor::create());
         $fields->addFieldToTab('Root.Facebook', $facebookGruppen);
-
-        //$mailingLists = HtmlEditorField::create('Mailinglists','Mailing-Listen');
-        //$fields->addFieldToTab('Root.Seiteninhalt', $mailingLists);
         return $fields;
     }
 
