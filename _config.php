@@ -141,3 +141,4 @@ HtmlEditorConfig::get("cms")->setOptions(array('template_templates' => array(
 //ShortcodeParser::get('default')->register('existinggooglemap', array('LocationPage', 'ExistingGoogleMap'));
 
 ShortcodeParser::get('default')->register('gallery_link', array('Gallery', 'link_shortcode_handler'));
+ShortcodeParser::get('default')->register('project_link', array('Project', 'link_shortcode_handler'));

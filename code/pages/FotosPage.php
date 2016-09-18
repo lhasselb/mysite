@@ -22,6 +22,17 @@ class FotosPage extends Page
         'Galleries' => 'Gallery',
     );
 
+    /*public function Galleries() {
+        return Gallery::get();
+    }*/
+
+    public function getCMSFields() {
+        $fields = parent::getCMSFields();
+        $galleries = CheckboxSetField::create('Galleries','Zeige Alben', DataObject::get('Gallery')->map());
+        $fields->addFieldToTab('Root.Main', $galleries,'Content');
+        return $fields;
+    }
+
     public function getFotosPageTags() {
         $usedtags = array();
         foreach ($this->Galleries() as $gallery) {
@@ -50,14 +61,6 @@ class FotosPage extends Page
         // this requires a __toString() method for the object compared
         // see Gallery __toString()
         return new ArrayList(array_unique($usedYears));
-    }
-
-
-    function getCMSFields() {
-        $fields = parent::getCMSFields();
-        $galleries = CheckboxSetField::create('Galleries','Zeige Alben', DataObject::get('Gallery')->map());
-        $fields->addFieldToTab('Root.Main', $galleries,'Content');
-        return $fields;
     }
 
 }

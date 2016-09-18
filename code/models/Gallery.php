@@ -4,23 +4,23 @@ class Gallery extends DataObject implements Linkable
     private static $singular_name = 'Album';
 
     private static $db = array(
-        'ImageFolder' => 'Varchar()',
-        'AlbumName' => 'Varchar()',
+        'ImageFolder' => 'Varchar(255)',
+        'AlbumName' => 'Varchar(255)',
         'AlbumDescription' => 'Varchar(255)',
         'AlbumDate' => 'Date',
     );
 
     private static $belongs_to = array(
-        'Project' => 'ProjectPage.Gallery',
+        //'Project' => 'ProjectPage.Gallery',
         //'Course' => 'Course.Album'
-    );
-
-    private static $has_one = array(
-        'AlbumImage' => 'Image'
     );
 
     private static $belongs_many_many = array(
         'FotosPage' => 'FotosPage'
+    );
+
+    private static $has_one = array(
+        'AlbumImage' => 'Image'
     );
 
     private static $has_many = array(
@@ -39,11 +39,19 @@ class Gallery extends DataObject implements Linkable
     private static $summary_fields = array(
         'AlbumName' => 'Name',
         'AlbumDescription' => 'Beschreibung',
-        'NiceAlbumDate' => 'Datum',
+        'getNiceAlbumDate' => 'Datum',
         'getTags' => 'Tags',
-        'ImageNumber' => 'Anzahl der Bilder',
+        'getImageNumber' => 'Anzahl der Bilder',
         'ImageFolder' => 'Verzeichnis'
     );
+
+    public function getTags() {
+        $tags = [];
+        foreach ($this->GalleryTags() as $tag) {
+            array_push($tags,$tag->Title);
+        }
+        return implode(',',$tags);
+    }
 
     public function getNiceAlbumDate()
     {
@@ -52,15 +60,15 @@ class Gallery extends DataObject implements Linkable
         return $date->Format('d.m.Y');
     }
 
+    public function getImageNumber() {
+        return $this->GalleryImages()->count();
+    }
+
     public function getAlbumYear() {
         $date = new Date();
         $date->setValue($this->AlbumDate);
         //SS_Log::log('YEAR='. $date->Year(), SS_Log::WARN);
         return $date->Year();
-    }
-
-    public function getImageNumber() {
-        return $this->GalleryImages()->count();
     }
 
     public function getTitle() {
@@ -163,14 +171,6 @@ class Gallery extends DataObject implements Linkable
         return $labels;
     }
 
-    public function getTags() {
-        $tags = [];
-        foreach ($this->GalleryTags() as $tag) {
-            array_push($tags,$tag->Title);
-        }
-        return implode(',',$tags);
-    }
-
     public function getSortedImages() {
         return $this->GalleryImages()->sort('SortOrder');
     }
@@ -269,36 +269,4 @@ class Gallery extends DataObject implements Linkable
         }
     }
 
-/*
-    public function getImagesString() {
-        $images_string = "data = [";
-        $images = $this->getSortedImages();
-        $num_items = count($images);
-        $i = 1;
-        foreach ($images as $image)
-        {
-            $thumb = Convert::raw2js($image->Image()->CroppedImage(80, 60)->URL);
-            $img = Convert::raw2js($image->Image()->CroppedImage(400, 300)->URL);
-            $big = Convert::raw2js($image->Image()->URL);
-            $title = Convert::raw2js($image->Title);
-            $description = Convert::raw2js($image->Description);
-            $images_string .= "{thumb: '$thumb', image: '$img', big: '$big', title: '$title', description: '$description' }";
-            if ($i ++ < $num_items)
-                $images_string .= ",";
-        }
-        $images_string .= "]";
-
-        return $images_string;
-    }
-
-    public function contentcontrollerInit() {
-        $theme = $this->themeDir();
-        if($this->GalleryImages()->count() > 0) {
-            Requirements::css($theme.'mysite/javascript/galleria/themes/twelve/galleria.twelve.css');
-            Requirements::javascript($theme.'/bower_components/galleria/src/galleria.js');
-            Requirements::javascript('mysite/javascript/galleria/themes/twelve/galleria.twelve.min.js');
-            Requirements::javascriptTemplate('mysite/javascript/Gallery.js', array("imageJson" => $this->ImagesString()));
-        }
-    } //init
-*/
 }
