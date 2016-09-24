@@ -79,6 +79,8 @@ class HomePage_Controller extends Page_Controller
      * @return PaginatedList list containing news items
      */
     public function PaginatedLatestNews($num = 10) {
+        $today = date("Y-m-d");
+        SS_Log::log('Today='.$today,SS_Log::WARN);
         $start = isset($_GET['start']) ? (int) $_GET['start'] : 0;
         /*
         $itemsToSkip = 0;
@@ -89,8 +91,13 @@ class HomePage_Controller extends Page_Controller
         ->filterAny(array(
             'ClassName' => 'News',
             'HomepageSectionID:GreaterThan' => '0'
-        ));
+        ))
+        ->filter('ExpireDate:GreaterThan' ,$today);
+        //->exclude('ExpireDate:LessThan',$today);
         //->sort('NewsDate','DESC');
+        foreach ($list as $news) {
+            SS_Log::log('ExpireDate'.$news->ExpireDate,SS_Log::WARN);
+        }
 
         return new PaginatedList($list, $this->getRequest());
     }

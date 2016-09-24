@@ -76,6 +76,13 @@ class Course extends News
                 ->setConfig('showcalendar', true);
             $newsDate->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('dd.MM.yyyy'))));
             $fields->addFieldToTab('Root.Main', $newsDate);
+
+            $expireDate = DateField::create('ExpireDate', $this->fieldLabel('ExpireDate'))
+                ->setConfig('dataformat', 'dd.MM.yyyy')
+                ->setConfig('showcalendar', true);
+            $expireDate->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('dd.MM.yyyy'))));
+            $fields->addFieldToTab('Root.Main', $expireDate);
+
             //$fields->addFieldToTab('Root.News', LinkField::create('NewsLinkID', 'Link'));
             $fields->removeByName('NewsLinkID');
             $fields->addFieldToTab('Root.Main', DropdownField::create('HomepageSectionID',
@@ -97,7 +104,7 @@ class Course extends News
             );
             $fields->addFieldToTab('Root.Main', new LiteralField('Info','
             <p><span style="color:red;">Achtung: </span>Bitte die maximale Textlänge begrenzen. Es handelt sich hier um eine News für die Homepage!</p>'),'NewsContent');
-            
+
             $fields->removeFieldsFromTab('Root.Main',array('CourseTitle','URLSegment','MenuTitle','Section','CourseContent','CourseShort','CourseImage'));
         }
         if($controller == 'CourseAdmin')
@@ -114,6 +121,7 @@ class Course extends News
 
             //Course Main TAB
             $fields->removeByName('NewsLinkID');
+            $fields->removeByName('ExpireDate');
 
             $fields->addFieldToTab('Root.Main', TextField::create('CourseTitle', $this->fieldLabel('CourseTitle'))
                 ->setDescription('Der Titel des Kurses, Workshops oder der Veranstaltung.'));

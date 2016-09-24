@@ -10,6 +10,7 @@ class News extends DataObject
     private static $db = array(
         'NewsTitle' => 'Varchar(255)',
         'NewsDate' => 'Date',
+        'ExpireDate' => 'Date',
         'NewsContent' => 'HTMLText',
         'Section' => 'Varchar(255)',
     );
@@ -24,6 +25,7 @@ class News extends DataObject
     private static $summary_fields = array(
         'NewsTitle' => 'Schlagzeile',
         'NiceNewsDate' => 'Anzeige-Datum',
+        'NiceExpireDate' => 'Ablauf-Datum',
         'onHomepage' => 'Wird auf der Startseite angezeigt?',
         'Thumbnail' => 'Bild'
     );
@@ -31,6 +33,11 @@ class News extends DataObject
     public function getNiceNewsDate() {
         $date = new Date();
         $date->setValue($this->NewsDate);
+        return $date->Format('d.m.Y');
+    }
+    public function getNiceExpireDate() {
+        $date = new Date();
+        $date->setValue($this->ExpireDate);
         return $date->Format('d.m.Y');
     }
     // Used for $summary_fields
@@ -65,6 +72,12 @@ class News extends DataObject
         $newsDate->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('dd.MM.yyyy'))));
         $fields->addFieldToTab('Root.Main', $newsDate);
 
+        $newsDate = DateField::create('ExpireDate', $this->fieldLabel('ExpireDate'))
+            ->setConfig('dataformat', 'dd.MM.yyyy')
+            ->setConfig('showcalendar', true);
+        $newsDate->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('dd.MM.yyyy'))));
+        $fields->addFieldToTab('Root.Main', $newsDate);
+
         $fields->addFieldToTab('Root.Main', TextField::create('Section', 'Bereich')
             ->setDescription('Bereich ist optional. Ohne Eingabe wird "News" als Bereich angezeigt.'));
 
@@ -89,6 +102,7 @@ class News extends DataObject
         $labels = parent::fieldLabels($includerelations);
         $labels['NewsTitle'] = 'Schlagzeile';
         $labels['NewsDate'] = 'Anzeige-Datum';
+        $labels['ExpireDate'] = 'Ablauf-Datum';
         $labels['NewsContent'] = 'News-Inhalt';
         $labels['NewsImage'] = 'News-Bild';
         return $labels;
