@@ -41,7 +41,18 @@ class Course extends News
     }
     // Used for $summary_fields
     public function onHomepage() {
-        return ($this->HomepageSectionID > 0 ) ? 'Ja' : 'Nein';
+        $today = date("Y-m-d");
+        $state = 'Nein';
+        if (!$this->ExpireDate) {
+            $state .= '-Ablaufdatum fehlt';
+        } elseif($this->ExpireDate < $today) {
+            $state .= '-Abgelaufen';
+        } if ( $this->HomepageSectionID == 0 ) {
+            $state .= '-Bereich fehlt';
+        } elseif ( $this->HomepageSectionID > 0 && $state == 'Nein') {
+            $state = "Ja";
+        }
+        return $state;
     }
     // Offer a Title
     public function getTitle() {
@@ -80,7 +91,7 @@ class Course extends News
             $expireDate = DateField::create('ExpireDate', $this->fieldLabel('ExpireDate'))
                 ->setConfig('dataformat', 'dd.MM.yyyy')
                 ->setConfig('showcalendar', true);
-            $expireDate->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('dd.MM.yyyy'))));
+            $expireDate->setDescription(sprintf('z.B. %s', Convert::raw2xml(Zend_Date::now()->toString('dd.MM.yyyy'))).' , Datum ist notwendig um die News auf der Startseite zu zeigen. ' );
             $fields->addFieldToTab('Root.Main', $expireDate);
 
             //$fields->addFieldToTab('Root.News', LinkField::create('NewsLinkID', 'Link'));

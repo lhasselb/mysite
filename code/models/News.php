@@ -46,7 +46,14 @@ class News extends DataObject
     }
     // Used for $summary_fields
     public function onHomepage() {
-        return 'Ja';
+        $today = date("Y-m-d");
+        $state = 'Nein';
+        if (!$this->ExpireDate) {
+            $state .= '-Ablaufdatum fehlt';
+        } elseif($this->ExpireDate < $today) {
+            $state .= '-Abgelaufen';
+        } else $state = "Ja";
+        return $state;
     }
     // Offer a Title
     public function getTitle() {
