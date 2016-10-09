@@ -66,13 +66,44 @@ class HomePage_Controller extends Page_Controller
 	 *
 	 * @var array
 	 */
-	private static $allowed_actions = array ();
+	private static $allowed_actions = array ('NewsletterForm');
 
 	public function init() {
 		parent::init();
 		$theme = $this->themeDir();
         Requirements::javascript('mysite/javascript/slider-4.js');
+        Requirements::javascript('mysite/javascript/Newsletter.js');
 	}//init()
+
+    public function NewsletterForm() {
+
+        $emailField = EmailField::create('Email','E-Mail');
+        $emailField->addExtraClass('form-control input-lg c-square');
+        $emailField->setAttribute('placeholder','Email');
+        //$emailField->setTemplate('FormField_holder_Newsletter');
+        // Create fields
+        $fields = new FieldList($emailField);
+        $fields->setTemplate('FormField_holder_Newsletter');
+
+        // Create actions
+        $actions = new FieldList(
+            new FormAction('doAddEmail', 'Absenden')
+        );
+
+        $form = new Form($this, 'NewsletterForm', $fields, $actions);
+        $form->setTemplate('NewsletterForm');
+        return $form;
+    }
+
+    public function index(SS_HTTPRequest $request) {
+
+        if($request->isAjax()) {
+            SS_Log::log('Ajax',SS_Log::WARN);
+            return "Ajax response!";
+        }
+
+        return array();
+    }
 
     /**
      * Create a news items list
@@ -80,7 +111,7 @@ class HomePage_Controller extends Page_Controller
      */
     public function PaginatedLatestNews($num = 10) {
         $today = date("Y-m-d");
-        SS_Log::log('Today='.$today,SS_Log::WARN);
+        //SS_Log::log('Today='.$today,SS_Log::WARN);
         $start = isset($_GET['start']) ? (int) $_GET['start'] : 0;
         /*
         $itemsToSkip = 0;
@@ -96,7 +127,7 @@ class HomePage_Controller extends Page_Controller
         //->exclude('ExpireDate:LessThan',$today);
         //->sort('NewsDate','DESC');
         foreach ($list as $news) {
-            SS_Log::log('ExpireDate'.$news->ExpireDate,SS_Log::WARN);
+            //SS_Log::log('ExpireDate'.$news->ExpireDate,SS_Log::WARN);
         }
 
         return new PaginatedList($list, $this->getRequest());
