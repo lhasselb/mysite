@@ -19,6 +19,7 @@ class Page extends SiteTree
     public function getAlert() {
         return $alerts = HomePage::get()->First()->Alarm();
     }
+
     /**
      * Make Facebook Links accessible from all pages
      */
@@ -47,10 +48,9 @@ class Page_Controller extends ContentController
 	 *
 	 * @var array
 	 */
-    private static $allowed_actions = array ();
+    private static $allowed_actions = array ('NewsletterForm');
 
     public function init() {
-
         // You can include any CSS or JS required by your project here.
         // See: http://doc.silverstripe.org/framework/en/reference/requirements
         $theme = $this->themeDir();
@@ -92,6 +92,9 @@ class Page_Controller extends ContentController
         } else {
             Requirements::javascript($theme.'/dist/javascript/script.min.js');
         }
+
+        // Used for handling AJAX to Newsletter
+        Requirements::javascript('mysite/javascript/Newsletter.js');
         parent::init();
     } //init
 
@@ -101,6 +104,19 @@ class Page_Controller extends ContentController
      */
     public function isDev() {
         return Director::isDev();
+    }
+
+    /*public function index(SS_HTTPRequest $request) {
+        if($request->isAjax()) {
+            SS_Log::log('-- Homepage AJAX index --',SS_Log::WARN);
+        } else {
+            SS_Log::log('-- Homeage index --',SS_Log::WARN);
+            return $this;
+        }
+    }*/
+
+    public function NewsletterForm() {
+        return new NewsletterForm($this, 'NewsletterForm');
     }
 
     public function Copyright($startYear = "2007", $separator = "-") {

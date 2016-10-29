@@ -17,7 +17,8 @@ class HomePage extends Page
     private static $has_many = array(
         'Sliders' => 'HomepageSlider.Parent',
         'Alarm' => 'Alarm',
-        'News' => 'News'
+        'News' => 'News',
+        'Messages' => 'NewsletterMessages'
     );
 
     function getCMSFields() {
@@ -29,7 +30,7 @@ class HomePage extends Page
         $sliderConfig->addComponent(new GridFieldSortableRows('SortOrder'));
         $sliderGridField = new GridField('SLider', 'Bild(er) auf der Startseite', $this->Sliders());
         $sliderGridField->setConfig($sliderConfig);
-        $fields->addFieldToTab("Root.Slider-Bilder", $sliderGridField);
+        $fields->addFieldToTab('Root.Slider-Bilder', $sliderGridField);
 
         // ALARM
         $alarmConfig = GridFieldConfig_RecordEditor::create();
@@ -41,7 +42,19 @@ class HomePage extends Page
 
         $alarmGridField = new GridField('Alarm', 'Alarm auf der Startseite', $this->Alarm());
         $alarmGridField->setConfig($alarmConfig);
-        $fields->addFieldToTab("Root.Alarm", $alarmGridField);
+        $fields->addFieldToTab('Root.Alarm', $alarmGridField);
+
+        // Messages für das Newsletter-Formular
+        $messagesConfig = GridFieldConfig_RecordEditor::create();
+        if ($this->Messages()->count() > 0) {
+            // remove the buttons if we don't want to allow more records to be added/created
+            $messagesConfig->removeComponentsByType('GridFieldAddNewButton');
+            $messagesConfig->removeComponentsByType('GridFieldAddExistingAutocompleter');
+        }
+
+        $msgGridField = new GridField('Messages', 'Texte Newsletter-Formular', $this->Messages());
+        $msgGridField->setConfig($messagesConfig);
+        $fields->addFieldToTab('Root.Newsletter-Formular', $msgGridField);
 
         return $fields;
     }
@@ -66,51 +79,20 @@ class HomePage_Controller extends Page_Controller
 	 *
 	 * @var array
 	 */
-	private static $allowed_actions = array ('NewsletterForm');
+	private static $allowed_actions = array ();
 
 	public function init() {
 		parent::init();
 		$theme = $this->themeDir();
         Requirements::javascript('mysite/javascript/slider-4.js');
-        Requirements::javascript('mysite/javascript/Newsletter.js');
 	}//init()
-
-    public function NewsletterForm() {
-
-        $emailField = EmailField::create('Email','E-Mail');
-        $emailField->addExtraClass('form-control input-lg c-square');
-        $emailField->setAttribute('placeholder','Email');
-        //$emailField->setTemplate('FormField_holder_Newsletter');
-        // Create fields
-        $fields = new FieldList($emailField);
-        $fields->setTemplate('FormField_holder_Newsletter');
-
-        // Create actions
-        $actions = new FieldList(
-            new FormAction('doAddEmail', 'Absenden')
-        );
-
-        $form = new Form($this, 'NewsletterForm', $fields, $actions);
-        $form->setTemplate('NewsletterForm');
-        return $form;
-    }
-
-    public function index(SS_HTTPRequest $request) {
-
-        if($request->isAjax()) {
-            SS_Log::log('Ajax',SS_Log::WARN);
-            return "Ajax response!";
-        }
-
-        return array();
-    }
 
     /**
      * Create a news items list
      * @return PaginatedList list containing news items
      */
     public function PaginatedLatestNews($num = 10) {
-        $today = date("Y-m-d");
+        $today = date('Y-m-d');
         //SS_Log::log('Today='.$today,SS_Log::WARN);
         $start = isset($_GET['start']) ? (int) $_GET['start'] : 0;
         /*

@@ -1,34 +1,37 @@
- $(function() {
-    $("button#newsletterSubmit").click(function(){
-        var url = $('#Form_NewsletterForm').attr('action');
-        console.log(url);
-        console.log('clicked');
-        $.ajax({
-            type: "GET",
-            url: url,
-            data: $('form.newsletter').serialize(),
-                success: function(msg){
-                    $(".modal-body").html(msg);
-                    //$("#newsletter-form").modal('hide');
-                },
-                error: function(){
-                    alert("failure");
-            }
-       });
-    });
-});
+$(function() {
 
-// Pagination
-/*if ($('.pagination').length) {
-  $('.main').on('click','.pagination a', function (e) {
-        e.preventDefault();
-        var url = $(this).attr('href');
-        $.ajax(url)
-            .done(function (response) {
-                $('.main').html(response);
-            })
-            .fail (function (xhr) {
-                alert('Error: ' + xhr.responseText);
-            });
+
+    /*$('body').on('show.bs.modal', '.c-content-newsletter-form', function() {
+
+        var modal = $(this);
+        $.ajax('newsletter').done(function(html) {
+            modal = $(".modal-content").html(html);
+        });
+            var form = $('#NewsletterForm_NewsletterForm');
+            var url = $(form).attr('action');
+            //console.log(url);
+    });*/
+
+
+    $('#NewsletterForm_NewsletterForm input[type="submit"]').click(function(event) {
+        event.preventDefault();
+        var form = $('#NewsletterForm_NewsletterForm');
+        var url = $(form).attr('action');
+        //console.log(url);
+        $.ajax({
+            type: $(form).attr('method'),
+            url:  $(form).attr('action'),
+            data: $(form).serialize(),
+                success: function(msg){
+                    //console.log(msg);
+                    $("#newsletter-form div.modal-content").html(msg);
+                    //$(form).modal('hide');
+                },
+                error: function(xhr){
+                    console.log(xhr.responseText);
+                }
+        });
     });
-}*/
+
+
+});
