@@ -26,22 +26,22 @@ class NewsletterForm extends Form {
     public function getSucessMessage() {
         $messages = HomePage::get()->First()->Messages()->First();
         //SS_Log::log($messages->SuccessText,SS_Log::WARN);
-        return $messages->SuccessText;
+        if($messages) return $messages->SuccessText;
     }
 
     public function getHeadline() {
         $messages = HomePage::get()->First()->Messages()->First();
-        return $messages->Headline;
+        if($messages) return $messages->Headline;
     }
 
     public function getAddText() {
         $messages = HomePage::get()->First()->Messages()->First();
-        return $messages->AddText;
+        if($messages) return $messages->AddText;
     }
 
     public function getRemoveText() {
         $messages = HomePage::get()->First()->Messages()->First();
-        return $messages->RemoveText;
+        if($messages) return $messages->RemoveText;
     }
 
     public function doAddEmail($data, $form)
