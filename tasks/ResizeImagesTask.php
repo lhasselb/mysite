@@ -12,9 +12,9 @@ class ResizeImagesTask extends BuildTask {
 
     protected $description = 'Resize all images exceeding a specific width & height (1600 x 1200)';
 
-    private static $max_width = 1023;
+    private static $max_width = 1600;
 
-    private static $max_height = 767;
+    private static $max_height = 1200;
 
     /**
      * Check that the user has appropriate permissions to execute this task
