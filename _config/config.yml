@@ -15,15 +15,12 @@ SSViewer:
 # Enable Fragment Link rewriting (hashlinks)
 #  rewrite_hash_links: false
 
-#Image:
-#  force_resample: true
-
 # Rescale upload to max-width/-height
-ScaledUploads:
-  max-width: 1600
-  max-height: 1200
-  auto-rotate: 0
-  bypass: 0
+#ScaledUploads:
+#  max-width: 1600
+#  max-height: 1200
+#  auto-rotate: 0
+#  bypass: 0
 
 # General Quality GD
 GDBackend:
@@ -41,3 +38,8 @@ Email:
 Injector:
   Image:
   class: FPImage
+
+Upload_Validator:
+  default_max_file_size:
+    '[image]': '1000'
+    'jpg': '1000'
