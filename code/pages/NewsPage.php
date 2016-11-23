@@ -37,7 +37,7 @@ class NewsPage_Controller extends Page_Controller
      * Create a news items list
      * @return PaginatedList list containing news items
      */
-    public function PaginatedLatestNews($num = 10) {
+    public function PaginatedLatestNews($num = 2) {
         $start = isset($_GET['start']) ? (int) $_GET['start'] : 0;
         /*
         $itemsToSkip = 0;
@@ -50,6 +50,7 @@ class NewsPage_Controller extends Page_Controller
             'HomepageSectionID:GreaterThan' => '0'
         ));
         //->sort('NewsDate','DESC');
+        SS_Log::log('count='.$list->count(),SS_Log::WARN);
 
         return new PaginatedList($list, $this->getRequest());
     }

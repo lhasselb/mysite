@@ -90,8 +90,9 @@ class News extends DataObject
 
         $newsImage = new UploadField('NewsImage', $this->fieldLabel('NewsImage'));
         $newsImage->setConfig('allowedMaxFileNumber', 1);
-        $newsImage->getValidator()->allowedExtensions = array('jpg', 'gif', 'png');
-        $newsImage->setFolderName('news')->setDisplayFolderName('news');
+        $newsImage->getValidator()->allowedExtensions = array('jpeg','jpg', 'gif', 'png');
+        $newsImage->setFolderName('news');
+        $newsImage->setDisplayFolderName('news');
         $fields->addFieldToTab('Root.Main', $newsImage);
 
         $fields->addFieldToTab('Root.Main',
