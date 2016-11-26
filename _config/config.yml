@@ -41,5 +41,5 @@ Injector:
 
 Upload_Validator:
   default_max_file_size:
-    '[image]': '1000'
-    'jpg': '1000'
+    '[image]': '1M'
+    'jpg': '1M'
