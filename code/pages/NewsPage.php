@@ -72,7 +72,7 @@ class NewsPage_Controller extends Page_Controller
      * Create a news items list
      * @return PaginatedList list containing news items
      */
-    public function PaginatedLatestNews($num = 1) {
+    public function PaginatedLatestNews($num = 5) {
         return PaginatedList::create($this->newsList,$this->getRequest())->setPageLength($num);
     }
 }
