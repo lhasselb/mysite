@@ -26,11 +26,9 @@ class NewsPage extends Page
     public function ArchiveDates() {
         $list = ArrayList::create();
         $newsList = News::get();
-        SS_Log::log('result '.$newsList->count(),SS_Log::WARN);
         if($newsList) {
             foreach($newsList as $news) {
                 $year = $news->getYear();
-                SS_Log::log('loop year='.$year,SS_Log::WARN);
                 if(!$list->find('Year',$year)) {
                     $list->push(ArrayData::create(array(
                         'Year' => $year,
@@ -51,6 +49,7 @@ class NewsPage_Controller extends Page_Controller
     private static $allowed_actions = array ('date');
 
     protected $newsList;
+    protected $selectedYear;
 
     public function init() {
         parent::init();
@@ -60,11 +59,20 @@ class NewsPage_Controller extends Page_Controller
         ))->sort('NewsDate DESC');
     }//init()
 
+    public function SelectedYear() {
+        return $this->selectedYear;
+    }
+
     public function date(SS_HTTPRequest $r) {
         $year = $r->param('ID');
-        SS_Log::log('date called year ='.$year,SS_Log::WARN);
+        $this->selectedYear = $year;
         if(!$year) return $this->httpError(404);
-        $this->newsList = $this->newsList->filterAny('NewsDate:PartialMatch', $year);
+        if ($year = 'all') {
+            $this->newsList = News::get()->filterAny(array(
+                'ClassName' => 'News',
+                'HomepageSectionID:GreaterThan' => '0'
+            ))->sort('NewsDate DESC');
+        } else $this->newsList = $this->newsList->filterAny('NewsDate:PartialMatch', $year);
         return array();
     }
 
