@@ -35,6 +35,13 @@ class News extends DataObject
         $date->setValue($this->NewsDate);
         return $date->Format('d.m.Y');
     }
+
+    public function getYear() {
+        $date = new Date();
+        $date->setValue($this->NewsDate);
+        return $date->Year();
+    }
+
     public function getNiceExpireDate() {
         $date = new Date();
         $date->setValue($this->ExpireDate);

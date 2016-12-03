@@ -23,43 +23,56 @@ class NewsPage extends Page
         return $fields;
     }
 
+    public function ArchiveDates() {
+        $list = ArrayList::create();
+        $newsList = News::get();
+        SS_Log::log('result '.$newsList->count(),SS_Log::WARN);
+        if($newsList) {
+            foreach($newsList as $news) {
+                $year = $news->getYear();
+                SS_Log::log('loop year='.$year,SS_Log::WARN);
+                if(!$list->find('Year',$year)) {
+                    $list->push(ArrayData::create(array(
+                        'Year' => $year,
+                        'Link' => $this->Link('date/'.$year),
+                        'NewsCount' => News::get()->filterAny('NewsDate:PartialMatch', $year)->count()
+                    )));
+                }
+
+            }
+        }
+        return $list;
+    }
+
 }
 
 class NewsPage_Controller extends Page_Controller
 {
-    private static $allowed_actions = array ();
+    private static $allowed_actions = array ('date');
+
+    protected $newsList;
 
     public function init() {
         parent::init();
+        $this->newsList = News::get()->filterAny(array(
+            'ClassName' => 'News',
+            'HomepageSectionID:GreaterThan' => '0'
+        ))->sort('NewsDate DESC');
     }//init()
+
+    public function date(SS_HTTPRequest $r) {
+        $year = $r->param('ID');
+        SS_Log::log('date called year ='.$year,SS_Log::WARN);
+        if(!$year) return $this->httpError(404);
+        $this->newsList = $this->newsList->filterAny('NewsDate:PartialMatch', $year);
+        return array();
+    }
 
     /**
      * Create a news items list
      * @return PaginatedList list containing news items
      */
-    public function PaginatedLatestNews($num = 5) {
-        $datetime = SS_DateTime::now(); // date doday
-        $year = isset($_GET['year']) ? (int) $_GET['year'] : $datetime->Year();
-        SS_Log::log('year='.$year,SS_Log::WARN);
-
-        $start = isset($_GET['start']) ? (int) $_GET['start'] : 0;
-        /*
-        $itemsToSkip = 0;
-        $itemsToReturn = 5;
-        return News::Entries($itemsToSkip, $itemsToReturn);*/
-        //$item->ClassName == 'Course' && $item->HomepageSectionID == 0
-        $list = News::get()
-        ->filterAny(array(
-            'ClassName' => 'News',
-            'HomepageSectionID:GreaterThan' => '0'
-        ));
-        //->sort('NewsDate','DESC');
-        //SS_Log::log('count='.$list->count(),SS_Log::WARN);
-        if ($list)
-        {
-            $news = PaginatedList::create($list,$this->getRequest())->setPageLength($num);
-        }
-
-        return $news;
+    public function PaginatedLatestNews($num = 1) {
+        return PaginatedList::create($this->newsList,$this->getRequest())->setPageLength($num);
     }
 }
