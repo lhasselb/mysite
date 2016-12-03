@@ -67,7 +67,7 @@ class NewsPage_Controller extends Page_Controller
         $year = $r->param('ID');
         $this->selectedYear = $year;
         if(!$year) return $this->httpError(404);
-        if ($year = 'all') {
+        if ($year == 'all') {
             $this->newsList = News::get()->filterAny(array(
                 'ClassName' => 'News',
                 'HomepageSectionID:GreaterThan' => '0'
