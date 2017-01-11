@@ -60,7 +60,8 @@ class FotosPage extends Page
         // Limit to used ones
         // this requires a __toString() method for the object compared
         // see Gallery __toString()
-        return new ArrayList(array_unique($usedYears));
+        $list = new ArrayList(array_unique($usedYears));
+        return $list->sort('AlbumDate', 'DESC');
     }
 
 }
