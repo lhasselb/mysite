@@ -4,3 +4,4 @@
 /.sass-cache/*
 /.tmp/*
 .DS_Store
+_config.php
