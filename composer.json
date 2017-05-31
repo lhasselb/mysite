@@ -1,0 +1,17 @@
+{
+    "name": "lhasselb/mysite",
+    "description": "Jim e.V.",
+    "type": "silverstripe-module",
+    "keywords": ["silverstripe", "Jim e.V."],
+    "authors": [
+    {
+        "name": "guggelimehl",
+        "email": "guggelimehl@gmail.com"
+    }
+    ],
+    "require":
+    {
+        "silverstripe/framework": "3.*",
+        "silverstripe/cms": "3.*"
+    }
+}
