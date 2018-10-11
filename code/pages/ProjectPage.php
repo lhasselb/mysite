@@ -5,6 +5,7 @@ class ProjectPage extends Page
     private static $description = 'Seite zum Darstellen von Projekten.';
     private static $icon = 'mysite/images/projects.png';
     private static $can_be_root = true;
+    //TODO: limit to none
     private static $allowed_children = array(
         'ProjectPage',
         '*Page'
@@ -49,7 +50,8 @@ class ProjectPage extends Page
         // Limit to used ones
         // this requires a __toString() method for the object compared
         // see Project __toString()
-        return new ArrayList(array_unique($usedYears));
+        $list = new ArrayList(array_unique($usedYears));
+        return $list->sort('ProjectDate', 'DESC');
     }
 
 }
