@@ -45,6 +45,7 @@ class HomePage extends Page
         $fields->addFieldToTab('Root.Alarm', $alarmGridField);
 
         // Messages für das Newsletter-Formular
+        /*
         $messagesConfig = GridFieldConfig_RecordEditor::create();
         if ($this->Messages()->count() > 0) {
             // remove the buttons if we don't want to allow more records to be added/created
@@ -55,6 +56,7 @@ class HomePage extends Page
         $msgGridField = new GridField('Messages', 'Texte Newsletter-Formular', $this->Messages());
         $msgGridField->setConfig($messagesConfig);
         $fields->addFieldToTab('Root.Newsletter-Formular', $msgGridField);
+        */
 
         return $fields;
     }
