@@ -17,10 +17,6 @@ class GalleryImage extends DataObject {
 
     private static $default_sort='SortOrder';
 
-    //Permissions
-    public function canEdit($Member = null){if(permission::check('EDIT_GALLERY')){return true;}else{return false;}}
-    public function canCreate($Member = null){if(permission::check('EDIT_GALLERY')){return true;}else{return false;}}
-
     // Add fields to dataobject
     public function getCMSFields() {
         $fields = parent::getCMSFields();
@@ -58,5 +54,24 @@ class GalleryImage extends DataObject {
         return $this->isSize($width, $height) && !Config::inst()->get('Image', 'force_resample') ?
             $this : $this->getFormattedImage('CroppedImage', $width, $height);
      }
+     
+    //Permissions
+    //public function canEdit($Member = null){if(permission::check('EDIT_GALLERY')){return true;}else{return false;}}
+    //public function canCreate($Member = null){if(permission::check('EDIT_GALLERY')){return true;}else{return false;}}
 
+     public function canView($member = null) {
+        return Permission::check('CMS_ACCESS_GalleryAdmin', 'any', $member);
+    }
+
+    public function canEdit($member = null) {
+        return Permission::check('CMS_ACCESS_GalleryAdmin', 'any', $member);
+    }
+
+    public function canDelete($member = null) {
+        return Permission::check('CMS_ACCESS_GalleryAdmin', 'any', $member);
+    }
+
+    public function canCreate($member = null) {
+        return Permission::check('CMS_ACCESS_GalleryAdmin', 'any', $member);
+    }     
 }
