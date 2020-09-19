@@ -106,7 +106,7 @@ class EnrollPage_Controller extends Page_Controller
 
     public function EnrollForm() {
         $today = SS_Datetime::now()->FormatI18N("%d.%m.%Y");
-
+        i18n::set_locale('de_DE');
         $fields = FieldList::create(
             DropdownField::create('Salutation', 'Anrede',
                 //singleton('ClubMember')->dbObject('Salutation')->enumValues()
@@ -168,6 +168,7 @@ class EnrollPage_Controller extends Page_Controller
         /*foreach ($data as $key => $value) {
             SS_Log::log("key=".$key." value=".$value,SS_Log::WARN);
         }*/
+
         // Create a ClubMember object
         $clubMember = new ClubMemberPending();
         // Save data into object
@@ -176,8 +177,13 @@ class EnrollPage_Controller extends Page_Controller
         $serialized = base64_encode(serialize($clubMember));
         // Get the desired folder to store the serialized object
         $folder = $this->Folder();
+        // Replace special characters
+        setlocale( LC_ALL, "de_DE.utf8");
+        $fn = iconv('utf-8', 'ascii//TRANSLIT', $clubMember->FirstName);
+        $ln = iconv('utf-8', 'ascii//TRANSLIT', $clubMember->LastName);
+
         // Get the path for the folder and add a filename
-        $path = $folder->getFullPath() . $data['FirstName'][0] . $data['LastName'][0] . '_' . $data['Birthday'] . '_' . date('d.m.Y_H_i_s') . '.antrag';
+        $path = $folder->getFullPath() . $fn[0] . $ln[0] . '_' . $data['Birthday'] . '_' . date('d.m.Y_H_i_s') . '.antrag';
         //SS_Log::log("path=".$path,SS_Log::WARN);
         /* Store the object at calculated path
          * If filename does not exist, the file is created. Otherwise,
@@ -198,6 +204,7 @@ class EnrollPage_Controller extends Page_Controller
 
     function init() {
         parent::init();
+
         $theme = $this->themeDir();
         //Add javascript here
         Requirements::block(THIRDPARTY_DIR . '/jquery/jquery.js');

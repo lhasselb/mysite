@@ -278,6 +278,15 @@ class Course extends News
                     $section = DataObject::get_by_id('SectionPage',$this->HomepageSectionID);
                     //SS_Log::log('Homepage? ='.$section->Link(),SS_Log::WARN);
                     return Controller::join_links($section->Link(),'kurs',$this->URLSegment);
+
+                }
+            }
+            // NewsPage
+            if(Controller::curr() == 'NewsPage_Controller') {
+                if($this->HomepageSectionID) {
+                    $section = DataObject::get_by_id('SectionPage',$this->HomepageSectionID);
+                    //SS_Log::log('Homepage? ='.$section->Link(),SS_Log::WARN);
+                    return Controller::join_links($section->Link(),'kurs',$this->URLSegment);
                 }
             }
             // SectionPage
