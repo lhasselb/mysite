@@ -2,11 +2,12 @@
 
     $(document).ready(function() {
         $('#calendar').fullCalendar({
-            /*header: {
+            header: {
                 left: 'today prev,next',
                 center: 'title',
                 right: 'month,basicWeek,basicDay'
-            },*/
+            },
+            defaultView: 'month',
             lang: 'de',
 
             googleCalendarApiKey: 'AIzaSyB6cztHJTF4Xn6LJUiNNhCGyItBzO6xyhs',
