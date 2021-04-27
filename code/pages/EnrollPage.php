@@ -130,7 +130,7 @@ class EnrollPage_Controller extends Page_Controller
                 ->setAttribute('placeholder', 'Wohnort'),
             EmailField::create('Email', 'E-Mailadresse')
                 ->setAttribute('placeholder', 'name@domain.de'),
-            TextField::create('Mobil', 'Mobiltelefom')
+            TextField::create('Mobil', 'Mobiltelefon')
                 ->setAttribute('placeholder', 'Handynummer'),//PhoneNumberField
             TextField::create('Phone', 'Telefon')
                 ->setAttribute('placeholder', 'Telefonnummer'),//PhoneNumberField
